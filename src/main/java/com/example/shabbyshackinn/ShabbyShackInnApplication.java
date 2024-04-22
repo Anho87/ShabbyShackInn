@@ -3,6 +3,7 @@ package com.example.shabbyshackinn;
 import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
@@ -10,6 +11,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
@@ -32,29 +35,29 @@ public class ShabbyShackInnApplication {
 //            customerRepo.save(cust3);
 //            customerRepo.save(cust4);
 //            customerRepo.save(cust5);
-//  
 //
-//            Room room1 = new Room(1, 2, 1);
-//            Room room2 = new Room(2, 1, 2);
-//            Room room3 = new Room(3, 2, 1);
-//            Room room4 = new Room(4, 3, 0);
-//            Room room5 = new Room(5, 1, 1);
+//
+//            Room room1 = new Room(1, RoomType.DOUBLE, 2, 1);
+//            Room room2 = new Room(2,RoomType.SINGLE, 1, 0);
+//            Room room3 = new Room(3,RoomType.DOUBLE, 2, 2);
+//            Room room4 = new Room(4,RoomType.DOUBLE, 2, 0);
+//            Room room5 = new Room(5,RoomType.SINGLE, 1, 0);
 //
 //            roomRepo.save(room1);
 //            roomRepo.save(room2);
 //            roomRepo.save(room3);
 //            roomRepo.save(room4);
 //            roomRepo.save(room5);
-//            
-//            Booking b1 = new Booking(cust1, 2,"2024-04-20", "2024-05-01");
-//            Booking b2 = new Booking(cust3,2,"2024-04-21", "2024-05-02");
-//            Booking b3 = new Booking(cust5, 1,"2024-04-15", "2024-04-17");
-//            
+//
+//            Booking b1 = new Booking(cust1, LocalDate.of(2024,4,22),LocalDate.of(2024,05,01),12345,2,room3);
+//            Booking b2 = new Booking(cust3,LocalDate.of(2024,04,15),LocalDate.of(2024,04,17),54321,0,room2);
+//            Booking b3 = new Booking(cust5,LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,1,room1);
+//
 //            bookingRepo.save(b1);
 //            bookingRepo.save(b2);
 //            bookingRepo.save(b3);
-//            
-//            
+//
+//
 //        };
 //    }
 
