@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.locks.LockSupport;
 
 @Data
 @Entity
@@ -18,26 +21,25 @@ public class Booking {
     @GeneratedValue
     private Long id;
 
-    private int amountOfPersons;
-
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int bookingNumber;
+    private int extraBedsWanted;
 
     @ManyToOne
     @JoinColumn
     private Customer customer;
+    
+    @ManyToOne
+    @JoinColumn
+    private Room room;
 
-    public Booking(Customer customer, int amountOfPersons, String startDate, String endDate) {
+    public Booking(Customer customer, LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, Room room) {
         this.customer = customer;
-        this.amountOfPersons = amountOfPersons;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Room> room = new ArrayList<>();
-
-    public void addRoom(Room r){
-        room.add(r);
+        this.bookingNumber = bookingNumber;
+        this.extraBedsWanted = extraBedsWanted;
+        this.room = room;
     }
 }
