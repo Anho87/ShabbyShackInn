@@ -17,10 +17,16 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String phone;
     private String eMail;
 
-    public Customer(String name) {
-        this.name = name;
+    public Customer(String name, String lastName, String phone, String eMail) {
+        this.firstName = name;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.eMail = eMail;
+        
     }
 }

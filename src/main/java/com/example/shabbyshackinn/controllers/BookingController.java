@@ -8,6 +8,8 @@ import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -35,8 +37,9 @@ public class BookingController {
     }
 
     @RequestMapping("/addNewBooking")
-    public List<Booking> addNewBooking(@RequestParam Long customerId, @RequestParam int amountOfpeople
-            , String startDate, String endDate){
+    public List<Booking> addNewBooking(@RequestParam Long customerId
+            , @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int bookingNumber
+            , @RequestParam int extraBedsWanted, @RequestParam Long roomId){
         Customer customer = customerRepo.findById(customerId).get();
         Room room = roomRepo.findById(roomId).get();
         if(customer != null && room != null){
