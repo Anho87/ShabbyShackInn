@@ -21,13 +21,13 @@ public class Room {
 
     private int beds;
 
-    private int possibleExtraBed;
+    private int possibleExtraBeds;
 
     public Room(int roomNumber,RoomType roomType, int beds, int possibleExtraBeds) {
         this.roomNumber = roomNumber;
         this.roomType = roomType;
         this.beds = beds;
-        this.possibleExtraBed = possibleExtraBed;
+        this.possibleExtraBeds = possibleExtraBeds;
     }
     
     
