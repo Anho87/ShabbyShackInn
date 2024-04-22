@@ -38,21 +38,22 @@ public class BookingController {
     public List<Booking> addNewBooking(@RequestParam Long customerId, @RequestParam int amountOfpeople
             , String startDate, String endDate){
         Customer customer = customerRepo.findById(customerId).get();
-        if(customer != null){
-            Booking newBooking = new Booking(customer,amountOfpeople,startDate,endDate);
+        Room room = roomRepo.findById(roomId).get();
+        if(customer != null && room != null){
+            Booking newBooking = new Booking(customer,startDate,endDate,bookingNumber, extraBedsWanted,room);
             bookingRepo.save(newBooking);
         }
         return bookingRepo.findAll();
     }
 
-    @RequestMapping("/addRoomToBooking")
-    public List<Booking> addRoomToBooking(@RequestParam Long bookingId, @RequestParam Long roomId){
-        Booking booking = bookingRepo.findById(bookingId).get();
-        Room room = roomRepo.findById(roomId).get();
-        if (booking != null && room != null){
-            booking.addRoom(room);
-            bookingRepo.save(booking);
-        }
-        return bookingRepo.findAll();
-    }
+//    @RequestMapping("/addRoomToBooking")
+//    public List<Booking> addRoomToBooking(@RequestParam Long bookingId, @RequestParam Long roomId){
+//        Booking booking = bookingRepo.findById(bookingId).get();
+//        Room room = roomRepo.findById(roomId).get();
+//        if (booking != null && room != null){
+//            booking.addRoom(room);
+//            bookingRepo.save(booking);
+//        }
+//        return bookingRepo.findAll();
+//    }
 }

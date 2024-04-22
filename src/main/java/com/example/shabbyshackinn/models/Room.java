@@ -16,15 +16,19 @@ public class Room {
     @GeneratedValue
     private Long id;
 
+    private RoomType roomType;
     private int roomNumber;
 
     private int beds;
 
     private int possibleExtraBed;
 
-    public Room(int roomNumber, int beds, int possibleExtraBed) {
+    public Room(int roomNumber,RoomType roomType, int beds, int possibleExtraBeds) {
         this.roomNumber = roomNumber;
+        this.roomType = roomType;
         this.beds = beds;
         this.possibleExtraBed = possibleExtraBed;
     }
+    
+    
 }

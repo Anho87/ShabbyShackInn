@@ -18,44 +18,44 @@ public class ShabbyShackInnApplication {
         SpringApplication.run(ShabbyShackInnApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
-        return (args) -> {
-            Customer cust1 = new Customer("Andreas");
-            Customer cust2 = new Customer("Johan");
-            Customer cust3 = new Customer("Felix");
-            Customer cust4 = new Customer("Kalle");
-            Customer cust5 = new Customer("Peter");
-
-            customerRepo.save(cust1);
-            customerRepo.save(cust2);
-            customerRepo.save(cust3);
-            customerRepo.save(cust4);
-            customerRepo.save(cust5);
-
-
-            Room room1 = new Room(1, 2, 1);
-            Room room2 = new Room(2, 1, 2);
-            Room room3 = new Room(3, 2, 1);
-            Room room4 = new Room(4, 3, 0);
-            Room room5 = new Room(5, 1, 1);
-
-            roomRepo.save(room1);
-            roomRepo.save(room2);
-            roomRepo.save(room3);
-            roomRepo.save(room4);
-            roomRepo.save(room5);
-            
-            Booking b1 = new Booking(cust1, 2,"2024-04-20", "2024-05-01");
-            Booking b2 = new Booking(cust3,2,"2024-04-21", "2024-05-02");
-            Booking b3 = new Booking(cust5, 1,"2024-04-15", "2024-04-17");
-            
-            bookingRepo.save(b1);
-            bookingRepo.save(b2);
-            bookingRepo.save(b3);
-            
-            
-        };
-    }
+//    @Bean
+//    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
+//        return (args) -> {
+//            Customer cust1 = new Customer("Andreas", "Holmberg", "0702879445", "Andreas.holmber@airbnb.se");
+//            Customer cust2 = new Customer("Johan", "Johnsson", "0702345116", "johan.johnsson@airbnb.se");
+//            Customer cust3 = new Customer("Felix", "Dahlberg", "0706547889", "Felix.Dahlber@airbnb.se");
+//            Customer cust4 = new Customer("Kalle", "Johansson", "0706584225", "Kalle.johansson@airnbnb.se");
+//            Customer cust5 = new Customer("Peter", "Petersson", "0709878456", "Peter.petersson@airbnb.se");
+//
+//            customerRepo.save(cust1);
+//            customerRepo.save(cust2);
+//            customerRepo.save(cust3);
+//            customerRepo.save(cust4);
+//            customerRepo.save(cust5);
+//  
+//
+//            Room room1 = new Room(1, 2, 1);
+//            Room room2 = new Room(2, 1, 2);
+//            Room room3 = new Room(3, 2, 1);
+//            Room room4 = new Room(4, 3, 0);
+//            Room room5 = new Room(5, 1, 1);
+//
+//            roomRepo.save(room1);
+//            roomRepo.save(room2);
+//            roomRepo.save(room3);
+//            roomRepo.save(room4);
+//            roomRepo.save(room5);
+//            
+//            Booking b1 = new Booking(cust1, 2,"2024-04-20", "2024-05-01");
+//            Booking b2 = new Booking(cust3,2,"2024-04-21", "2024-05-02");
+//            Booking b3 = new Booking(cust5, 1,"2024-04-15", "2024-04-17");
+//            
+//            bookingRepo.save(b1);
+//            bookingRepo.save(b2);
+//            bookingRepo.save(b3);
+//            
+//            
+//        };
+//    }
 
 }
