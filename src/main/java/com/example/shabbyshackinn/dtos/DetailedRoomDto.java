@@ -17,5 +17,11 @@ public class DetailedRoomDto {
     private int roomNumber;
     private int beds;
     private int possibleExtraBeds;
-    
+
+    public DetailedRoomDto(RoomType roomType, int roomNumber, int beds, int possibleExtraBeds) {
+        this.roomType = roomType;
+        this.roomNumber = roomNumber;
+        this.beds = beds;
+        this.possibleExtraBeds = possibleExtraBeds;
+    }
 }
