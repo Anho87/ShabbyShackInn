@@ -1,34 +1,25 @@
-package com.example.shabbyshackinn.models;
+package com.example.shabbyshackinn.dtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Customer {
-
-    @Id
-    @GeneratedValue
+public class DetailedCustomerDto {
     private Long id;
-
     private String firstName;
     private String lastName;
     private String phone;
     private String eMail;
-
-    public Customer(String name, String lastName, String phone, String eMail) {
-        this.firstName = name;
+    
+    public DetailedCustomerDto(String firstName, String lastName, String phone, String eMail) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.eMail = eMail;
-        
     }
 }
