@@ -42,4 +42,5 @@ public class RoomController {
                              @RequestParam int roomNumber, @RequestParam int possibleExtraBeds){
         return roomService.updateRoom(new DetailedRoomDto(id,roomType,beds,roomNumber,possibleExtraBeds));
     }
+
 }

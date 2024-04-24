@@ -6,7 +6,7 @@ import com.example.shabbyshackinn.models.Room;
 
 import java.util.List;
 
-public interface RoomService {
+public interface RoomService {//
     DetailedRoomDto roomToDetailedRoomDTO(Room room);
     List<DetailedRoomDto> getAllRooms();
     String addRoom(DetailedRoomDto room);
