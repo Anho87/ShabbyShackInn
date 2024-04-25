@@ -9,6 +9,8 @@ import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BookingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,7 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/booking")
 public class BookingController {
-    
+
+    private static final Logger log =
+            LoggerFactory.getLogger(BookingController.class);
+
     private final BookingService bookingService;
 
     public BookingController(BookingService bookingService){
@@ -27,15 +32,18 @@ public class BookingController {
     
     @RequestMapping("/getAll")
     public List<DetailedBookingDto> getAllBookings(){
+        log.info("All bookings shown");
         return bookingService.getAllBookings();
     }
     
     @RequestMapping("/delete")
     public String deleteBooking(@RequestParam Long id){
+        log.info("Booking with id:" + id + "has been deleted");
         return bookingService.deleteBooking(id);
     }
     @PostMapping("/update")
     public String updateBooking(@RequestBody DetailedBookingDto booking){
+        log.info("booking with id:" + booking.getId() + " has benn updated");
         return bookingService.updateBooking(booking);
     }
     

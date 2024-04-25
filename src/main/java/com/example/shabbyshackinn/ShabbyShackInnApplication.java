@@ -21,6 +21,8 @@ public class ShabbyShackInnApplication {
         SpringApplication.run(ShabbyShackInnApplication.class, args);
     }
 
+
+
 //    @Bean
 //    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
 //        return (args) -> {
