@@ -1,7 +1,18 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.Booking;
+import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.repos.BookingRepo;
+import com.example.shabbyshackinn.repos.CustomerRepo;
+import com.example.shabbyshackinn.repos.RoomRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
@@ -30,7 +41,7 @@ public class ShabbyShackInnApplication {
 //            Room room2 = new Room(2,RoomType.SINGLE, 1, 0);
 //            Room room3 = new Room(3,RoomType.DOUBLE, 2, 2);
 //            Room room4 = new Room(4,RoomType.DOUBLE, 2, 0);
-//            Room room5 = new Room(5,RoomType.SINGLE, 1, 0);
+//            Room room5 = new Room(5, RoomType.SINGLE, 1, 0);
 //
 //            roomRepo.save(room1);
 //            roomRepo.save(room2);
@@ -40,13 +51,15 @@ public class ShabbyShackInnApplication {
 //
 //            Booking b1 = new Booking(cust1, LocalDate.of(2024,4,22),LocalDate.of(2024,05,01),12345,2,room3);
 //            Booking b2 = new Booking(cust3,LocalDate.of(2024,04,15),LocalDate.of(2024,04,17),54321,0,room2);
-//            Booking b3 = new Booking(cust5,LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,1,room1);
+//            Booking b3 = new Booking(cust5, LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,1,room1);
+//            Booking b4 = new Booking(cust2, LocalDate.of(2024,04,01),LocalDate.of(2024,04,03),98765,1,room1);
+//            Booking b5 = new Booking(cust1, LocalDate.of(2024,04,01),LocalDate.of(2024,04,03),98765,1,room3);
 //
 //            bookingRepo.save(b1);
 //            bookingRepo.save(b2);
 //            bookingRepo.save(b3);
-//
-//
+//            bookingRepo.save(b4);
+//            bookingRepo.save(b5);
 //        };
 //    }
 

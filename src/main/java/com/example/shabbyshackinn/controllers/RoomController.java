@@ -16,7 +16,7 @@ public class RoomController {
         this.roomRepo = roomRepo;
     }
 
-    @RequestMapping("/getAllRooms")
+    @RequestMapping("/getAll")
     public List<Room> getAllRooms(){
         return roomRepo.findAll();
     }
