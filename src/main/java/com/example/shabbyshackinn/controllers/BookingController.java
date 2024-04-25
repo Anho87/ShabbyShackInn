@@ -47,6 +47,11 @@ public class BookingController {
         return bookingService.updateBooking(booking);
     }
     
+    @PostMapping("add")
+    public String addBooking(@RequestBody DetailedBookingDto booking){
+        return bookingService.addBooking(new DetailedBookingDto(booking.getStartDate(),booking.getEndDate(),booking.getBookingNumber()
+        ,booking.getExtraBedsWanted(),booking.getMiniCustomerDto(),booking.getMiniRoomDto()));
+    }
 //    @RequestMapping("/update")
 //    public String updateBooking(@RequestParam Long id,@RequestParam LocalDate startDate, @RequestParam LocalDate endDate
 //    ,@RequestParam int extraBedsWanted, @RequestParam MiniRoomDto miniRoomDto){

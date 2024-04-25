@@ -11,13 +11,11 @@ import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BookingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -68,13 +66,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public String addBooking(DetailedBookingDto booking) {
-        return null;
+    public String addBooking(DetailedBookingDto detailedBookingDto) {
+        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate()) ){
+            Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
+            Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
+            bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto,customer,room));
+            return "Booking added";
+        }
+        return "Booking not added";
     }
 
     @Override
     public String updateBooking(DetailedBookingDto detailedBookingDto) {
-        if (checkIfBookingPossible(detailedBookingDto)){
+        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())){
             Customer customer = bookingRepo.findById(detailedBookingDto.getId()).get().getCustomer();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
             bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto,customer,room));
