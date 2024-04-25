@@ -20,8 +20,15 @@ public class DetailedBookingDto {
     private int extraBedsWanted;
     private MiniCustomerDto miniCustomerDto;
     private MiniRoomDto miniRoomDto;
-    
-    
+
+    public DetailedBookingDto(Long id, LocalDate startDate, LocalDate endDate, int extraBedsWanted, MiniRoomDto miniRoomDto) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.extraBedsWanted = extraBedsWanted;
+        this.miniRoomDto = miniRoomDto;
+    }
+
     public DetailedBookingDto (LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, MiniCustomerDto miniCustomerDto, MiniRoomDto miniRoomDto) {
         this.startDate = startDate;
         this.endDate = endDate;

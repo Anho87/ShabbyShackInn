@@ -10,10 +10,10 @@ import java.util.List;
 public interface CustomerService {
 
     DetailedCustomerDto customerToDetailedCustomerDTO(Customer customer);
-    List<DetailedCustomerDto> getAllCustomers();
-    String addCustomer(DetailedCustomerDto customer);
     Customer detailedCustomerToCustomer(DetailedCustomerDto customer);
     MiniCustomerDto customerToMiniCustomerDto(Customer customer);
+    List<DetailedCustomerDto> getAllCustomers();
+    String addCustomer(DetailedCustomerDto customer);
     String updateCustomer(DetailedCustomerDto customer);
     String deleteCustomer(Long id);
 }
