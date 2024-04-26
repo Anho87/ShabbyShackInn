@@ -29,8 +29,9 @@ public class CustomerController {
     }
     
     @PostMapping("/update")
-    public String updateCustomer(@RequestBody DetailedCustomerDto customer){
+    public String updateCustomer(@RequestBody DetailedCustomerDto customer) {
         return customerService.updateCustomer(customer);
+    }
     @RequestMapping("/add")
     public String addCustomer(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone
     ,@RequestParam String eMail){
@@ -38,17 +39,6 @@ public class CustomerController {
         return customerService.addCustomer(new DetailedCustomerDto(firstName,lastName,phone,eMail));
     }
 
-//    @RequestMapping("/add")
-//    public String addCustomer(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone
-//    ,@RequestParam String eMail){
-//        return customerService.addCustomer(new DetailedCustomerDto(firstName,lastName,phone,eMail));
-//    }
-
-//    @RequestMapping("/update")
-//    public String updateCustomer(@RequestParam Long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone
-//            ,@RequestParam String eMail){
-//        return customerService.updateCustomer(new DetailedCustomerDto(id,firstName,lastName,phone,eMail));
-//    }
     @RequestMapping("/update")
     public String updateCustomer(@RequestParam Long id, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone
             ,@RequestParam String eMail){
@@ -64,7 +54,7 @@ public class CustomerController {
 
     @RequestMapping("/getAll")
     public List<DetailedCustomerDto> getAllCustomers(){
-        log.info("All customers shown");
+        log.info("Get request for all customers");
         return customerService.getAllCustomers();
     }
 }

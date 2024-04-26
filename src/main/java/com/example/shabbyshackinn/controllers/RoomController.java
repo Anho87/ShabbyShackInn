@@ -28,6 +28,7 @@ public class RoomController {
 
     @RequestMapping("/getAll")
     public List<DetailedRoomDto> getAllRooms(){
+        log.info("Get request for all rooms");
         return roomService.getAllRooms();
     }
 

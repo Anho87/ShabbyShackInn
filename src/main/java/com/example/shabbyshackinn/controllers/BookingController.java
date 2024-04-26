@@ -32,7 +32,7 @@ public class BookingController {
     
     @RequestMapping("/getAll")
     public List<DetailedBookingDto> getAllBookings(){
-        log.info("All bookings shown");
+        log.info("Get request for all bookings");
         return bookingService.getAllBookings();
     }
     
