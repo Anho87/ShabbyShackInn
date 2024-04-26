@@ -57,7 +57,7 @@ public class IndexController {
     }
 
 
-    @RequestMapping("/search")
+    /*@RequestMapping("/search")
     public String search(Model model, @RequestParam(name = "startDate") String startDate, 
                          @RequestParam(name = "endDate") String endDate, @RequestParam(name = "amountOfPersons") int amountOfPersons){
         model.addAttribute("startDate", startDate);
@@ -65,7 +65,7 @@ public class IndexController {
         model.addAttribute("amountOfPersons", amountOfPersons);
         //Skickar med datum och antalPersoner till searchResults
         return "searchResults";
-    }
+    }*/
 
     @PostMapping("/updateOrAddCustomer")
     public String updateOrAddCustomer(@RequestParam Long id,@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
