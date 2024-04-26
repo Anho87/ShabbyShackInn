@@ -32,11 +32,19 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public MiniBookingDto bookingToMiniBookingDto(Booking booking) {
-        return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate()).build();
+        MiniCustomerDto miniCustomerDto = (booking.getCustomer() != null) ?
+                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(),booking.getCustomer().getEMail()) :
+                null;
+        
+        return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
+                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
+                .miniCustomerDto(miniCustomerDto)
+                .build();
     }
 
     @Override
     public DetailedBookingDto bookingToDetailedBookingDto(Booking booking) {
+        
         MiniCustomerDto miniCustomerDto = (booking.getCustomer() != null) ?
                 new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(),booking.getCustomer().getEMail()) :
                 null;

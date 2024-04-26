@@ -26,16 +26,17 @@ public class IndexController {
     
     @RequestMapping("/index")
     public String index(Model model){
-        List<DetailedCustomerDto> detailedCustomerDtoList = customerService.getAllCustomers();
-        model.addAttribute("allCustomer", detailedCustomerDtoList);
-        model.addAttribute("Title", "CustomerList");
+        List<MiniCustomerDto> miniCustomerDtoList = customerService.getallMiniCustomers();
+        List<MiniBookingDto> miniBookingDtoList = bookingService.getAllCurrentAndFutureMiniBookings();
+        model.addAttribute("allCustomer", miniCustomerDtoList);
+        model.addAttribute("allBooking", miniBookingDtoList);
         return "index";
     }
 
     @RequestMapping(path = "/deleteById/{id}")
-    public String deleteCustomer(@PathVariable Long id, Model model) {
+    public String deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
-        return index(model);
+        return "redirect:/shabbyShackInn/index";
     }
 
     @RequestMapping(path = "/deleteBookingById/{id}")

@@ -7,16 +7,88 @@
     <link href="static/styles.css" rel="stylesheet" />
 </head>
 <body>
-<h2 th:text="${Title}"></h2>
-<table>
-    <tbody>
-    <tr th:each="c : ${allCustomer}">
-        <td th:text="${c.firstName}"></td>
-        <td th:text="${c.lastName}"></td>
-        <td><a th:href="@{/shabbyShackInn/deleteById/{id}(id=${c.id})}">Delete</a></td>
-        <td><a th:href="@{/shabbyShackInn/editByView/{id}(id=${c.id})}">Update</a></td>
-    </tr>
-    </tbody>
-</table>
+
+<div class="container mt-3">
+    <div class="row mb-4">
+        <div class="col">
+            <a th:href="@{/shabbyShackInn/customerAddAndUpdate}" class="btn btn-primary">Add Customer</a>
+        </div>
+
+        <!-- Form in the middle -->
+        <div class="col">
+            <form th:action="@{/shabbyShackInn/search}" method="get" class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="startDate" class="sr-only">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" placeholder="Start Date">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="endDate" class="sr-only">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" placeholder="End Date">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="amountOfPersons" class="sr-only">Persons</label>
+                    <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons" placeholder="Persons">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Search</button>
+            </form>
+        </div>
+
+        <div class="col">
+            <a th:href="@{/booking/add}" class="btn btn-secondary ">Add Booking</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Column for the first table (Customers) -->
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${allCustomer}">
+                    <td th:text="${c.firstName}"></td>
+                    <td th:text="${c.lastName}"></td>
+                    <td th:text="${c.eMail}"></td>
+                    <td><a th:href="@{/shabbyShackInn/deleteById/{id}(id=${c.id})}">Delete</a></td>
+                    <td><a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${c.id})}">Update</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Column for the second table (Bookings) -->
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Room Number</th>
+                    <th>Email</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="b : ${allBooking}">
+                    <td th:text="${b.startDate}"></td>
+                    <td th:text="${b.endDate}"></td>
+                    <td th:text="${b.miniRoomDto.roomNumber}"></td>
+                    <td th:text="${b.miniCustomerDto.eMail}"></td>
+                    <td><a th:href="@{/shabbyShackInn/deleteBookingById/{id}(id=${b.id})}">Delete</a></td>
+                    <td><a th:href="@{/shabbyShackInn/updateBookingById/{id}(id=${b.id})}">Update</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

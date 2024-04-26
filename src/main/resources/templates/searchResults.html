@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Search Available Rooms</h1>
+    <form th:action="@{/search}" method="get" class="mb-5">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="startDate">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="endDate">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="amountOfPersons">Persons</label>
+                <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons" th:value="${amountOfPersons}">
+            </div>
+            <div class="form-group col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary btn-block">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <h2>Search Results</h2>
+    <div>
+        <p>Start Date: <span th:text="${startDate}"></span></p>
+        <p>End Date: <span th:text="${endDate}"></span></p>
+        <p>Amount of Persons: <span th:text="${amountOfPersons}"></span></p>
+    </div>
+    <!-- Placeholder for displaying actual search results -->
+    <div th:if="${not #lists.isEmpty(searchResults)}">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>Room Number</th>
+                <th>Type</th>
+                <th>Beds</th>
+                <th>Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${searchResults}">
+                <td th:text="${room.roomNumber}"></td>
+                <td th:text="${room.roomType}"></td>
+                <td th:text="${room.beds}"></td>
+                <td th:text="${room.available ? 'Yes' : 'No'}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${not #lists.isEmpty(searchResults)}">
+        <p>No available rooms found for the selected dates.</p>
+    </div>
+</div>
+</body>
+</html>
