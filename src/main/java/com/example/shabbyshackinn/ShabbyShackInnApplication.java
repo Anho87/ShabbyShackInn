@@ -1,7 +1,18 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.Booking;
+import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.repos.BookingRepo;
+import com.example.shabbyshackinn.repos.CustomerRepo;
+import com.example.shabbyshackinn.repos.RoomRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
@@ -49,7 +60,7 @@ public class ShabbyShackInnApplication {
 //
 //
 //            Room room1 = new Room(1, RoomType.DOUBLE, 2, 1);
-//            Room room2 = new Room(2,RoomType.SINGLE, 1, 0);
+//            Room room2 = new Room(2, RoomType.SINGLE, 1, 0);
 //            Room room3 = new Room(3,RoomType.DOUBLE, 2, 2);
 //            Room room4 = new Room(4, RoomType.DOUBLE, 2, 0);
 //            Room room5 = new Room(5, RoomType.SINGLE, 1, 0);

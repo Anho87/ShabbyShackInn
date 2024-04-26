@@ -71,6 +71,7 @@ public class IndexController {
     public String updateOrAddCustomer(@RequestParam Long id,@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
                                       @RequestParam String eMail){
         DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
-        return customerService.updateCustomer(customerDto);
+        customerService.updateCustomer(customerDto);
+        return "redirect:/shabbyShackInn/index";
     }
 }
