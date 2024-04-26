@@ -11,7 +11,7 @@
 <div class="container mt-3">
     <div class="row mb-4">
         <div class="col">
-            <a th:href="@{/shabbyShackInn/customerAddAndUpdate}" class="btn btn-primary">Add Customer</a>
+            <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-primary">Add Customer</a>
         </div>
 
         <!-- Form in the middle -->
@@ -49,7 +49,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th colspan="2">Actions</th>
+                    <th colspan="2">Customers</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                     <th>End Date</th>
                     <th>Room Number</th>
                     <th>Email</th>
-                    <th colspan="2">Actions</th>
+                    <th colspan="3">Bookings</th>
                 </tr>
                 </thead>
                 <tbody>

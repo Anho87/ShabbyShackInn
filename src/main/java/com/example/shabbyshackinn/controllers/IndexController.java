@@ -8,7 +8,10 @@ import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -47,6 +50,9 @@ public class IndexController {
     
     @RequestMapping(path ="/customerAddAndUpdate/{id}")
     public String showCustomerAddAndUpdatePage(@PathVariable Long id, Model model) {
+        if(id == 0){
+            return "customerAddAndUpdate";
+        }
         Customer c = customerService.findCustomerById(id);
         model.addAttribute("id", c.getId());
         model.addAttribute("firstName", c.getFirstName());
