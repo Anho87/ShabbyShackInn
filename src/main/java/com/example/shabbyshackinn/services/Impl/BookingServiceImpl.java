@@ -38,7 +38,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public DetailedBookingDto bookingToDetailedBookingDto(Booking booking) {
         MiniCustomerDto miniCustomerDto = (booking.getCustomer() != null) ?
-                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName()) :
+                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(),booking.getCustomer().getEMail()) :
                 null;
 
         return DetailedBookingDto.builder()
@@ -63,6 +63,16 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<DetailedBookingDto> getAllBookings() {
         return bookingRepo.findAll().stream().map(booking -> bookingToDetailedBookingDto(booking)).toList();
+    }
+    @Override
+    public List<MiniBookingDto> getAllMiniBookings(){
+        return bookingRepo.findAll().stream().map(booking -> bookingToMiniBookingDto(booking)).toList();
+    }
+
+    @Override
+    public List<MiniBookingDto> getAllCurrentAndFutureMiniBookings(){
+        LocalDate todaysDate = LocalDate.now();
+        return bookingRepo.findAll().stream().filter(booking -> booking.getEndDate().isAfter(todaysDate)).map(booking -> bookingToMiniBookingDto(booking)).toList();
     }
 
     @Override

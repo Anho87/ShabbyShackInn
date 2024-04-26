@@ -34,4 +34,39 @@ public class IndexController {
         customerService.deleteCustomer(id);
         return index(model);
     }
+
+    @RequestMapping(path = "/deleteBookingById/{id}")
+    public String deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return "redirect:/shabbyShackInn/index";
+    }
+    
+    @RequestMapping(path ="/customerAddAndUpdate/{id}")
+    public String showCustomerAddAndUpdatePage(@PathVariable Long id, Model model) {
+        Customer c = customerService.findCustomerById(id);
+        model.addAttribute("id", c.getId());
+        model.addAttribute("firstName", c.getFirstName());
+        model.addAttribute("lastName", c.getLastName());
+        model.addAttribute("phone", c.getPhone());
+        model.addAttribute("eMail", c.getEMail());
+        return "customerAddAndUpdate";
+    }
+
+
+    @RequestMapping("/search")
+    public String search(Model model, @RequestParam(name = "startDate") String startDate, 
+                         @RequestParam(name = "endDate") String endDate, @RequestParam(name = "amountOfPersons") int amountOfPersons){
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("amountOfPersons", amountOfPersons);
+        //Skickar med datum och antalPersoner till searchResults
+        return "searchResults";
+    }
+
+    @PostMapping("/updateOrAddCustomer")
+    public String updateOrAddCustomer(@RequestParam Long id,@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
+                                      @RequestParam String eMail){
+        DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
+        return customerService.updateCustomer(customerDto);
+    }
 }

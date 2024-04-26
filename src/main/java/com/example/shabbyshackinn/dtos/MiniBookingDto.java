@@ -16,4 +16,5 @@ public class MiniBookingDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private MiniRoomDto miniRoomDto;
+    private MiniCustomerDto miniCustomerDto;
 }

@@ -29,6 +29,10 @@ public class CustomerServiceImpl implements CustomerService {
     public List<DetailedCustomerDto> getAllCustomers() {
         return customerRepo.findAll().stream().map(c -> customerToDetailedCustomerDTO(c)).toList();
     }
+    @Override
+    public List<MiniCustomerDto> getallMiniCustomers(){
+        return customerRepo.findAll().stream().map(c -> customerToMiniCustomerDto(c)).toList();
+    }
 
     @Override
     public DetailedCustomerDto customerToDetailedCustomerDTO(Customer customer) {
@@ -41,7 +45,12 @@ public class CustomerServiceImpl implements CustomerService {
     
     public MiniBookingDto bookingToMiniBookingDto(Booking booking){
         return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
-                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber())).build();
+                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber()))
+                .miniCustomerDto(new MiniCustomerDto(booking.getCustomer().getId(),booking.getCustomer().getFirstName(),booking.getCustomer().getLastName(),booking.getCustomer().getEMail())).build();
+    }
+    
+    public Customer findCustomerById(Long id){
+        return customerRepo.findById(id).orElse(null);
     }
 
     @Override
@@ -66,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public MiniCustomerDto customerToMiniCustomerDto(Customer customer) {
         return MiniCustomerDto.builder().id(customer.getId()).firstName(customer.getFirstName())
-                .lastName(customer.getLastName()).build();
+                .lastName(customer.getLastName()).eMail(customer.getEMail()).build();
     }
     
     @Override
