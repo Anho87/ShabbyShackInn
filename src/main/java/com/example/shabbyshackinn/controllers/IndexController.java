@@ -6,6 +6,7 @@ import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
+import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -21,10 +23,12 @@ public class IndexController {
     
     private final CustomerService customerService;
     private final BookingService bookingService;
+    private final RoomService roomService;
 
-    public IndexController(CustomerService customerService, BookingService bookingService) {
+    public IndexController(CustomerService customerService, BookingService bookingService,RoomService roomService) {
         this.customerService = customerService;
         this.bookingService = bookingService;
+        this.roomService = roomService;
     }
     
     @RequestMapping("/index")
@@ -62,6 +66,26 @@ public class IndexController {
         return "customerAddAndUpdate";
     }
 
+    @RequestMapping(path ="/bookingAddAndUpdate/{id}")
+    public String showBookingAddAndUpdatePage(@PathVariable Long id, Model model) {
+        if(id == 0){
+            return "bookingAddAndUpdate";
+        }
+        Booking b = bookingService.findBookingById(id);
+        model.addAttribute("id",b.getId());
+        model.addAttribute("startDate",b.getStartDate());
+        model.addAttribute("endDate",b.getEndDate());
+        model.addAttribute("bookingNumber",b.getBookingNumber());
+        model.addAttribute("extraBedsWanted",b.getExtraBedsWanted());
+        
+        model.addAttribute("roomNumber", b.getRoom().getRoomNumber());
+        
+        model.addAttribute("firstName", b.getCustomer().getFirstName());
+        model.addAttribute("lastName", b.getCustomer().getLastName());
+        model.addAttribute("eMail", b.getCustomer().getEMail());
+        return "bookingAddAndUpdate";
+    }
+
 
     /*@RequestMapping("/search")
     public String search(Model model, @RequestParam(name = "startDate") String startDate, 
@@ -78,6 +102,15 @@ public class IndexController {
                                       @RequestParam String eMail){
         DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
         customerService.updateCustomer(customerDto);
+        return "redirect:/shabbyShackInn/index";
+    }
+
+    @PostMapping("/updateOrAddBooking")
+    public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate,
+                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber){
+        MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
+        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
+        bookingService.updateBooking(bookingDto);
         return "redirect:/shabbyShackInn/index";
     }
 }

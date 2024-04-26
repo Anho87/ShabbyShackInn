@@ -60,6 +60,11 @@ public class BookingServiceImpl implements BookingService {
                 .build();
     }
     
+    @Override
+    public Booking findBookingById(Long id){
+        return bookingRepo.findById(id).orElse(null);
+    }
+    
 
     @Override
     public Booking detailedBookingDtoToBooking(DetailedBookingDto detailedBookingDto, Customer customer, Room room) {

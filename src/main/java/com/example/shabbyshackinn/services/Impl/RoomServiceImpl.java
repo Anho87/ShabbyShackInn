@@ -57,5 +57,10 @@ public class RoomServiceImpl implements RoomService {
         roomRepo.deleteById(id);
         return "Room deleted";
     }
+    @Override
+    public MiniRoomDto findMiniRoomByRoomNumber(int roomNumber){
+       Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
+       return roomToMiniRoomDto(room);
+    }
 
 }

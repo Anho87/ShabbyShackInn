@@ -14,4 +14,5 @@ public interface RoomService {//
     MiniRoomDto roomToMiniRoomDto(Room room);
     String updateRoom(DetailedRoomDto room);
     String deleteRoom(Long id);
+    MiniRoomDto findMiniRoomByRoomNumber(int roomNumber);
 }
