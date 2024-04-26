@@ -1,8 +1,7 @@
 package com.example.shabbyshackinn.controllers;
 
-import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
-import com.example.shabbyshackinn.dtos.MiniBookingDto;
-import com.example.shabbyshackinn.dtos.MiniCustomerDto;
+import com.example.shabbyshackinn.dtos.*;
+import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
