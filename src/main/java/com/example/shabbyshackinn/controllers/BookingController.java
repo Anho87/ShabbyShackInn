@@ -38,7 +38,6 @@ public class BookingController {
     public String updateBooking(@RequestBody DetailedBookingDto booking){
         return bookingService.updateBooking(booking);
     }
-    
     @PostMapping("add")
     public String addBooking(@RequestBody DetailedBookingDto booking){
         return bookingService.addBooking(new DetailedBookingDto(booking.getStartDate(),booking.getEndDate(),booking.getBookingNumber()

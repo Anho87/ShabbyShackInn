@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<h2 th:text="${Title}"></h2>
+<table>
+    <tbody>
+    <tr th:each="c : ${allCustomer}">
+        <td th:text="${c.firstName}"></td>
+        <td th:text="${c.lastName}"></td>
+        <td><a th:href="@{/shabbyShackInn/deleteById/{id}(id=${c.id})}">Delete</a></td>
+        <td><a th:href="@{/shabbyShackInn/editByView/{id}(id=${c.id})}">Update</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
