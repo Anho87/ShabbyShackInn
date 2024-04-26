@@ -1,13 +1,14 @@
 package com.example.shabbyshackinn.controllers;
 
 import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
+import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +17,11 @@ import java.util.List;
 public class IndexController {
     
     private final CustomerService customerService;
+    private final BookingService bookingService;
 
-    public IndexController(CustomerService customerService) {
+    public IndexController(CustomerService customerService, BookingService bookingService) {
         this.customerService = customerService;
+        this.bookingService = bookingService;
     }
     
     @RequestMapping("/index")
