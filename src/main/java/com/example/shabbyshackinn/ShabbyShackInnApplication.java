@@ -40,7 +40,7 @@ public class ShabbyShackInnApplication {
 //            Customer cust14 = new Customer("Ivy", "Jones", "0709000100", "ivy.jones@domain.com");
 //            Customer cust15 = new Customer("John", "Klein", "0710000110", "john.klein@domain.com");
 //
-//        
+//
 //
 //            customerRepo.save(cust1);
 //            customerRepo.save(cust2);

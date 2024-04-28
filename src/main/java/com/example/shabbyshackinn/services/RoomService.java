@@ -4,6 +4,7 @@ import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
 import com.example.shabbyshackinn.models.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {//
@@ -15,4 +16,5 @@ public interface RoomService {//
     String updateRoom(DetailedRoomDto room);
     String deleteRoom(Long id);
     MiniRoomDto findMiniRoomByRoomNumber(int roomNumber);
+    List<DetailedRoomDto> findAvailableRooms(LocalDate startDate, LocalDate endDate, int amountOfPersons);
 }

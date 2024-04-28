@@ -13,8 +13,7 @@
         <div class="col">
             <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-primary">Add Customer</a>
         </div>
-
-        <!-- Form in the middle -->
+        
         <div class="col">
             <form th:action="@{/shabbyShackInn/search}" method="get" class="form-inline">
                 <div class="form-group mx-sm-3 mb-2">
@@ -35,14 +34,13 @@
 
         <div class="col">
             <a th:href="@{/shabbyShackInn/bookingAddAndUpdate/{id}(id=${0})}" class="btn btn-secondary ">Add Booking</a>
-        </div>
+        </div> 
     </div>
 </div>
-
 <div class="container">
     <div class="row">
-        <!-- Column for the first table (Customers) -->
         <div class="col-md-6">
+            <h2>Customers</h2>
             <table class="table">
                 <thead>
                 <tr>
@@ -64,15 +62,16 @@
             </table>
         </div>
 
-        <!-- Column for the second table (Bookings) -->
+        
         <div class="col-md-6">
+            <h2>Bookings</h2>
             <table class="table">
                 <thead>
                 <tr>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Room Number</th>
-                    <th>Email</th>
+                    <th>Customer Email</th>
                     <th colspan="3">Bookings</th>
                 </tr>
                 </thead>
