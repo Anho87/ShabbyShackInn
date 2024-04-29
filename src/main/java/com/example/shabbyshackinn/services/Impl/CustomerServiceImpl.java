@@ -58,6 +58,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public DetailedCustomerDto findDetailedCustomerDtoById(Long id) {
+        return customerToDetailedCustomerDTO(customerRepo.findById(id).get());
+    }
+
+    @Override
     public String addCustomer(DetailedCustomerDto customer) {
         customerRepo.save(detailedCustomerToCustomer(customer));
         return "Customer " + customer.getFirstName() + " is saved";

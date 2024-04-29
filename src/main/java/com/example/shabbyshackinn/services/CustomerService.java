@@ -19,4 +19,5 @@ public interface CustomerService {
     List<MiniCustomerDto> getallMiniCustomers();
     Customer findCustomerById(Long id);
     MiniCustomerDto findMiniCustomerById(Long id);
+    DetailedCustomerDto findDetailedCustomerDtoById(Long id);
 }
