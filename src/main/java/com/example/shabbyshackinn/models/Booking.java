@@ -52,4 +52,14 @@ public class Booking {
         this.extraBedsWanted = extraBedsWanted;
         this.room = room;
     }
+
+    public Booking(Long id,Customer customer, LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, Room room) {
+        this.id = id;
+        this.customer = customer;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.bookingNumber = bookingNumber;
+        this.extraBedsWanted = extraBedsWanted;
+        this.room = room;
+    }
 }

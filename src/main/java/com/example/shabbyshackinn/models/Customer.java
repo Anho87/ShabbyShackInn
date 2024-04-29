@@ -37,11 +37,11 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
     
-    public Customer(String name, String lastName, String phone, String eMail) {
+    public Customer(Long id,String name, String lastName, String phone, String eMail) {
+        this.id = id;
         this.firstName = name;
         this.lastName = lastName;
         this.phone = phone;
         this.eMail = eMail;
-        
     }
 }
