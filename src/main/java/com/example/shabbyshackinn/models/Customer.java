@@ -16,7 +16,6 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Customer {
 
@@ -43,5 +42,20 @@ public class Customer {
         this.lastName = lastName;
         this.phone = phone;
         this.eMail = eMail;
+    }
+    public Customer(String name, String lastName, String phone, String eMail) {
+        this.firstName = name;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.eMail = eMail;
+    }
+
+    public Customer(Long id, String firstName, String lastName, String phone, String eMail, List<Booking> bookings) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.eMail = eMail;
+        this.bookings = bookings;
     }
 }
