@@ -25,7 +25,7 @@ public class Room {
     private int roomNumber;
     @Positive
     private int beds;
-    @Positive
+   
     private int possibleExtraBeds;
 
     public Room(int roomNumber,RoomType roomType, int beds, int possibleExtraBeds) {

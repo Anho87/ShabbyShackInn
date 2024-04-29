@@ -61,7 +61,7 @@ public class ShabbyShackInnApplication {
 //
 //            Room room1 = new Room(1, RoomType.DOUBLE, 2, 1);
 //            Room room2 = new Room(2, RoomType.SINGLE, 1, 0);
-//            Room room3 = new Room(3,RoomType.DOUBLE, 2, 2);
+//            Room room3 = new Room(3, RoomType.DOUBLE, 2, 2);
 //            Room room4 = new Room(4, RoomType.DOUBLE, 2, 0);
 //            Room room5 = new Room(5, RoomType.SINGLE, 1, 0);
 //            Room room6 = new Room(6, RoomType.SINGLE, 1, 0);
@@ -91,11 +91,11 @@ public class ShabbyShackInnApplication {
 //            roomRepo.save(room14);
 //            roomRepo.save(room15);
 //
-//            Booking b1 = new Booking(cust1, LocalDate.of(2024,4,22),LocalDate.of(2024,05,01),12345,2,room3);
-//            Booking b2 = new Booking(cust3,LocalDate.of(2024,04,15),LocalDate.of(2024,04,17),54321,0,room2);
-//            Booking b3 = new Booking(cust5, LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,1,room1);
-//            Booking b4 = new Booking(cust2, LocalDate.of(2024,04,01),LocalDate.of(2024,04,03),98765,1,room1);
-//            Booking b5 = new Booking(cust1, LocalDate.of(2024,04,01),LocalDate.of(2024,04,03),98765,1,room3);
+//            Booking b1 = new Booking(cust1, LocalDate.of(2024,4,22),LocalDate.of(2024,05,01),12345,1,room1);
+//            Booking b2 = new Booking(cust3,LocalDate.of(2024,04,15),LocalDate.of(2024,05,17),54321,0,room2);
+//            Booking b3 = new Booking(cust5, LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,2,room3);
+//            Booking b4 = new Booking(cust2, LocalDate.of(2024,04,01),LocalDate.of(2024,05,03),98765,0,room4);
+//            Booking b5 = new Booking(cust1, LocalDate.of(2024,04,01),LocalDate.of(2024,05,03),98765,1,room7);
 //            Booking booking6 = new Booking(cust6, LocalDate.of(2024, 6, 1), LocalDate.of(2024, 6, 3), 6001, 0, room6);
 //            Booking booking7 = new Booking(cust7, LocalDate.of(2024, 6, 5), LocalDate.of(2024, 6, 10), 6002, 1, room7);
 //            Booking booking8 = new Booking(cust8, LocalDate.of(2024, 6, 10), LocalDate.of(2024, 6, 12), 6003, 2, room8);
