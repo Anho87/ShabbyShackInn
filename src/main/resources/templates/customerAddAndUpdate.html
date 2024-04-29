@@ -10,6 +10,7 @@
 <form action="#" th:action="@{/shabbyShackInn/updateOrAddCustomer}" method="post">
     <input type=hidden id="id" name="id" th:value="${id}"><br>
     
+    <div style="padding-left: 18px">
     <label for="firstName">First Name:</label><br>
     <input type="text" id="firstName" name="firstName" th:value="${firstName}" required pattern="^[A-Za-z]{1,20}$"><br>
 
@@ -21,8 +22,10 @@
 
     <label for="email">Email:</label><br>
     <input type="email" id="eMail" name="eMail" th:value="${eMail}" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
-
-    <input type="submit" value="Submit">
+<div style="padding-top: 10px">
+    <input class="btn btn-success" type="submit" value="Submit">
+</div>
+    </div>
 </form>
 
 </body>

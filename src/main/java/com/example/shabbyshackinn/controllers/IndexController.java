@@ -47,7 +47,7 @@ public class IndexController {
 
     @RequestMapping(path = "/deleteBookingById/{id}")
     public String deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+        bookingService.deleteBooking(id);   
         return "redirect:/shabbyShackInn/index";
     }
     

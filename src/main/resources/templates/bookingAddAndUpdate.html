@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/styles.css" rel="stylesheet" />
 </head>
 <body> 
 <h2>Booking Information</h2>
@@ -20,7 +19,7 @@
         <label for="endDate" class="sr-only">End Date</label>
         <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}" style="max-width: 200px;">
     </div>
-    
+    <div style="padding-left: 18px">
     <label for="bookingNumber">Booking number:</label><br>
     <input type="text" id="bookingNumber" name="bookingNumber" th:value="${bookingNumber}" readonly><br>
 
@@ -38,8 +37,10 @@
 
     <label for="email">Email:</label><br>
     <input type="email" id="eMail" name="eMail" th:value="${eMail}" readonly><br>
-
+<div style="padding-top: 10px">
     <input  class="btn btn-success" type="submit" value="Submit">
+</div>
+    </div>
 </form>
 
 <script>

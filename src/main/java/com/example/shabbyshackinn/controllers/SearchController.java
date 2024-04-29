@@ -31,8 +31,8 @@ public class SearchController {
     }
 
     @RequestMapping("/search")
-    public String search(Model model, @RequestParam(name = "startDate") LocalDate startDate,
-                         @RequestParam(name = "endDate") LocalDate endDate, @RequestParam(name = "amountOfPersons") int amountOfPersons){
+    public String search(Model model, @RequestParam LocalDate startDate,
+                         @RequestParam LocalDate endDate, @RequestParam int amountOfPersons){
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("amountOfPersons", amountOfPersons);

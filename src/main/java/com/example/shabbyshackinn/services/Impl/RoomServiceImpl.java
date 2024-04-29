@@ -2,7 +2,6 @@ package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
-import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
@@ -10,7 +9,6 @@ import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -67,6 +65,21 @@ public class RoomServiceImpl implements RoomService {
     public MiniRoomDto findMiniRoomByRoomNumber(int roomNumber){
        Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
        return roomToMiniRoomDto(room);
+    }
+    
+
+    @Override
+    public DetailedRoomDto findDetailedRoomByRoomNumber(int roomNumber){
+        Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
+        return roomToDetailedRoomDTO(room);
+    }
+    @Override
+    public DetailedRoomDto findDetailedRoomById(Long id){
+        return roomToDetailedRoomDTO(roomRepo.findById(id).orElse(null));
+    }
+    @Override
+    public MiniRoomDto findMiniRoomById(Long id){
+        return roomToMiniRoomDto(roomRepo.findById(id).get());
     }
 
     @Override
