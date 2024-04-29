@@ -31,7 +31,6 @@ public class Booking {
 
     
     private int bookingNumber;
-    @Pattern(regexp = "[0-2]")
     private int extraBedsWanted;
     
     @Valid
