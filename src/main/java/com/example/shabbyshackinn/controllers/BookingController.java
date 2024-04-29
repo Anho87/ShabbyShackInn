@@ -1,18 +1,11 @@
 package com.example.shabbyshackinn.controllers;
 
 import com.example.shabbyshackinn.dtos.DetailedBookingDto;
-import com.example.shabbyshackinn.dtos.MiniRoomDto;
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
-import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BookingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,6 +14,9 @@ public class BookingController {
     
     private final BookingService bookingService;
 
+    private static final Logger log =
+            LoggerFactory.getLogger(BookingController.class);
+    
     public BookingController(BookingService bookingService){
         this.bookingService = bookingService;
     }
@@ -40,6 +36,7 @@ public class BookingController {
     }
     @PostMapping("add")
     public String addBooking(@RequestBody DetailedBookingDto booking){
+        log.info("New booking with id:{} added", booking.getId());
         return bookingService.addBooking(new DetailedBookingDto(booking.getStartDate(),booking.getEndDate(),booking.getBookingNumber()
         ,booking.getExtraBedsWanted(),booking.getMiniCustomerDto(),booking.getMiniRoomDto()));
     }

@@ -28,6 +28,9 @@ public class IndexController {
     private final BookingService bookingService;
     private final RoomService roomService;
 
+    private static final Logger log =
+            LoggerFactory.getLogger(IndexController.class);
+
     public IndexController(CustomerService customerService, BookingService bookingService,RoomService roomService) {
         this.customerService = customerService;
         this.bookingService = bookingService;
@@ -40,6 +43,7 @@ public class IndexController {
         List<MiniBookingDto> miniBookingDtoList = bookingService.getAllCurrentAndFutureMiniBookings();
         model.addAttribute("allCustomer", miniCustomerDtoList);
         model.addAttribute("allBooking", miniBookingDtoList);
+        log.info("Fetching all customers and current/future bookings for the index page.");
         return "index";
     }
 
@@ -62,6 +66,7 @@ public class IndexController {
 
     @RequestMapping(path = "/deleteBookingById/{id}")
     public String deleteBooking(@PathVariable Long id) {
+        log.info("Request to delete booking with id: " + id);
         bookingService.deleteBooking(id);   
         return "redirect:/shabbyShackInn/index";
     }
@@ -126,6 +131,10 @@ public class IndexController {
     @PostMapping("/updateOrAddBooking")
     public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate,
                                      @RequestParam int extraBedsWanted, @RequestParam int roomNumber){
+        if (id == null){
+            log.info("Request to add new booking");
+        }
+        log.info("Request to update booking with id:{}", id);
         MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
         DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
         bookingService.updateBooking(bookingDto);

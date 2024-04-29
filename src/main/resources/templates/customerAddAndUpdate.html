@@ -22,8 +22,9 @@
     <label for="lastName">Last Name:</label><br>
     <input type="text" id="lastName" name="lastName" th:value="${lastName}" required pattern="^[A-Za-z]{1,20}$"><br>
 
-    <label for="phone">Phone:</label><br>
-    <input type="tel" id="phone" name="phone" th:value="${phone}" required pattern="[0-9\s\-]+"><br>
+                        <label for="phone">Phone:</label><br>
+                        <input type="tel" id="phone" name="phone" th:value="${phone}" required
+                               pattern="(\\+46)?[0-9]{9,10}"><br>
 
     <label for="email">Email:</label><br>
     <input type="email" id="eMail" name="eMail" th:value="${eMail}" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>

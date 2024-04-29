@@ -26,11 +26,12 @@
     <label for="bookingNumber">Booking number:</label><br>
     <input type="text" id="bookingNumber" name="bookingNumber" th:value="${bookingNumber}" readonly><br>
 
-    <label for="extraBedsWanted">Extra beds wanted:</label><br>
-    <input type="number" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"><br>
-    
-    <label for="roomNumber">Room nr:</label><br>
-    <input type="text" id="roomNumber" name="roomNumber" th:value="${roomNumber}"><br>
+                        <label for="extraBedsWanted">Extra beds wanted:</label><br>
+                        <input type="number" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"
+                               pattern="[0-3]"><br>
+
+                        <label for="roomNumber">Room nr:</label><br>
+                        <input type="text" id="roomNumber" name="roomNumber" th:value="${roomNumber}"><br>
 
     <label for="firstName">First Name:</label><br>
     <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly><br>
