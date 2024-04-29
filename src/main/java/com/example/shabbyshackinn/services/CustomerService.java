@@ -18,4 +18,5 @@ public interface CustomerService {
     String deleteCustomer(Long id);
     List<MiniCustomerDto> getallMiniCustomers();
     Customer findCustomerById(Long id);
+    MiniCustomerDto findMiniCustomerById(Long id);
 }

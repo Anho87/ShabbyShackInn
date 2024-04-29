@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Search Results</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -42,13 +42,13 @@
                 <th>Type</th>
                 <th>Beds</th>
                 <th>Possible Extra Beds</th>
-                <th>Book</th>
+                <th>Book this room</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="room : ${searchResults}">
                 <td th:text="${room.roomNumber}"></td>
-                <td th:text="${room.roomType}"></td>
+                <td th:text="${room.roomType.roomType}"></td>
                 <td th:text="${room.beds}"></td>
                 <td th:text="${room.possibleExtraBeds}"></td>
                 <td><a th:href="@{/shabbyShackInn/index}">Book</a></td>

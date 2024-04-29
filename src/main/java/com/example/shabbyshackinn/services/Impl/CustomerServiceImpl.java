@@ -52,6 +52,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findCustomerById(Long id){
         return customerRepo.findById(id).orElse(null);
     }
+    
+    public MiniCustomerDto findMiniCustomerById(Long id){
+        return customerToMiniCustomerDto(customerRepo.findById(id).get());
+    }
 
     @Override
     public String addCustomer(DetailedCustomerDto customer) {
