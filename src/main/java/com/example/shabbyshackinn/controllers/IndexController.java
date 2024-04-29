@@ -6,12 +6,16 @@ import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
 import com.example.shabbyshackinn.services.RoomService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -40,8 +44,19 @@ public class IndexController {
     }
 
     @RequestMapping(path = "/deleteById/{id}")
-    public String deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
+    public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String s = customerService.deleteCustomer(id);
+        if (s.equals("Customer not found")) {
+            redirectAttributes.addFlashAttribute("error", "Customer cannot be found");
+            log.info("Request to delete customer with id: {}but customer cannot be found", id);
+        } else if(s.equals("Customer has ongoing bookings")) {
+            redirectAttributes.addFlashAttribute("error", "Customer has ongoing bookings and cannot be deleted.");
+            log.info("Request to delete customer with id: {}but customer has ongoing bookings", id);
+        } else {
+            redirectAttributes.addFlashAttribute("success", "Customer deleted successfully.");
+            log.info("Request to delete customer with id: {}", id);
+        }
+        
         return "redirect:/shabbyShackInn/index";
     }
 
@@ -97,8 +112,12 @@ public class IndexController {
     }*/
 
     @PostMapping("/updateOrAddCustomer")
-    public String updateOrAddCustomer(@RequestParam Long id,@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
-                                      @RequestParam String eMail){
+    public String updateOrAddCustomer(@RequestParam Long id, @RequestParam @Valid String firstName, @RequestParam @Valid String lastName
+            , @RequestParam @Valid String phone,@RequestParam @Valid String eMail){
+        if (id == null){
+            log.info("Request to add new customer");
+        }
+        log.info("Request to update customer with id:{}", id);
         DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
         customerService.updateCustomer(customerDto);
         return "redirect:/shabbyShackInn/index";
