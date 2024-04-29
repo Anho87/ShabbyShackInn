@@ -41,5 +41,21 @@
 
     <input  class="btn btn-success" type="submit" value="Submit">
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function(event) {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (new Date(startDate) > new Date(endDate)) {
+                event.preventDefault(); // Stop form submission
+                alert('Start date needs to be before end date.');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
