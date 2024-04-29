@@ -80,7 +80,7 @@ public class RoomServiceImpl implements RoomService {
 
             return getAllRooms().stream()
                     .filter(room -> !bookedDetaliedRoomsDto.contains(room))
-                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() > amountOfPersons - 1)
+                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() >= amountOfPersons)
                     .toList();
         }else {
             return null;
