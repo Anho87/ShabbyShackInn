@@ -5,48 +5,58 @@
     <title>Title</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body> 
-<h2>Booking Information</h2>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Booking Information</h2>
+            <div class="center-div">
+                <form action="#" th:action="@{/shabbyShackInn/updateOrAddBooking}" method="post">
+                    <input type=hidden id="id" name="id" th:value="${id}"><br>
 
-<form action="#" th:action="@{/shabbyShackInn/updateOrAddBooking}" method="post">
-    <input type=hidden id="id" name="id" th:value="${id}"><br>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="startDate" class="sr-only">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}"
+                               style="max-width: 200px;">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="endDate" class="sr-only">End Date</label>
+                        <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}"
+                               style="max-width: 200px;">
+                    </div>
+                    <div style="padding-left: 18px">
+                        <label for="bookingNumber">Booking number:</label><br>
+                        <input type="text" id="bookingNumber" name="bookingNumber" th:value="${bookingNumber}" readonly><br>
 
-    <div class="form-group mx-sm-3 mb-2">
-        <label for="startDate" class="sr-only">Start Date</label>
-        <input type="date" class="form-control" id="startDate" name="startDate" th:value="${startDate}" style="max-width: 200px;">
+                        <label for="extraBedsWanted">Extra beds wanted:</label><br>
+                        <input type="number" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"
+                               pattern="[0-3]"><br>
+
+                        <label for="roomNumber">Room nr:</label><br>
+                        <input type="text" id="roomNumber" name="roomNumber" th:value="${roomNumber}"><br>
+
+                        <label for="firstName">First Name:</label><br>
+                        <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly><br>
+
+                        <label for="lastName">Last Name:</label><br>
+                        <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly><br>
+
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="eMail" name="eMail" th:value="${eMail}" readonly><br>
+                        <div style="padding-top: 10px">
+                            <input class="btn btn-success" type="submit" value="Submit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group mx-sm-3 mb-2">
-        <label for="endDate" class="sr-only">End Date</label>
-        <input type="date" class="form-control" id="endDate" name="endDate" th:value="${endDate}" style="max-width: 200px;">
-    </div>
-    <div style="padding-left: 18px">
-    <label for="bookingNumber">Booking number:</label><br>
-    <input type="text" id="bookingNumber" name="bookingNumber" th:value="${bookingNumber}" readonly><br>
-
-    <label for="extraBedsWanted">Extra beds wanted:</label><br>
-    <input type="number" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"><br>
-    
-    <label for="roomNumber">Room nr:</label><br>
-    <input type="text" id="roomNumber" name="roomNumber" th:value="${roomNumber}"><br>
-
-    <label for="firstName">First Name:</label><br>
-    <input type="text" id="firstName" name="firstName" th:value="${firstName}" readonly><br>
-
-    <label for="lastName">Last Name:</label><br>
-    <input type="text" id="lastName" name="lastName" th:value="${lastName}" readonly><br>
-
-    <label for="email">Email:</label><br>
-    <input type="email" id="eMail" name="eMail" th:value="${eMail}" readonly><br>
-<div style="padding-top: 10px">
-    <input  class="btn btn-success" type="submit" value="Submit">
 </div>
-    </div>
-</form>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("form");
-        form.addEventListener("submit", function(event) {
+        form.addEventListener("submit", function (event) {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
 

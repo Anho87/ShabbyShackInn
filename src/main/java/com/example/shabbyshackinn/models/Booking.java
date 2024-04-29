@@ -1,17 +1,17 @@
 package com.example.shabbyshackinn.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.locks.LockSupport;
 
 @Data
 @Entity
@@ -22,21 +22,39 @@ public class Booking {
     @Id
     @GeneratedValue
     private Long id;
-
-    private LocalDate startDate;
+    
+    @Future
     private LocalDate endDate;
-    private int bookingNumber;
-    private int extraBedsWanted;
 
+    @NotNull
+    private LocalDate startDate;
+
+    
+    private int bookingNumber;
+    @Pattern(regexp = "[0-2]")
+    private int extraBedsWanted;
+    
+    @Valid
     @ManyToOne
     @JoinColumn
     private Customer customer;
     
+    @Valid
     @ManyToOne
     @JoinColumn
     private Room room;
 
     public Booking(Customer customer, LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, Room room) {
+        this.customer = customer;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.bookingNumber = bookingNumber;
+        this.extraBedsWanted = extraBedsWanted;
+        this.room = room;
+    }
+
+    public Booking(Long id,Customer customer, LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, Room room) {
+        this.id = id;
         this.customer = customer;
         this.startDate = startDate;
         this.endDate = endDate;

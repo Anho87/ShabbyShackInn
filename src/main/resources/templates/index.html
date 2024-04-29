@@ -14,11 +14,11 @@
 
 <div class="container mt-3">
     <div class="row mb-4">
-        <div class="col">
+        <div class="col-md-4">
             <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-primary">Add Customer</a>
         </div>
-        
-        <div class="col">
+
+        <div class="col-md-4">
             <form th:action="@{/shabbyShackInn/search}" method="get" class="form-inline">
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="startDate" class="sr-only">Start Date</label>
@@ -30,13 +30,12 @@
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="amountOfPersons" class="sr-only">Persons</label>
-                    <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons" placeholder="Persons">
+                    <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons"
+                           placeholder="Persons">
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">Search</button>
             </form>
         </div>
-
-        
     </div>
 </div>
 <div class="container table-container">
@@ -57,13 +56,14 @@
                     <td th:text="${c.firstName}"></td>
                     <td th:text="${c.lastName}"></td>
                     <td th:text="${c.eMail}"></td>
-                    <td><a th:href="@{/shabbyShackInn/deleteById/{id}(id=${c.id})}" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a></td>
+                    <td><a th:href="@{/shabbyShackInn/deleteById/{id}(id=${c.id})}"
+                           onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a></td>
                     <td><a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${c.id})}">Update</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        
+
         <div class="col-md-6">
             <h2>Bookings</h2>
             <table class="table">
@@ -82,7 +82,8 @@
                     <td th:text="${b.endDate}"></td>
                     <td th:text="${b.miniRoomDto.roomNumber}"></td>
                     <td th:text="${b.miniCustomerDto.eMail}"></td>
-                    <td><a th:href="@{/shabbyShackInn/deleteBookingById/{id}(id=${b.id})}" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a></td>
+                    <td><a th:href="@{/shabbyShackInn/deleteBookingById/{id}(id=${b.id})}"
+                           onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a></td>
                     <td><a th:href="@{/shabbyShackInn/bookingAddAndUpdate/{id}(id=${b.id})}">Update</a></td>
                 </tr>
                 </tbody>
@@ -90,5 +91,20 @@
         </div>
     </div>
 </div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var errorMsg = [[${error}]];
+    if (errorMsg) {
+        alert(errorMsg);
+    }
+
+    var successMsg = [[${success}]];
+    if (successMsg) {
+        alert(successMsg);
+    }
+    /*]]>*/
+</script>
+
 </body>
 </html>

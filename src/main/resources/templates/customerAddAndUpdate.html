@@ -6,27 +6,38 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h2>Customer Information</h2>
-<form action="#" th:action="@{/shabbyShackInn/updateOrAddCustomer}" method="post">
-    <input type=hidden id="id" name="id" th:value="${id}"><br>
-    
-    <div style="padding-left: 18px">
-    <label for="firstName">First Name:</label><br>
-    <input type="text" id="firstName" name="firstName" th:value="${firstName}" required pattern="^[A-Za-z]{1,20}$"><br>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Customer Information</h2>
+            <div class="center-div">
+                <form action="#" th:action="@{/shabbyShackInn/updateOrAddCustomer}" method="post">
+                    <input type=hidden id="id" name="id" th:value="${id}"><br>
 
-    <label for="lastName">Last Name:</label><br>
-    <input type="text" id="lastName" name="lastName" th:value="${lastName}" required pattern="^[A-Za-z]{1,20}$"><br>
+                    <div style="padding-left: 18px">
+                        <label for="firstName">First Name:</label><br>
+                        <input type="text" id="firstName" name="firstName" th:value="${firstName}" required
+                               pattern="^[A-Za-z]{1,20}$"><br>
 
-    <label for="phone">Phone:</label><br>
-    <input type="tel" id="phone" name="phone" th:value="${phone}" required pattern="[0-9\s\-]+"><br>
+                        <label for="lastName">Last Name:</label><br>
+                        <input type="text" id="lastName" name="lastName" th:value="${lastName}" required
+                               pattern="^[A-Za-z]{1,20}$"><br>
 
-    <label for="email">Email:</label><br>
-    <input type="email" id="eMail" name="eMail" th:value="${eMail}" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
-<div style="padding-top: 10px">
-    <input class="btn btn-success" type="submit" value="Submit">
-</div>
+                        <label for="phone">Phone:</label><br>
+                        <input type="tel" id="phone" name="phone" th:value="${phone}" required
+                               pattern="(\\+46)?[0-9]{9,10}"><br>
+
+                        <label for="email">Email:</label><br>
+                        <input type="email" id="eMail" name="eMail" th:value="${eMail}" required
+                               pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
+                        <div style="padding-top: 10px">
+                            <input class="btn btn-success" type="submit" value="Submit">
+                        </div>
+                    </div>
+            </div>
+        </div>
     </div>
-</form>
+</div>
 
 </body>
 </html>

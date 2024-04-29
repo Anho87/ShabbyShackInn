@@ -12,6 +12,7 @@ import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,13 +37,26 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public DetailedCustomerDto customerToDetailedCustomerDTO(Customer customer) {
-        return DetailedCustomerDto.builder().id(customer.getId()).firstName(customer.getFirstName())
-                .lastName(customer.getLastName()).phone(customer.getPhone())
+        List<MiniBookingDto> miniBookingDtos = new ArrayList<>();
+
+        if (customer.getBookings() != null) {
+            for (Booking booking : customer.getBookings()) {
+                MiniBookingDto miniBookingDto = bookingToMiniBookingDto(booking);
+                miniBookingDtos.add(miniBookingDto);
+            }
+        }
+
+        return DetailedCustomerDto.builder()
+                .id(customer.getId())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .phone(customer.getPhone())
                 .eMail(customer.getEMail())
-                .bookings(customer.getBookings().stream()
-                        .map(booking -> bookingToMiniBookingDto(booking)).toList()).build();
+                .bookings(miniBookingDtos)
+                .build();
     }
-    
+
+
     public MiniBookingDto bookingToMiniBookingDto(Booking booking){
         return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
                 .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber()))

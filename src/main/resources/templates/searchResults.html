@@ -20,7 +20,8 @@
             </div>
             <div class="form-group col-md-2">
                 <label for="amountOfPersons">Persons</label>
-                <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons" th:value="${amountOfPersons}">
+                <input type="number" class="form-control" id="amountOfPersons" name="amountOfPersons"
+                       th:value="${amountOfPersons}">
             </div>
             <div class="form-group col-md-2 align-self-end">
                 <button type="submit" class="btn btn-primary btn-block">Search</button>
@@ -41,7 +42,7 @@
                 <th>Room Number</th>
                 <th>Type</th>
                 <th>Beds</th>
-                <th>Possible Extra Beds</th>
+                <th>Extra Beds</th>
                 <th>Book this room</th>
             </tr>
             </thead>
@@ -51,7 +52,9 @@
                 <td th:text="${room.roomType.roomType}"></td>
                 <td th:text="${room.beds}"></td>
                 <td th:text="${room.possibleExtraBeds}"></td>
-                <td> <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}(id=${room.id},startDate=${startDate},endDate=${endDate})}">Book</a></td>
+                <td>
+                    <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}(id=${room.id},startDate=${startDate},endDate=${endDate})}">Book</a>
+                </td>
             </tr>
             </tbody>
         </table>
