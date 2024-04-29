@@ -17,4 +17,7 @@ public interface RoomService {//
     String deleteRoom(Long id);
     MiniRoomDto findMiniRoomByRoomNumber(int roomNumber);
     List<DetailedRoomDto> findAvailableRooms(LocalDate startDate, LocalDate endDate, int amountOfPersons);
+    DetailedRoomDto findDetailedRoomByRoomNumber(int roomNumber);
+    DetailedRoomDto findDetailedRoomById(Long id);
+    MiniRoomDto findMiniRoomById(Long id);
 }

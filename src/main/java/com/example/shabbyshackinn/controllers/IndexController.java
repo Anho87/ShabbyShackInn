@@ -51,7 +51,7 @@ public class IndexController {
         return "redirect:/shabbyShackInn/index";
     }
     
-    @RequestMapping(path ="/customerAddAndUpdate/{id}")
+    @RequestMapping(path = "/customerAddAndUpdate/{id}")
     public String showCustomerAddAndUpdatePage(@PathVariable Long id, Model model) {
         if(id == 0){
             return "customerAddAndUpdate";
