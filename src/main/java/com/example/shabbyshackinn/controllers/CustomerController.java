@@ -4,9 +4,11 @@ import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/shabbyShackInn")
@@ -17,7 +19,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-
+    
     @RequestMapping(path = "/deleteById/{id}")
     public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String feedback =  customerService.deleteCustomer(id);

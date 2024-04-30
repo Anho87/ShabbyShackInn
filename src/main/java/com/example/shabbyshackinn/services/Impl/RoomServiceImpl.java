@@ -31,12 +31,7 @@ public class RoomServiceImpl implements RoomService {
     public List<DetailedRoomDto> getAllRooms() {
         return roomRepo.findAll().stream().map(r -> roomToDetailedRoomDTO(r)).toList();
     }
-
-    @Override
-    public String addRoom(DetailedRoomDto room) {
-        roomRepo.save(detailedRoomToRoom(room));
-        return "Room " + room.getRoomType() + " added";
-    }
+    
 
     @Override
     public Room detailedRoomToRoom(DetailedRoomDto room) {
@@ -49,30 +44,14 @@ public class RoomServiceImpl implements RoomService {
         return MiniRoomDto.builder().id(room.getId()).roomType(room.getRoomType())
                 .roomNumber(room.getRoomNumber()).build();
     }
-
-    @Override
-    public String updateRoom(DetailedRoomDto room) {
-        roomRepo.save(detailedRoomToRoom(room));
-        return "Room " + room.getRoomType() + " updated";
-    }
-
-    @Override
-    public String deleteRoom(Long id) {
-        roomRepo.deleteById(id);
-        return "Room deleted";
-    }
+    
     @Override
     public MiniRoomDto findMiniRoomByRoomNumber(int roomNumber){
        Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
        return roomToMiniRoomDto(room);
     }
     
-
-    @Override
-    public DetailedRoomDto findDetailedRoomByRoomNumber(int roomNumber){
-        Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
-        return roomToDetailedRoomDTO(room);
-    }
+    
     @Override
     public DetailedRoomDto findDetailedRoomById(Long id){
         return roomToDetailedRoomDTO(roomRepo.findById(id).orElse(null));

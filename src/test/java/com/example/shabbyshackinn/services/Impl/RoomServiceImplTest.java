@@ -6,11 +6,11 @@ import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class RoomServiceImplTest {
     
 

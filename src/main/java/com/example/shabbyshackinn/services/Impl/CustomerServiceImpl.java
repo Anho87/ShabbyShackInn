@@ -63,9 +63,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .miniCustomerDto(new MiniCustomerDto(booking.getCustomer().getId(),booking.getCustomer().getFirstName(),booking.getCustomer().getLastName(),booking.getCustomer().getEMail())).build();
     }
     
-    public Customer findCustomerById(Long id){
-        return customerRepo.findById(id).orElse(null);
-    }
     
     public MiniCustomerDto findMiniCustomerById(Long id){
         return customerToMiniCustomerDto(customerRepo.findById(id).get());

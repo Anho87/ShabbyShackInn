@@ -60,10 +60,6 @@ public class BookingServiceImpl implements BookingService {
                 .build();
     }
     
-    @Override
-    public Booking findBookingById(Long id){
-        return bookingRepo.findById(id).orElse(null);
-    }
 
     @Override
     public DetailedBookingDto findDetailedBookingById(Long id) {
@@ -77,11 +73,7 @@ public class BookingServiceImpl implements BookingService {
                 .endDate(detailedBookingDto.getEndDate()).bookingNumber(detailedBookingDto.getBookingNumber())
                 .extraBedsWanted(detailedBookingDto.getExtraBedsWanted()).customer(customer).room(room).build();
     }
-
-    @Override
-    public List<DetailedBookingDto> getAllBookings() {
-        return bookingRepo.findAll().stream().map(booking -> bookingToDetailedBookingDto(booking)).toList();
-    }
+    
     @Override
     public List<MiniBookingDto> getAllMiniBookings(){
         return bookingRepo.findAll().stream().map(booking -> bookingToMiniBookingDto(booking)).toList();
