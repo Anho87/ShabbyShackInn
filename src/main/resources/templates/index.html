@@ -11,7 +11,12 @@
     </style>
 </head>
 <body>
-
+<div th:if="${feedback}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${feedback}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <div class="container mt-3">
     <div class="row mb-4">
         <div class="col-md-4">
@@ -48,7 +53,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th colspan="2">Customers</th>
+                    <th colspan="2">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,7 +78,7 @@
                     <th>End Date</th>
                     <th>Room Number</th>
                     <th>Customer Email</th>
-                    <th colspan="3">Bookings</th>
+                    <th colspan="3">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,19 +97,10 @@
     </div>
 </div>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var errorMsg = [[${error}]];
-    if (errorMsg) {
-        alert(errorMsg);
-    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    var successMsg = [[${success}]];
-    if (successMsg) {
-        alert(successMsg);
-    }
-    /*]]>*/
-</script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

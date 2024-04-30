@@ -10,6 +10,7 @@ import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,9 +47,9 @@ public class BookingController {
         model.addAttribute("endDate",b.getEndDate());
         model.addAttribute("bookingNumber",b.getBookingNumber());
         model.addAttribute("extraBedsWanted",b.getExtraBedsWanted());
-
+        model.addAttribute("possibleExtraBeds", roomService.findDetailedRoomById(b.getMiniRoomDto().getId()).getPossibleExtraBeds());
         model.addAttribute("roomNumber", b.getMiniRoomDto().getRoomNumber());
-
+        model.addAttribute("maxRoomNumber", roomService.getAllRooms().size());
         model.addAttribute("firstName", b.getMiniCustomerDto().getFirstName());
         model.addAttribute("lastName", b.getMiniCustomerDto().getLastName());
         model.addAttribute("eMail", b.getMiniCustomerDto().getEMail());
@@ -57,7 +58,7 @@ public class BookingController {
 
     @PostMapping("/updateOrAddBooking")
     public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate,
-                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber){
+                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber, RedirectAttributes redirectAttributes){
         MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
         DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
         bookingService.updateBooking(bookingDto);
@@ -85,7 +86,7 @@ public class BookingController {
 
     @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}")
     public String finishBooking(@PathVariable Long customerId, @PathVariable Long roomId,
-                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted){
+                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
         bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));

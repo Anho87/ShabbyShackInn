@@ -40,7 +40,13 @@ public class CustomerController {
 
     @PostMapping("/updateOrAddCustomer")
     public String updateOrAddCustomer(@RequestParam Long id,@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phone,
-                                      @RequestParam String eMail){
+                                      @RequestParam String eMail, RedirectAttributes redirectAttributes){
+        if (id == 0){
+            DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
+            String feedback = customerService.addCustomer(customerDto);
+            redirectAttributes.addFlashAttribute("feedback", feedback);
+            return "redirect:/shabbyShackInn/index";
+        }
         DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
         customerService.updateCustomer(customerDto);
         return "redirect:/shabbyShackInn/index";
