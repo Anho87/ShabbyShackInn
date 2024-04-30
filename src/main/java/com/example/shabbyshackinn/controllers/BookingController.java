@@ -64,29 +64,31 @@ public class BookingController {
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}")
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{amountOfPersons}")
     public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
-            ,@PathVariable LocalDate endDate){
+            ,@PathVariable LocalDate endDate,@PathVariable int amountOfPersons){
         if(id == null){
             return "redirect:/shabbyShackInn/search";
         }
 
         DetailedRoomDto r = roomService.findDetailedRoomById(id);
+        int extraBedsWanted = Math.max(0, amountOfPersons - r.getBeds());
         model.addAttribute("room", r);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
+        model.addAttribute("extraBedsWanted", extraBedsWanted);
         List<MiniCustomerDto> miniCustomerDtoList = customerService.getallMiniCustomers();
         model.addAttribute("allCustomer", miniCustomerDtoList);
 
         return "createBooking";
     }
 
-    @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}")
+    @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}")
     public String finishBooking(@PathVariable Long customerId, @PathVariable Long roomId,
-                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate){
+                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
-        bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,0, customer, room));
+        bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
         return "redirect:/shabbyShackInn/index";
     }
 

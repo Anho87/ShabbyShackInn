@@ -20,8 +20,8 @@
         <input type="text" id="roomNumber" name="roomNumber" th:value="${room.roomNumber}" readonly><br>
 
 
-        <label for="possibleExtraBeds">Extra beds wanted:</label><br>
-        <input type="text" id="possibleExtraBeds" name="possibleExtraBeds" th:value="${room.possibleExtraBeds}"
+        <label for="extraBedsWanted">Extra beds wanted:</label><br>
+        <input type="text" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"
                readonly><br>
 
     </div>
@@ -44,7 +44,7 @@
             <td th:text="${c.lastName}"></td>
             <td th:text="${c.eMail}"></td>
             <td>
-                <a th:href="@{/shabbyShackInn/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}(customerId=${c.id}, roomId=${room.id}, startDate=${startDate}, endDate=${endDate})}">Book
+                <a th:href="@{/shabbyShackInn/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}(customerId=${c.id}, roomId=${room.id}, startDate=${startDate}, endDate=${endDate}, extraBedsWanted=${extraBedsWanted})}">Book
                     with this customer</a></td>
         </tr>
         </tbody>
