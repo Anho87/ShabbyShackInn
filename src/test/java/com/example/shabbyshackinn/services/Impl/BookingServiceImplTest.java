@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,12 +51,12 @@ class BookingServiceImplTest {
     RoomType roomType = RoomType.DOUBLE;
     int beds = 2;
     int possibleExtraBeds = 1;
-
+    List<Booking> bookings = new ArrayList<>();
     Long bookingId = 1L;
 
     Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
 
-    Customer customer = new Customer(customerId, firstName, lastName, phone, email);
+    Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
 
     Booking booking = new Booking(bookingId, customer, startDate, endDate, bookingNumber, extraBedsWanted, room);
 
@@ -77,7 +78,7 @@ class BookingServiceImplTest {
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
 
     @Test
-    void getAllBookings(){
+    void getMiniAllBookings(){
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
         BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
         List<MiniBookingDto> allCustomers = service2.getAllMiniBookings();
@@ -92,5 +93,54 @@ class BookingServiceImplTest {
         assertEquals(actual.getId(), booking.getId());
         assertEquals(actual.getStartDate(), booking.getStartDate());
         assertEquals(actual.getEndDate(), booking.getEndDate());
+        
+        assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
+        assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
+        assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
+        assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
+        
+        assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
+        assertEquals(actual.getMiniRoomDto().getRoomType().roomType, booking.getRoom().getRoomType().roomType);
+        assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
+    }
+    
+    @Test
+    void bookingToDetailedBookingDto(){
+        DetailedBookingDto actual = service.bookingToDetailedBookingDto(booking);
+
+        assertEquals(actual.getId(), booking.getId());
+        assertEquals(actual.getStartDate(), booking.getStartDate());
+        assertEquals(actual.getEndDate(), booking.getEndDate());
+        assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
+        assertEquals(actual.getExtraBedsWanted(), booking.getExtraBedsWanted());
+        
+        assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
+        assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
+        assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
+        assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
+        
+        assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
+        assertEquals(actual.getMiniRoomDto().getRoomType().roomType, booking.getRoom().getRoomType().roomType);
+        assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
+    }
+    
+    @Test
+    void detailedBookingDtoToBooking(){
+        Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto,customer,room);
+        
+        assertEquals(actual.getId(), detailedBookingDto.getId());
+        assertEquals(actual.getStartDate(), detailedBookingDto.getStartDate());
+        assertEquals(actual.getEndDate(), detailedBookingDto.getEndDate());
+        assertEquals(actual.getBookingNumber(), detailedBookingDto.getBookingNumber());
+        assertEquals(actual.getExtraBedsWanted(), detailedBookingDto.getExtraBedsWanted());
+        
+        assertEquals(actual.getCustomer().getId(), detailedBookingDto.getMiniCustomerDto().getId());
+        assertEquals(actual.getCustomer().getFirstName(), detailedBookingDto.getMiniCustomerDto().getFirstName());
+        assertEquals(actual.getCustomer().getLastName(), detailedBookingDto.getMiniCustomerDto().getLastName());
+        assertEquals(actual.getCustomer().getEMail(), detailedBookingDto.getMiniCustomerDto().getEMail());
+        
+        assertEquals(actual.getRoom().getId(), detailedBookingDto.getMiniRoomDto().getId());
+        assertEquals(actual.getRoom().getRoomType().roomType, detailedBookingDto.getMiniRoomDto().getRoomType().roomType);
+        assertEquals(actual.getRoom().getRoomNumber(), detailedBookingDto.getMiniRoomDto().getRoomNumber());
     }
 }
