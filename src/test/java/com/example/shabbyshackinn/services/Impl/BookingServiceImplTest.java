@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -42,8 +43,8 @@ class BookingServiceImplTest {
     String phone = "123456789";
     String email = "john.doe@example.com";
 
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2020, 1, 3);
+    LocalDate startDate = LocalDate.now();
+    LocalDate endDate = startDate.plusDays(1);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
     Long roomId = 1L;
@@ -142,5 +143,81 @@ class BookingServiceImplTest {
         assertEquals(actual.getRoom().getId(), detailedBookingDto.getMiniRoomDto().getId());
         assertEquals(actual.getRoom().getRoomType().roomType, detailedBookingDto.getMiniRoomDto().getRoomType().roomType);
         assertEquals(actual.getRoom().getRoomNumber(), detailedBookingDto.getMiniRoomDto().getRoomNumber());
+    }
+    
+    @Test
+    void getAllCurrentAndFutureMiniBookings(){
+        LocalDate todaysDate = LocalDate.now();
+        LocalDate tomorrowsDate = todaysDate.plusDays(1);
+        Booking booking2 = new Booking(bookingId, customer, todaysDate, tomorrowsDate, bookingNumber, extraBedsWanted, room);
+        
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking2));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        List<MiniBookingDto> allCustomers = service2.getAllCurrentAndFutureMiniBookings();
+
+        assertEquals(1, allCustomers.size());
+    }
+    
+    @Test
+    void addBooking(){
+        when(bookingRepo.save(booking)).thenReturn(booking);
+        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        
+        String feedback = service2.addBooking(detailedBookingDto);
+        System.out.println("Feedback: " + feedback);
+        assertTrue(feedback.equalsIgnoreCase("Booking added"));
+    }
+    
+    @Test
+    void updateBooking(){
+        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
+        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        String feedBack = service2.updateBooking(detailedBookingDto);
+        System.out.println("feedback" + feedBack);
+        assertTrue(feedBack.equalsIgnoreCase("Booking updated"));
+    }
+    
+    @Test
+    void deleteBooking(){
+        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
+        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        service2.addBooking(detailedBookingDto);
+        String feedback = service2.deleteBooking(bookingId);
+        System.out.println("Feedback: " + feedback);
+        assertTrue(feedback.equalsIgnoreCase("Booking deleted"));
+    }
+    
+    @Test
+    void checkIfBookingPossible(){
+        
+    }
+    
+    @Test
+    void findDetailedBookingById(){
+        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+        DetailedBookingDto actual = service2.findDetailedBookingById(booking.getId());
+        
+        assertEquals(actual.getId(), booking.getId());
+        assertEquals(actual.getStartDate(), booking.getStartDate());
+        assertEquals(actual.getEndDate(), booking.getEndDate());
+        assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
+        assertEquals(actual.getExtraBedsWanted(),booking.getExtraBedsWanted());
+        
+        assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
+        assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
+        assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
+        assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
+        
+        assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
+        assertEquals(actual.getMiniRoomDto().getRoomType(), booking.getRoom().getRoomType());
+        assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
+        
     }
 }

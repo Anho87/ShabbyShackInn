@@ -19,8 +19,9 @@ public class CustomerController {
 
 
     @RequestMapping(path = "/deleteById/{id}")
-    public String deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
+    public String deleteCustomer(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String feedback =  customerService.deleteCustomer(id);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 
@@ -48,7 +49,8 @@ public class CustomerController {
             return "redirect:/shabbyShackInn/index";
         }
         DetailedCustomerDto customerDto = new DetailedCustomerDto(id,firstName,lastName,phone,eMail);
-        customerService.updateCustomer(customerDto);
+        String feedback = customerService.updateCustomer(customerDto);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 

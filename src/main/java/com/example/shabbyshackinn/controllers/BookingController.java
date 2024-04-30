@@ -31,8 +31,9 @@ public class BookingController {
 
     
     @RequestMapping(path = "/deleteBookingById/{id}")
-    public String deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+    public String deleteBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String feedback = bookingService.deleteBooking(id);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 
@@ -61,7 +62,8 @@ public class BookingController {
                                      @RequestParam int extraBedsWanted, @RequestParam int roomNumber, RedirectAttributes redirectAttributes){
         MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
         DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
-        bookingService.updateBooking(bookingDto);
+        String feedback = bookingService.updateBooking(bookingDto);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 
@@ -89,7 +91,8 @@ public class BookingController {
                                 @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
-        bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
+        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 

@@ -17,7 +17,6 @@ public interface CustomerService {
     String updateCustomer(DetailedCustomerDto customer);
     String deleteCustomer(Long id);
     List<MiniCustomerDto> getallMiniCustomers();
-    Customer findCustomerById(Long id);
     MiniCustomerDto findMiniCustomerById(Long id);
     DetailedCustomerDto findDetailedCustomerDtoById(Long id);
     Boolean customerHasActiveBookings(Customer customer);

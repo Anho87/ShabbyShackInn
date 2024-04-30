@@ -15,14 +15,12 @@ public interface BookingService {
     MiniBookingDto bookingToMiniBookingDto(Booking booking);
     DetailedBookingDto bookingToDetailedBookingDto(Booking booking);
     Booking detailedBookingDtoToBooking(DetailedBookingDto detailedBookingDto, Customer customer, Room room);
-    List<DetailedBookingDto> getAllBookings();
     List<MiniBookingDto> getAllMiniBookings();
     List<MiniBookingDto> getAllCurrentAndFutureMiniBookings();
     String addBooking(DetailedBookingDto booking);
     String updateBooking(DetailedBookingDto booking);
     String deleteBooking(Long id);
     boolean checkIfBookingPossible(DetailedBookingDto booking);
-    Booking findBookingById(Long id);
     DetailedBookingDto findDetailedBookingById(Long id);
     
 }

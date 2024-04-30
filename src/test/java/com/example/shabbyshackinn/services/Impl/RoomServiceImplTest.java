@@ -14,7 +14,9 @@ import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -78,4 +80,57 @@ public class RoomServiceImplTest {
         assertEquals(actual.getBeds(), room.getBeds());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
+    
+    @Test
+    void getAllRooms(){
+        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        List<DetailedRoomDto> allRoom = service2.getAllRooms();
+
+        assertEquals(1, allRoom.size());
+    }
+    
+    @Test
+    void detailedRoomToRoom(){
+        Room actual = service.detailedRoomToRoom(detailedRoomDto);
+        
+        assertEquals(actual.getId(), detailedRoomDto.getId());
+        assertEquals(actual.getRoomType().roomType, detailedRoomDto.getRoomType().roomType);
+        assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber());
+        assertEquals(actual.getBeds(), detailedRoomDto.getBeds());
+        assertEquals(actual.getPossibleExtraBeds(), detailedRoomDto.getPossibleExtraBeds());
+    }
+    
+    @Test
+    void roomToMiniRoomDto(){
+        MiniRoomDto actual = service.roomToMiniRoomDto(room);
+        
+        assertEquals(actual.getId(), room.getId());
+        assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
+        assertEquals(actual.getRoomNumber(), room.getRoomNumber());
+    }
+    
+    @Test
+    void findDetailedRoomById(){
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        DetailedRoomDto actual = service2.findDetailedRoomById(room.getId());
+        assertEquals(actual.getId(), room.getId());
+        assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
+        assertEquals(actual.getRoomNumber(), room.getRoomNumber());
+        assertEquals(actual.getBeds(), room.getBeds());
+        assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
+    }
+    
+    @Test
+    void findMiniRoomById(){
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        MiniRoomDto actual = service2.findMiniRoomById(room.getId());
+        assertEquals(actual.getId(), room.getId());
+        assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
+        assertEquals(actual.getRoomNumber(), room.getRoomNumber());
+    }
+    
+    
 }
