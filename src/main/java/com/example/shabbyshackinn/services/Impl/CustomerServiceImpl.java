@@ -103,24 +103,28 @@ public class CustomerServiceImpl implements CustomerService {
     
     @Override
     public String deleteCustomer(Long id){
-        LocalDate dateOfToday = LocalDate.now();
         Customer customer = customerRepo.findById(id).orElse(null);
         if (customer == null) {
             return "Customer not found";
         }
         
-        List<Booking> bookings = customer.getBookings();
-        boolean hasNoActiveBookings = bookings.stream()
-                .allMatch(booking -> dateOfToday.isAfter(booking.getEndDate()));
-        if (!hasNoActiveBookings) {
+        if (!customerHasActiveBookings(customer)) {
             return "Customer has ongoing bookings";
         }
+        
+        List<Booking> bookings = customer.getBookings();   
         for (Booking booking : bookings) {
             booking.setCustomer(null);
             bookingRepo.save(booking);
         }
         customerRepo.deleteById(id);
         return "Customer deleted";
+    }
+    
+    @Override
+    public Boolean customerHasActiveBookings(Customer customer){
+        return customer.getBookings().stream()
+                .allMatch(booking -> LocalDate.now().isAfter(booking.getEndDate()));
     }
 }
 

@@ -20,4 +20,5 @@ public interface CustomerService {
     Customer findCustomerById(Long id);
     MiniCustomerDto findMiniCustomerById(Long id);
     DetailedCustomerDto findDetailedCustomerDtoById(Long id);
+    Boolean customerHasActiveBookings(Customer customer);
 }
