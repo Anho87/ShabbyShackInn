@@ -91,21 +91,23 @@ public class ShabbyShackInnApplication {
 //            roomRepo.save(room14);
 //            roomRepo.save(room15);
 //
-//            Booking b1 = new Booking(cust1, LocalDate.of(2024,4,22),LocalDate.of(2024,05,01),12345,1,room1);
-//            Booking b2 = new Booking(cust3,LocalDate.of(2024,04,15),LocalDate.of(2024,05,17),54321,0,room2);
-//            Booking b3 = new Booking(cust5, LocalDate.of(2024,05,01),LocalDate.of(2024,05,03),98765,2,room3);
-//            Booking b4 = new Booking(cust2, LocalDate.of(2024,04,01),LocalDate.of(2024,05,03),98765,0,room4);
-//            Booking b5 = new Booking(cust1, LocalDate.of(2024,04,01),LocalDate.of(2024,05,03),98765,1,room7);
-//            Booking booking6 = new Booking(cust6, LocalDate.of(2024, 6, 1), LocalDate.of(2024, 6, 3), 6001, 0, room6);
-//            Booking booking7 = new Booking(cust7, LocalDate.of(2024, 6, 5), LocalDate.of(2024, 6, 10), 6002, 1, room7);
-//            Booking booking8 = new Booking(cust8, LocalDate.of(2024, 6, 10), LocalDate.of(2024, 6, 12), 6003, 2, room8);
-//            Booking booking9 = new Booking(cust9, LocalDate.of(2024, 6, 15), LocalDate.of(2024, 6, 20), 6004, 0, room9);
-//            Booking booking10 = new Booking(cust10, LocalDate.of(2024, 6, 20), LocalDate.of(2024, 6, 25), 6005, 0, room10);
-//            Booking booking11 = new Booking(cust11, LocalDate.of(2024, 7, 1), LocalDate.of(2024, 7, 3), 6006, 0, room11);
-//            Booking booking12 = new Booking(cust12, LocalDate.of(2024, 7, 5), LocalDate.of(2024, 7, 10), 6007, 1, room12);
-//            Booking booking13 = new Booking(cust1, LocalDate.of(2024, 7, 10), LocalDate.of(2024, 7, 12), 6008, 2, room13);
-//            Booking booking14 = new Booking(cust2, LocalDate.of(2024, 7, 15), LocalDate.of(2024, 7, 20), 6009, 0, room14);
-//            Booking booking15 = new Booking(cust3, LocalDate.of(2024, 7, 20), LocalDate.of(2024, 7, 25), 6010, 0, room15);
+//            LocalDate today = LocalDate.now();
+//
+//            Booking b1 = new Booking(cust1, today.plusDays(1),today.plusDays(5),12345,1,room1);
+//            Booking b2 = new Booking(cust3,today.plusDays(1),today.plusDays(5),54321,0,room2);
+//            Booking b3 = new Booking(cust5, today.plusDays(1),today.plusDays(5),98765,2,room3);
+//            Booking b4 = new Booking(cust2, today.plusDays(1),today.plusDays(5),98765,0,room4);
+//            Booking b5 = new Booking(cust1, today.plusDays(1),today.plusDays(5),98765,0,room5);
+//            Booking booking6 = new Booking(cust6, today.plusDays(5), today.plusDays(7), 6001, 0, room6);
+//            Booking booking7 = new Booking(cust7, today.plusDays(5), today.plusDays(7), 6002, 1, room7);
+//            Booking booking8 = new Booking(cust8, today.plusDays(5), today.plusDays(7), 6003, 2, room8);
+//            Booking booking9 = new Booking(cust9, today.plusDays(5), today.plusDays(7), 6004, 0, room9);
+//            Booking booking10 = new Booking(cust10, today.plusDays(5), today.plusDays(7), 6005, 0, room10);
+//            Booking booking11 = new Booking(cust11, today.plusDays(6), today.plusDays(9), 6006, 0, room11);
+//            Booking booking12 = new Booking(cust12, today.plusDays(6), today.plusDays(9), 6007, 1, room12);
+//            Booking booking13 = new Booking(cust1, today.plusDays(6), today.plusDays(9), 6008, 2, room13);
+//            Booking booking14 = new Booking(cust2, today.plusDays(6), today.plusDays(9), 6009, 0, room14);
+//            Booking booking15 = new Booking(cust3, today.plusDays(6), today.plusDays(9), 6010, 0, room15);
 //            bookingRepo.save(b1);
 //            bookingRepo.save(b2);
 //            bookingRepo.save(b3);
