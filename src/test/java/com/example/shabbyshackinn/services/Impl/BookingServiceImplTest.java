@@ -19,8 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -180,7 +179,7 @@ class BookingServiceImplTest {
         String feedBack = service2.updateBooking(detailedBookingDto);
         System.out.println("feedback" + feedBack);
         assertTrue(feedBack.equalsIgnoreCase("Booking updated"));
-    }
+    }   
     
     @Test
     void deleteBooking(){
@@ -192,11 +191,6 @@ class BookingServiceImplTest {
         String feedback = service2.deleteBooking(bookingId);
         System.out.println("Feedback: " + feedback);
         assertTrue(feedback.equalsIgnoreCase("Booking deleted"));
-    }
-    
-    @Test
-    void checkIfBookingPossible(){
-        
     }
     
     @Test
