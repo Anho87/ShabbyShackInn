@@ -67,15 +67,14 @@ public class BookingController {
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{amountOfPersons}")
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}")
     public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
-            ,@PathVariable LocalDate endDate,@PathVariable int amountOfPersons){
+            ,@PathVariable LocalDate endDate,@PathVariable int numberOfGuests){
         if(id == null){
             return "redirect:/shabbyShackInn/search";
         }
-
         DetailedRoomDto r = roomService.findDetailedRoomById(id);
-        int extraBedsWanted = Math.max(0, amountOfPersons - r.getBeds());
+        int extraBedsWanted = Math.max(0, numberOfGuests - r.getBeds());
         model.addAttribute("room", r);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

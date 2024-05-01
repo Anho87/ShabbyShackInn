@@ -24,11 +24,7 @@ public class RoomController {
 
     @RequestMapping("/search")
     public String search(Model model, @RequestParam LocalDate startDate,
-                         @RequestParam LocalDate endDate, @RequestParam int numberOfGuests, RedirectAttributes redirectAttributes){
-        if (startDate == null || endDate == null || numberOfGuests >= 0){
-            redirectAttributes.addFlashAttribute("feedback", "All search fields must be filled");
-            return "redirect:/shabbyShackInn/index";
-        }
+                         @RequestParam LocalDate endDate, @RequestParam int numberOfGuests){
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("numberOfGuests", numberOfGuests);

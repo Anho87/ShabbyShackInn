@@ -21,7 +21,7 @@
             <div class="form-group col-md-2">
                 <label for="numberOfGuests">Guests</label>
                 <input type="number" class="form-control" id="numberOfGuests" name="numberOfGuests"
-                       th:value="${numberOfGuests}">
+                       th:value="${numberOfGuests}" min="1">
             </div>
             <div class="form-group col-md-2 align-self-end">
                 <button type="submit" class="btn btn-primary btn-block">Search</button>
@@ -53,7 +53,7 @@
                 <td th:text="${room.beds}"></td>
                 <td th:text="${room.possibleExtraBeds}"></td>
                 <td>
-                    <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}/{amountOfPersons}(id=${room.id},startDate=${startDate},endDate=${endDate},amountOfPersons=${amountOfPersons})}">Book</a>
+                    <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}(id=${room.id},startDate=${startDate},endDate=${endDate},numberOfGuests=${numberOfGuests})}">Book</a>
                 </td>
             </tr>
             </tbody>
