@@ -54,7 +54,6 @@ class BookingServiceImplTest {
     int possibleExtraBeds = 1;
     List<Booking> bookings = new ArrayList<>();
     Long bookingId = 1L;
-    //Long bookingId2 = 2L;
 
     Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
 
@@ -75,10 +74,6 @@ class BookingServiceImplTest {
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
             .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
-
-//    DetailedBookingDto detailedBookingDto2 = DetailedBookingDto.builder().id(bookingId2)
-//            .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-//            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
