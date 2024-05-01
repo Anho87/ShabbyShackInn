@@ -19,8 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -55,6 +54,7 @@ class BookingServiceImplTest {
     int possibleExtraBeds = 1;
     List<Booking> bookings = new ArrayList<>();
     Long bookingId = 1L;
+    //Long bookingId2 = 2L;
 
     Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
 
@@ -75,6 +75,10 @@ class BookingServiceImplTest {
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
             .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+
+//    DetailedBookingDto detailedBookingDto2 = DetailedBookingDto.builder().id(bookingId2)
+//            .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+//            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
@@ -196,7 +200,28 @@ class BookingServiceImplTest {
     
     @Test
     void checkIfBookingPossible(){
-        
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
+        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+
+        DetailedBookingDto DifferentBookingIdSameDates = DetailedBookingDto.builder().id(2L)
+                .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+
+        DetailedBookingDto DifferentBookingIdDifferentDates = DetailedBookingDto.builder().id(2L)
+                .startDate(startDate.plusDays(1)).endDate(startDate.plusDays(2)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+
+        BookingServiceImpl service2 = new BookingServiceImpl(bookingRepo, customerRepo, roomRepo);
+
+        boolean feedbackSameBooking = service2.checkIfBookingPossible(detailedBookingDto);
+        boolean feedbackDifferentBookingIdSameDates = service2.checkIfBookingPossible(DifferentBookingIdSameDates);
+        boolean feedbackDifferentBookingIdDifferentDates = service2.checkIfBookingPossible(DifferentBookingIdDifferentDates);
+
+        assertTrue(feedbackSameBooking);
+        assertFalse(feedbackDifferentBookingIdSameDates);
+        assertTrue(feedbackDifferentBookingIdDifferentDates);
     }
     
     @Test
