@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" !>
+<head>
+    <meta charset="UTF-8">
+    <title>Create booking</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<form action="#" th:action="@{/shabbyShackInn/updateOrAddBooking}" method="post">
+
+    <div style="padding-left: 18px">
+        <label for="startDate">Start Date</label><br>
+        <input type="text" id="startDate" name="startDate" th:value="${startDate}" readonly><br>
+
+        <label for="endDate">End Date</label><br>
+        <input type="text" id="endDate" name="endDate" th:value="${endDate}" readonly><br>
+
+
+        <label for="roomNumber">Room nr:</label><br>
+        <input type="text" id="roomNumber" name="roomNumber" th:value="${room.roomNumber}" readonly><br>
+
+
+        <label for="extraBedsWanted">Extra beds wanted:</label><br>
+        <input type="text" id="extraBedsWanted" name="extraBedsWanted" th:value="${extraBedsWanted}"
+               readonly><br>
+
+    </div>
+</form>
+
+<div class="col-md-6">
+    <h2>Customers</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th colspan="2">Customers</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${allCustomer}">
+            <td th:text="${c.firstName}"></td>
+            <td th:text="${c.lastName}"></td>
+            <td th:text="${c.eMail}"></td>
+            <td>
+                <a th:href="@{/shabbyShackInn/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}(customerId=${c.id}, roomId=${room.id}, startDate=${startDate}, endDate=${endDate}, extraBedsWanted=${extraBedsWanted})}">Book
+                    with this customer</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,91 +1,99 @@
 package com.example.shabbyshackinn.controllers;
 
 import com.example.shabbyshackinn.dtos.DetailedBookingDto;
+import com.example.shabbyshackinn.dtos.DetailedRoomDto;
+import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
-import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BookingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.shabbyshackinn.services.CustomerService;
+import com.example.shabbyshackinn.services.RoomService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("/booking")
+@Controller
+@RequestMapping("/shabbyShackInn")
 public class BookingController {
-
-    private static final Logger log =
-            LoggerFactory.getLogger(BookingController.class);
-
+    
     private final BookingService bookingService;
+    private final RoomService roomService;
+    private final CustomerService customerService;
 
-    public BookingController(BookingService bookingService){
+    public BookingController(BookingService bookingService,RoomService roomService,CustomerService customerService){
         this.bookingService = bookingService;
+        this.roomService= roomService;
+        this.customerService = customerService;
     }
-    
-    @RequestMapping("/getAll")
-    public List<DetailedBookingDto> getAllBookings(){
-        log.info("Get request for all bookings");
-        return bookingService.getAllBookings();
-    }
-    
-    @RequestMapping("/delete")
-    public String deleteBooking(@RequestParam Long id){
-        log.info("Booking with id:" + id + "has been deleted");
-        return bookingService.deleteBooking(id);
-    }
-    @PostMapping("/update")
-    public String updateBooking(@RequestBody DetailedBookingDto booking){
-        log.info("booking with id:" + booking.getId() + " has benn updated");
-        return bookingService.updateBooking(booking);
-    }
-    
-    @PostMapping("add")
-    public String addBooking(@RequestBody DetailedBookingDto booking){
-        return bookingService.addBooking(new DetailedBookingDto(booking.getStartDate(),booking.getEndDate(),booking.getBookingNumber()
-        ,booking.getExtraBedsWanted(),booking.getMiniCustomerDto(),booking.getMiniRoomDto()));
-    }
-//    @RequestMapping("/update")
-//    public String updateBooking(@RequestParam Long id,@RequestParam LocalDate startDate, @RequestParam LocalDate endDate
-//    ,@RequestParam int extraBedsWanted, @RequestParam MiniRoomDto miniRoomDto){
-//        return bookingService.updateBooking(new DetailedBookingDto(id,startDate,endDate,extraBedsWanted,miniRoomDto));
-//    }
-    
-//
-//    @PostMapping("/addBooking")
-//    public List<Booking> addBooking(@RequestBody Booking booking){
-//        bookingRepo.save(booking);
-//        return bookingRepo.findAll();
-//    }
-//
-//    @RequestMapping("/addNewBooking")
-//    public List<Booking> addNewBooking(@RequestParam Long customerId
-//            , @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int bookingNumber
-//            , @RequestParam int extraBedsWanted, @RequestParam Long roomId){
-//        Customer customer = customerRepo.findById(customerId).get();
-//        Room room = roomRepo.findById(roomId).get();
-//        if(customer != null && room != null){
-//            Booking newBooking = new Booking(customer,startDate,endDate,bookingNumber, extraBedsWanted,room);
-//            bookingRepo.save(newBooking);
-//        }
-//        return bookingRepo.findAll();
-//    }
 
-//    @RequestMapping("/addRoomToBooking")
-//    public List<Booking> addRoomToBooking(@RequestParam Long bookingId, @RequestParam Long roomId){
-//        Booking booking = bookingRepo.findById(bookingId).get();
-//        Room room = roomRepo.findById(roomId).get();
-//        if (booking != null && room != null){
-//            booking.addRoom(room);
-//            bookingRepo.save(booking);
-//        }
-//        return bookingRepo.findAll();
-//    }
+    
+    @RequestMapping(path = "/deleteBookingById/{id}")
+    public String deleteBooking(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String feedback = bookingService.deleteBooking(id);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
+        return "redirect:/shabbyShackInn/index";
+    }
+
+    @RequestMapping(path ="/bookingAddAndUpdate/{id}")
+    public String showBookingAddAndUpdatePage(@PathVariable Long id, Model model) {
+        if(id == 0){
+            return "bookingAddAndUpdate";
+        }
+        DetailedBookingDto b = bookingService.findDetailedBookingById(id);
+        model.addAttribute("id",b.getId());
+        model.addAttribute("startDate",b.getStartDate());
+        model.addAttribute("endDate",b.getEndDate());
+        model.addAttribute("bookingNumber",b.getBookingNumber());
+        model.addAttribute("extraBedsWanted",b.getExtraBedsWanted());
+        model.addAttribute("possibleExtraBeds", roomService.findDetailedRoomById(b.getMiniRoomDto().getId()).getPossibleExtraBeds());
+        model.addAttribute("roomNumber", b.getMiniRoomDto().getRoomNumber());
+        model.addAttribute("maxRoomNumber", roomService.getAllRooms().size());
+        model.addAttribute("firstName", b.getMiniCustomerDto().getFirstName());
+        model.addAttribute("lastName", b.getMiniCustomerDto().getLastName());
+        model.addAttribute("eMail", b.getMiniCustomerDto().getEMail());
+        return "bookingAddAndUpdate";
+    }
+
+    @PostMapping("/updateOrAddBooking")
+    public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate,
+                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber, RedirectAttributes redirectAttributes){
+        MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
+        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
+        String feedback = bookingService.updateBooking(bookingDto);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
+        return "redirect:/shabbyShackInn/index";
+    }
+
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{amountOfPersons}")
+    public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
+            ,@PathVariable LocalDate endDate,@PathVariable int amountOfPersons){
+        if(id == null){
+            return "redirect:/shabbyShackInn/search";
+        }
+
+        DetailedRoomDto r = roomService.findDetailedRoomById(id);
+        int extraBedsWanted = Math.max(0, amountOfPersons - r.getBeds());
+        model.addAttribute("room", r);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("extraBedsWanted", extraBedsWanted);
+        List<MiniCustomerDto> miniCustomerDtoList = customerService.getallMiniCustomers();
+        model.addAttribute("allCustomer", miniCustomerDtoList);
+
+        return "createBooking";
+    }
+
+    @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}")
+    public String finishBooking(@PathVariable Long customerId, @PathVariable Long roomId,
+                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
+        MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
+        MiniRoomDto room = roomService.findMiniRoomById(roomId);
+        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
+        redirectAttributes.addFlashAttribute("feedback", feedback);
+        return "redirect:/shabbyShackInn/index";
+    }
+
 }

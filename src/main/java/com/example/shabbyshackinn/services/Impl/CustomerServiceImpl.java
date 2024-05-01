@@ -12,6 +12,7 @@ import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,19 +30,47 @@ public class CustomerServiceImpl implements CustomerService {
     public List<DetailedCustomerDto> getAllCustomers() {
         return customerRepo.findAll().stream().map(c -> customerToDetailedCustomerDTO(c)).toList();
     }
+    @Override
+    public List<MiniCustomerDto> getallMiniCustomers(){
+        return customerRepo.findAll().stream().map(c -> customerToMiniCustomerDto(c)).toList();
+    }
 
     @Override
     public DetailedCustomerDto customerToDetailedCustomerDTO(Customer customer) {
-        return DetailedCustomerDto.builder().id(customer.getId()).firstName(customer.getFirstName())
-                .lastName(customer.getLastName()).phone(customer.getPhone())
+        List<MiniBookingDto> miniBookingDtos = new ArrayList<>();
+
+        if (customer.getBookings() != null) {
+            for (Booking booking : customer.getBookings()) {
+                MiniBookingDto miniBookingDto = bookingToMiniBookingDto(booking);
+                miniBookingDtos.add(miniBookingDto);
+            }
+        }
+
+        return DetailedCustomerDto.builder()
+                .id(customer.getId())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .phone(customer.getPhone())
                 .eMail(customer.getEMail())
-                .bookings(customer.getBookings().stream()
-                        .map(booking -> bookingToMiniBookingDto(booking)).toList()).build();
+                .bookings(miniBookingDtos)
+                .build();
     }
-    
+
+
     public MiniBookingDto bookingToMiniBookingDto(Booking booking){
         return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
-                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber())).build();
+                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber()))
+                .miniCustomerDto(new MiniCustomerDto(booking.getCustomer().getId(),booking.getCustomer().getFirstName(),booking.getCustomer().getLastName(),booking.getCustomer().getEMail())).build();
+    }
+    
+    
+    public MiniCustomerDto findMiniCustomerById(Long id){
+        return customerToMiniCustomerDto(customerRepo.findById(id).get());
+    }
+
+    @Override
+    public DetailedCustomerDto findDetailedCustomerDtoById(Long id) {
+        return customerToDetailedCustomerDTO(customerRepo.findById(id).get());
     }
 
     @Override
@@ -66,29 +95,33 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public MiniCustomerDto customerToMiniCustomerDto(Customer customer) {
         return MiniCustomerDto.builder().id(customer.getId()).firstName(customer.getFirstName())
-                .lastName(customer.getLastName()).build();
+                .lastName(customer.getLastName()).eMail(customer.getEMail()).build();
     }
     
     @Override
     public String deleteCustomer(Long id){
-        LocalDate dateOfToday = LocalDate.now();
         Customer customer = customerRepo.findById(id).orElse(null);
         if (customer == null) {
             return "Customer not found";
         }
         
-        List<Booking> bookings = customer.getBookings();
-        boolean hasNoActiveBookings = bookings.stream()
-                .allMatch(booking -> dateOfToday.isAfter(booking.getEndDate()));
-        if (!hasNoActiveBookings) {
+        if (!customerHasActiveBookings(customer)) {
             return "Customer has ongoing bookings";
         }
+        
+        List<Booking> bookings = customer.getBookings();   
         for (Booking booking : bookings) {
             booking.setCustomer(null);
             bookingRepo.save(booking);
         }
         customerRepo.deleteById(id);
         return "Customer deleted";
+    }
+    
+    @Override
+    public Boolean customerHasActiveBookings(Customer customer){
+        return customer.getBookings().stream()
+                .allMatch(booking -> LocalDate.now().isAfter(booking.getEndDate()));
     }
 }
 
