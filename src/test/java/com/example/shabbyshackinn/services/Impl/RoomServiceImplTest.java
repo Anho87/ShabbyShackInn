@@ -133,6 +133,42 @@ public class RoomServiceImplTest {
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
     }
+
+    @Test
+    void findAvailableRoomsForThreePeople() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(1);
+        int amountOfPersons = 3;
+        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
+
+        assertEquals(1, detailedRoomDtoList.size());
+    }
+
+    @Test
+    void findAvailableRoomsForFourPeople() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(1);
+        int amountOfPersons = 4;
+        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
+
+        assertEquals(0, detailedRoomDtoList.size());
+    }
+
+    @Test
+    void findMiniRoomByRoomNumber() {
+        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        MiniRoomDto actual = service2.findMiniRoomByRoomNumber(room.getRoomNumber());
+        assertEquals(actual.getId(), room.getId());
+        assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
+        assertEquals(actual.getRoomNumber(), room.getRoomNumber());
+    }
     
     
 }
