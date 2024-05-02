@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RoomServiceImplTest {
-
+    
 
     @Mock
     private BookingRepo bookingRepo;
@@ -53,7 +53,7 @@ public class RoomServiceImplTest {
 
     Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
 
-    Customer customer = new Customer(customerId, firstName, lastName, phone, email, bookings);
+    Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
 
     Booking booking = new Booking(bookingId, customer, startDate, endDate, bookingNumber, extraBedsWanted, room);
 
@@ -62,7 +62,7 @@ public class RoomServiceImplTest {
     MiniCustomerDto miniCustomerDto = new MiniCustomerDto(customerId, firstName, lastName, email);
 
     MiniBookingDto miniBookingDto = new MiniBookingDto(bookingId, startDate, endDate, miniRoomDto, miniCustomerDto);
-
+    
 
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
@@ -70,10 +70,10 @@ public class RoomServiceImplTest {
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
-
-
+    
+    
     @Test
-    void roomToDetailedRoomDTO() {
+    void roomToDetailedRoomDTO(){
         DetailedRoomDto actual = service.roomToDetailedRoomDTO(room);
 
         assertEquals(actual.getId(), room.getId());
@@ -82,38 +82,38 @@ public class RoomServiceImplTest {
         assertEquals(actual.getBeds(), room.getBeds());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
-
+    
     @Test
-    void getAllRooms() {
+    void getAllRooms(){
         when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         List<DetailedRoomDto> allRoom = service2.getAllRooms();
 
         assertEquals(1, allRoom.size());
     }
-
+    
     @Test
-    void detailedRoomToRoom() {
+    void detailedRoomToRoom(){
         Room actual = service.detailedRoomToRoom(detailedRoomDto);
-
+        
         assertEquals(actual.getId(), detailedRoomDto.getId());
         assertEquals(actual.getRoomType().roomType, detailedRoomDto.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber());
         assertEquals(actual.getBeds(), detailedRoomDto.getBeds());
         assertEquals(actual.getPossibleExtraBeds(), detailedRoomDto.getPossibleExtraBeds());
     }
-
+    
     @Test
-    void roomToMiniRoomDto() {
+    void roomToMiniRoomDto(){
         MiniRoomDto actual = service.roomToMiniRoomDto(room);
-
+        
         assertEquals(actual.getId(), room.getId());
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
     }
-
+    
     @Test
-    void findDetailedRoomById() {
+    void findDetailedRoomById(){
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         DetailedRoomDto actual = service2.findDetailedRoomById(room.getId());
@@ -123,9 +123,9 @@ public class RoomServiceImplTest {
         assertEquals(actual.getBeds(), room.getBeds());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
-
+    
     @Test
-    void findMiniRoomById() {
+    void findMiniRoomById(){
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         MiniRoomDto actual = service2.findMiniRoomById(room.getId());
@@ -169,6 +169,6 @@ public class RoomServiceImplTest {
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
     }
-
-
+    
+    
 }
