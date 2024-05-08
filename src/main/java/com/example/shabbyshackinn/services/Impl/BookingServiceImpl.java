@@ -17,19 +17,19 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.stereotype.Service;
 
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class BookingServiceImpl implements BookingService {
-    
+
     final private BookingRepo bookingRepo;
     final private CustomerRepo customerRepo;
     final private RoomRepo roomRepo;
 
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo,RoomRepo roomRepo) {
+    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
@@ -38,9 +38,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public MiniBookingDto bookingToMiniBookingDto(Booking booking) {
         MiniCustomerDto miniCustomerDto = (booking.getCustomer() != null) ?
-                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(),booking.getCustomer().getEMail()) :
+                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(), booking.getCustomer().getEMail()) :
                 null;
-        
+
         return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
                 .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
                 .miniCustomerDto(miniCustomerDto)
@@ -49,9 +49,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public DetailedBookingDto bookingToDetailedBookingDto(Booking booking) {
-        
+
         MiniCustomerDto miniCustomerDto = (booking.getCustomer() != null) ?
-                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(),booking.getCustomer().getEMail()) :
+                new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(), booking.getCustomer().getEMail()) :
                 null;
 
         return DetailedBookingDto.builder()
@@ -64,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
                 .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
                 .build();
     }
-    
+
 
     @Override
     public DetailedBookingDto findDetailedBookingById(Long id) {
@@ -78,24 +78,27 @@ public class BookingServiceImpl implements BookingService {
                 .endDate(detailedBookingDto.getEndDate()).bookingNumber(detailedBookingDto.getBookingNumber())
                 .extraBedsWanted(detailedBookingDto.getExtraBedsWanted()).customer(customer).room(room).build();
     }
-    
+
     @Override
-    public List<MiniBookingDto> getAllMiniBookings(){
+    public List<MiniBookingDto> getAllMiniBookings() {
         return bookingRepo.findAll().stream().map(booking -> bookingToMiniBookingDto(booking)).toList();
     }
 
     @Override
-    public List<MiniBookingDto> getAllCurrentAndFutureMiniBookings(){
+    public List<MiniBookingDto> getAllCurrentAndFutureMiniBookings() {
         LocalDate todaysDate = LocalDate.now();
         return bookingRepo.findAll().stream().filter(booking -> booking.getEndDate().isAfter(todaysDate)).map(booking -> bookingToMiniBookingDto(booking)).toList();
     }
 
     @Override
     public String addBooking(DetailedBookingDto detailedBookingDto) {
-        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate()) ){
+
+        System.out.println("isCustomerOkInBlacklist " + isCustomerOkInBlacklist(detailedBookingDto.getMiniCustomerDto().getEMail()));
+
+        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())) {
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
-            bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto,customer,room));
+            bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
             return "Booking added";
         }
         return "Booking not added";
@@ -103,10 +106,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public String updateBooking(DetailedBookingDto detailedBookingDto) {
-        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())){
+        if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())) {
             Customer customer = bookingRepo.findById(detailedBookingDto.getId()).get().getCustomer();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
-            bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto,customer,room));
+            bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
             return "Booking updated";
         }
         return "Booking not updated";
@@ -115,7 +118,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public String deleteBooking(Long id) {
         Booking booking = bookingRepo.findById(id).orElse(null);
-        if(booking == null){
+        if (booking == null) {
             return "Booking not found";
         }
         bookingRepo.deleteById(id);
@@ -140,19 +143,25 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public boolean isCustomerBlacklisted(String eMail) throws Exception {
-        ObjectMapper mapper = new JsonMapper();
-        List<BlackListedCustomer> blackListedCustomers = mapper.readValue(new URL("https://javabl.systementor.se/api/stefan/blacklist"),
-                mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
+    public boolean isCustomerOkInBlacklist(String eMail) {
+        try {
+            ObjectMapper mapper = new JsonMapper();
+            List<BlackListedCustomer> blackListedCustomers = mapper.readValue(new URL("https://javabl.systementor.se/api/stefan/blacklist"),
+                    mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
 
-        BlackListedCustomer b = blackListedCustomers.stream()
-                .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
-                .findFirst()
-                .orElse(null);
+            BlackListedCustomer b = blackListedCustomers.stream()
+                    .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
+                    .findFirst()
+                    .orElse(null);
 
-        if (b != null){
-            return b.ok;
+            if (b != null) {
+                return b.ok;
+            }
+            return true;
+        } catch (IOException e) {
+
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

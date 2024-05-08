@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -18,10 +17,11 @@ import org.hibernate.validator.constraints.UniqueElements;
 @Builder
 @JacksonXmlRootElement(localName = "customers")
 public class ContractCustomer {
+
     @Id
     @GeneratedValue
     public int id;
-    @UniqueElements
+
     @JacksonXmlProperty(localName = "id")
     public int externalSystemId;
     public String companyName;
