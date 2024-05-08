@@ -12,19 +12,6 @@ public interface ContractCustomerService {
     String addContractCustomer(ContractCustomer contractCustomer);
     List<MiniContractCustomerDto> getAllMiniContractCustomers();
     MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     String saveOrUpdateContractCustomer(ContractCustomer contractCustomer);
     ContractCustomer getContractCustomerByExternalSystemId(int externalSystemId);
     String updateContractCustomer(ContractCustomer existingContractCustomer, ContractCustomer contractCustomer);

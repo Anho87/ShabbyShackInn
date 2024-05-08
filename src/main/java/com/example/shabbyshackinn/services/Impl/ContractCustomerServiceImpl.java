@@ -42,29 +42,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         return MiniContractCustomerDto.builder().id(contractCustomer.id).companyName(contractCustomer.companyName)
                 .contactName(contractCustomer.contactName).country(contractCustomer.country).build();
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     @Override
     public String saveOrUpdateContractCustomer(ContractCustomer contractCustomer) {
