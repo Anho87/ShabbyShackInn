@@ -1,5 +1,7 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.Customer;
+import org.springframework.boot.CommandLineRunner;
 import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
@@ -32,6 +34,7 @@ public class ShabbyShackInnApplication {
             application.run(args);
         }
     }
+
 
 
 //    @Bean
