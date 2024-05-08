@@ -3,11 +3,8 @@ package com.example.shabbyshackinn;
 import com.example.shabbyshackinn.models.AllContractCustomers;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
-import com.example.shabbyshackinn.services.ContractCustomerService;
-import com.example.shabbyshackinn.services.Impl.ContractCustomerServiceImpl;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 
