@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 @Data
 @NoArgsConstructor
@@ -39,7 +40,7 @@ public class DetailedBookingDto {
     public DetailedBookingDto (LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, MiniCustomerDto miniCustomerDto, MiniRoomDto miniRoomDto) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.bookingNumber = bookingNumber;
+        this.bookingNumber = new Random().nextInt(9999);
         this.extraBedsWanted = extraBedsWanted;
         this.miniCustomerDto = miniCustomerDto;
         this.miniRoomDto = miniRoomDto;
