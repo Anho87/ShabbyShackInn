@@ -1,7 +1,9 @@
 package com.example.shabbyshackinn.controllers;
 
+import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniBookingDto;
+import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.services.ContractCustomerService;
 import com.example.shabbyshackinn.services.CustomerService;
@@ -62,16 +64,16 @@ public class CustomerController {
 
     @GetMapping("/allContractCustomers")
     public String listAllContractCustomers(Model model) {
-        List<ContractCustomer> contractCustomerList = contractCustomerService.getAllContractCustomers();
+        List<MiniContractCustomerDto> contractCustomerList = contractCustomerService.getAllMiniContractCustomers();
         model.addAttribute("allContractCustomer", contractCustomerList);
         return "allContractCustomers";
     }
 
     @GetMapping("/contractCustomer/{id}")
-    public String showContractCustomer(@PathVariable Long id) {
-        //ContractCustomer customer = contractCustomerService.getContractCustomerById(id); // Ensure this method exists and works
-        //model.addAttribute("customer", customer);
-        return "shabbyShackInn/contractCustomer";
+    public String showContractCustomer(@PathVariable Long id, Model model) {
+        DetailedContractCustomerDto contractCustomer = contractCustomerService.findDetailedContractCustomerById(id);
+        model.addAttribute("contractCustomer", contractCustomer);
+        return "contractCustomer";
     }
 
 }

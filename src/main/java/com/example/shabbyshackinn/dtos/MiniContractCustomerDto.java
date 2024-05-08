@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MiniContractCustomerDto {
-    @Id
-    @GeneratedValue
-    public int id;
-    public String companyName;
-    public String contactName;
-    public String country;
+    private int id;
+    private String companyName;
+    private String contactName;
+    private String country;
     
 }

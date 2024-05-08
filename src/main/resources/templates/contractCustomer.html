@@ -10,15 +10,15 @@
 <div class="container mt-5">
     <h1>Contract Customer Details</h1>
     <div>
-        <p>Company Name: <span th:text="${customer.companyName}"></span></p>
-        <p>Contact Name: <span th:text="${customer.contactName}"></span></p>
-        <p>Contact Title: <span th:text="${customer.contactTitle}"></span></p>
-        <p>Street Address: <span th:text="${customer.streetAddress}"></span></p>
-        <p>City: <span th:text="${customer.city}"></span></p>
-        <p>Postal Code: <span th:text="${customer.postalCode}"></span></p>
-        <p>Country: <span th:text="${customer.country}"></span></p>
-        <p>Phone: <span th:text="${customer.phone}"></span></p>
-        <p>Fax: <span th:text="${customer.fax}"></span></p>
+        <p>Company Name: <span th:text="${contractCustomer.getCompanyName()}"></span></p>
+        <p>Contact Name: <span th:text="${contractCustomer.getContactName()}"></span></p>
+        <p>Contact Title: <span th:text="${contractCustomer.getContactTitle()}"></span></p>
+        <p>Street Address: <span th:text="${contractCustomer.getStreetAddress()}"></span></p>
+        <p>City: <span th:text="${contractCustomer.getCity()}"></span></p>
+        <p>Postal Code: <span th:text="${contractCustomer.getPostalCode()}"></span></p>
+        <p>Country: <span th:text="${contractCustomer.getCountry()}"></span></p>
+        <p>Phone: <span th:text="${contractCustomer.getPhone()}"></span></p>
+        <p>Fax: <span th:text="${contractCustomer.getFax()}"></span></p>
     </div>
 </div>
 </body>
