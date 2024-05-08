@@ -18,10 +18,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="customer : ${allContractCustomer}" th:onclick="'window.location.href=\'contractCustomer.html?Id=' + ${customer.externalSystemId} + '\''" style="cursor:pointer;">
-            <td th:text="${customer.companyName}"></td>
-            <td th:text="${customer.contactName}"></td>
-            <td th:text="${customer.country}"></td>
+        <tr th:each="customer : ${allContractCustomer}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
+            <td th:text="${customer.getCompanyName()}"></td>
+            <td th:text="${customer.getContactName()}"></td>
+            <td th:text="${customer.getCountry()}"></td>
         </tr>
         </tbody>
     </table>
