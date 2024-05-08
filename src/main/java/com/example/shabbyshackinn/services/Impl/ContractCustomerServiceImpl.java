@@ -1,5 +1,6 @@
 package com.example.shabbyshackinn.services.Impl;
 
+import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
@@ -28,6 +29,18 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     public String addContractCustomer(ContractCustomer contractCustomer) {
         contractCustomerRepo.save(contractCustomer);
         return "Contract customer" + contractCustomer.companyName + "is saved!";
+    }
+    
+    @Override
+    public List<MiniContractCustomerDto> getAllMiniContractCustomers(){
+        return contractCustomerRepo.findAll().stream().map(c -> contractCustomerToMiniContractCustomerDto(c)).toList();
+    }
+    
+    
+    @Override
+    public MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer){
+        return MiniContractCustomerDto.builder().id(contractCustomer.id).companyName(contractCustomer.companyName)
+                .contactName(contractCustomer.contactName).country(contractCustomer.country).build();
     }
 
     

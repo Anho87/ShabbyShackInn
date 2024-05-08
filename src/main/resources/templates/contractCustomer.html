@@ -1,46 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contract Customer Details</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <title>Customer Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-4">
-    <h1 class="mb-3">Contract Customer Details</h1>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Customer ID: <span id="customerID">12345</span></h5>
-            <p class="card-text">Company Name: <span id="companyName">Example Company AB</span></p>
-            <p class="card-text">Contact Name: <span id="contactName">John Doe</span></p>
-            <p class="card-text">Contact Title: <span id="contactTitle">Manager</span></p>
-            <p class="card-text">Street Address: <span id="streetAddress">123 Example St</span></p>
-            <p class="card-text">City: <span id="city">Stockholm</span></p>
-            <p class="card-text">Postal Code: <span id="postalCode">111 22</span></p>
-            <p class="card-text">Country: <span id="country">Sweden</span></p>
-            <p class="card-text">Phone: <span id="phone">+46 10 123 4567</span></p>
-            <p class="card-text">Fax: <span id="fax">+46 10 765 4321</span></p>
-        </div>
+<div class="container mt-5">
+    <h1>Contract Customer Details</h1>
+    <div>
+        <p>Company Name: <span th:text="${customer.companyName}"></span></p>
+        <p>Contact Name: <span th:text="${customer.contactName}"></span></p>
+        <p>Contact Title: <span th:text="${customer.contactTitle}"></span></p>
+        <p>Street Address: <span th:text="${customer.streetAddress}"></span></p>
+        <p>City: <span th:text="${customer.city}"></span></p>
+        <p>Postal Code: <span th:text="${customer.postalCode}"></span></p>
+        <p>Country: <span th:text="${customer.country}"></span></p>
+        <p>Phone: <span th:text="${customer.phone}"></span></p>
+        <p>Fax: <span th:text="${customer.fax}"></span></p>
     </div>
 </div>
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const customerId = urlParams.get('customerId');
-
-        fetch(`/api/customers/${customerId}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('customerID').textContent = data.customerId;
-                document.getElementById('companyName').textContent = data.companyName;
-                // Continue setting all other fields similarly
-            })
-            .catch(error => console.error('Failed to load customer details:', error));
-    });
-</script>
 </html>

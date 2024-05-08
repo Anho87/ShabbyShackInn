@@ -1,5 +1,6 @@
 package com.example.shabbyshackinn.services;
 
+import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 
@@ -9,6 +10,8 @@ public interface ContractCustomerService {
     
     List<ContractCustomer> getAllContractCustomers();
     String addContractCustomer(ContractCustomer contractCustomer);
+    List<MiniContractCustomerDto> getAllMiniContractCustomers();
+    MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer);
     
     
     
