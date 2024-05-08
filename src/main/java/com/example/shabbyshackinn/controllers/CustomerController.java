@@ -4,10 +4,7 @@ import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -54,6 +51,11 @@ public class CustomerController {
         String feedback = customerService.updateCustomer(customerDto);
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
+    }
+
+    @GetMapping("/allContractCustomers")
+    public String listAllContractCustomers() {
+        return "allContractCustomers";
     }
 
 }

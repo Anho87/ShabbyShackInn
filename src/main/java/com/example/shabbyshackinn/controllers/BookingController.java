@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/shabbyShackInn")
@@ -90,7 +91,8 @@ public class BookingController {
                                 @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
-        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
+        Random random = new Random();
+        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,random.nextInt(9999),extraBedsWanted, customer, room));
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
