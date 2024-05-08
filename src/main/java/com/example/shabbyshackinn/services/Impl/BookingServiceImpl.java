@@ -4,6 +4,7 @@ import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
+import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
@@ -11,9 +12,13 @@ import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BookingService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.stereotype.Service;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -132,5 +137,22 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
 
         return overlappingBookings.isEmpty();
+    }
+
+    @Override
+    public boolean isCustomerBlacklisted(String eMail) throws Exception {
+        ObjectMapper mapper = new JsonMapper();
+        List<BlackListedCustomer> blackListedCustomers = mapper.readValue(new URL("https://javabl.systementor.se/api/stefan/blacklist"),
+                mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
+
+        BlackListedCustomer b = blackListedCustomers.stream()
+                .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
+                .findFirst()
+                .orElse(null);
+
+        if (b != null){
+            return b.ok;
+        }
+        return false;
     }
 }
