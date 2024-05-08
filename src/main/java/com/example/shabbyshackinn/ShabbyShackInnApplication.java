@@ -1,9 +1,19 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.Booking;
+import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.repos.BookingRepo;
+import com.example.shabbyshackinn.repos.CustomerRepo;
+import com.example.shabbyshackinn.repos.RoomRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -22,7 +32,7 @@ public class ShabbyShackInnApplication {
             application.run(args);
         }
     }
-}
+
 
 //    @Bean
 //    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
@@ -129,4 +139,4 @@ public class ShabbyShackInnApplication {
 //        };
 //    }
 
-
+}
