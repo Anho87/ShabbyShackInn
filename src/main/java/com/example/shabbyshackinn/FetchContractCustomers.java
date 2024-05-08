@@ -34,9 +34,6 @@ public class FetchContractCustomers implements CommandLineRunner {
         ContractCustomerServiceImpl contractCustomerService = new ContractCustomerServiceImpl(contractCustomerRepo);
         for (ContractCustomer c : allContractCustomers.contractCustomers) {
             contractCustomerService.saveOrUpdateContractCustomer(c);
-            System.out.println(c.companyName);
-            System.out.println(c.contactName);
-            System.out.println(c.country);
             
         }
     }
