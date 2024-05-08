@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,40 +8,23 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Customer List</h1>
+    <h1>Contract Customers</h1>
     <table class="table">
-        <thead class="table-dark">
+        <thead class="thead-dark">
         <tr>
             <th>Company Name</th>
             <th>Contact Name</th>
             <th>Country</th>
         </tr>
         </thead>
-        <tbody id="customerTableBody">
-        <!-- Data will be loaded here via JavaScript -->
+        <tbody>
+        <tr th:each="customer : ${allContractCustomer}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
+            <td th:text="${customer.getCompanyName()}"></td>
+            <td th:text="${customer.getContactName()}"></td>
+            <td th:text="${customer.getCountry()}"></td>
+        </tr>
         </tbody>
     </table>
 </div>
-
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/customers')
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('customerTableBody');
-                data.forEach(customer => {
-                    const row = `<tr onclick="location.href='contractCustomer.html?customerId=${customer.id}'" style="cursor: pointer;">
-                        <td>${customer.companyName}</td>
-                        <td>${customer.contactName}</td>
-                        <td>${customer.country}</td>
-                    </tr>`;
-                    tableBody.innerHTML += row;
-                });
-            })
-            .catch(error => console.error('Error loading the customer data:', error));
-    });
-</script>
 </body>
 </html>

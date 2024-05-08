@@ -1,19 +1,28 @@
 package com.example.shabbyshackinn.controllers;
 
+import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
+import com.example.shabbyshackinn.dtos.MiniBookingDto;
+import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
+import com.example.shabbyshackinn.models.ContractCustomer;
+import com.example.shabbyshackinn.services.ContractCustomerService;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/shabbyShackInn")
 public class CustomerController {
     private final CustomerService customerService;
+    private final ContractCustomerService contractCustomerService;
 
-    public CustomerController(CustomerService customerService){
+    public CustomerController(CustomerService customerService, ContractCustomerService contractCustomerService){
         this.customerService = customerService;
+        this.contractCustomerService = contractCustomerService;
     }
 
     
@@ -54,8 +63,17 @@ public class CustomerController {
     }
 
     @GetMapping("/allContractCustomers")
-    public String listAllContractCustomers() {
+    public String listAllContractCustomers(Model model) {
+        List<MiniContractCustomerDto> contractCustomerList = contractCustomerService.getAllMiniContractCustomers();
+        model.addAttribute("allContractCustomer", contractCustomerList);
         return "allContractCustomers";
+    }
+
+    @GetMapping("/contractCustomer/{id}")
+    public String showContractCustomer(@PathVariable Long id, Model model) {
+        DetailedContractCustomerDto contractCustomer = contractCustomerService.findDetailedContractCustomerById(id);
+        model.addAttribute("contractCustomer", contractCustomer);
+        return "contractCustomer";
     }
 
 }

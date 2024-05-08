@@ -1,6 +1,7 @@
 package com.example.shabbyshackinn;
 
 import com.example.shabbyshackinn.models.Shippers;
+import com.example.shabbyshackinn.repos.ShipperRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,6 +10,13 @@ import java.net.URL;
 
 @ComponentScan
 public class FetchShippers implements CommandLineRunner {
+
+    ShipperRepo shipperRepo;
+
+
+    public FetchShippers(ShipperRepo shipperRepo){
+        this.shipperRepo = shipperRepo;
+    }
     
     @Override
     public void run(String... args) throws Exception {
@@ -18,6 +26,7 @@ public class FetchShippers implements CommandLineRunner {
                 Shippers[].class);
         
         for (Shippers s: shippers){
+            shipperRepo.save(s);
             System.out.println(s.id);
             System.out.println(s.companyName);
             System.out.println(s.phone);
