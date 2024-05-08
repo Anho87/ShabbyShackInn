@@ -27,9 +27,6 @@ public class FetchShippers implements CommandLineRunner {
         
         for (Shippers s: shippers){
             shipperRepo.save(s);
-            System.out.println(s.id);
-            System.out.println(s.companyName);
-            System.out.println(s.phone);
         }
     }
 }
