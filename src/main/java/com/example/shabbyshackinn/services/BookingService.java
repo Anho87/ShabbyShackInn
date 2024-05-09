@@ -1,13 +1,11 @@
 package com.example.shabbyshackinn.services;
 
 import com.example.shabbyshackinn.dtos.DetailedBookingDto;
-import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
@@ -22,5 +20,5 @@ public interface BookingService {
     String deleteBooking(Long id);
     boolean checkIfBookingPossible(DetailedBookingDto booking);
     DetailedBookingDto findDetailedBookingById(Long id);
-    
+    boolean isCustomerOkInBlacklist(String eMail);
 }

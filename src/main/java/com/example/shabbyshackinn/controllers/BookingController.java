@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/shabbyShackInn")
@@ -67,15 +68,14 @@ public class BookingController {
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{amountOfPersons}")
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}")
     public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
-            ,@PathVariable LocalDate endDate,@PathVariable int amountOfPersons){
+            ,@PathVariable LocalDate endDate,@PathVariable int numberOfGuests){
         if(id == null){
             return "redirect:/shabbyShackInn/search";
         }
-
         DetailedRoomDto r = roomService.findDetailedRoomById(id);
-        int extraBedsWanted = Math.max(0, amountOfPersons - r.getBeds());
+        int extraBedsWanted = Math.max(0, numberOfGuests - r.getBeds());
         model.addAttribute("room", r);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
@@ -91,7 +91,8 @@ public class BookingController {
                                 @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
-        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,0,extraBedsWanted, customer, room));
+        Random random = new Random();
+        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,random.nextInt(9999),extraBedsWanted, customer, room));
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }

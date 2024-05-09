@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Contract Customers</h1>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Company Name</th>
+            <th>Contact Name</th>
+            <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${allContractCustomer}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
+            <td th:text="${customer.getCompanyName()}"></td>
+            <td th:text="${customer.getContactName()}"></td>
+            <td th:text="${customer.getCountry()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
