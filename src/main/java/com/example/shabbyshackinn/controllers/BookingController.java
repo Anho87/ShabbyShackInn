@@ -59,10 +59,10 @@ public class BookingController {
     }
 
     @PostMapping("/updateOrAddBooking")
-    public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate,
+    public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int bookingNumber,
                                      @RequestParam int extraBedsWanted, @RequestParam int roomNumber, RedirectAttributes redirectAttributes){
         MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
-        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, extraBedsWanted,miniRoomDto);
+        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, bookingNumber, extraBedsWanted,miniRoomDto);
         String feedback = bookingService.updateBooking(bookingDto);
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
