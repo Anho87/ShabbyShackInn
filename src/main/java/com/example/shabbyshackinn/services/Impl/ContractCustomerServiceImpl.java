@@ -5,7 +5,9 @@ import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
 import com.example.shabbyshackinn.services.ContractCustomerService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -117,5 +119,16 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     @Override
     public DetailedContractCustomerDto findDetailedContractCustomerById(Long id){
         return contractCustomerToDetailedContractCustomerDto(contractCustomerRepo.findById(id).get());
+    }
+
+    @Override
+    public List<MiniContractCustomerDto> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
+        return contractCustomerRepo.findAll(sort).stream()
+                .filter(contractCustomer ->
+                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())
+                                || contractCustomer.contactName.toLowerCase().contains(searchWord.toLowerCase())
+                                || contractCustomer.country.toLowerCase().contains(searchWord.toLowerCase()))
+                .map(this::contractCustomerToMiniContractCustomerDto)
+                .toList();
     }
 }
