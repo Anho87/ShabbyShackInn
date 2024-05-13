@@ -43,6 +43,7 @@ public class RoomServiceImplTest {
     LocalDate endDate = LocalDate.of(2020, 1, 3);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
+    int price = 1000;
     Long roomId = 1L;
     int roomNumber = 1;
     RoomType roomType = RoomType.DOUBLE;
@@ -51,7 +52,7 @@ public class RoomServiceImplTest {
     List<Booking> bookings = new ArrayList<>();
     Long bookingId = 1L;
 
-    Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
+    Room room = new Room(roomId, roomType, roomNumber, beds, price, possibleExtraBeds);
 
     Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
 
@@ -68,7 +69,7 @@ public class RoomServiceImplTest {
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
             .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
 
-    DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
+    DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber).price(price)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
     
     
@@ -80,6 +81,7 @@ public class RoomServiceImplTest {
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
         assertEquals(actual.getBeds(), room.getBeds());
+        assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
     
@@ -100,6 +102,7 @@ public class RoomServiceImplTest {
         assertEquals(actual.getRoomType().roomType, detailedRoomDto.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber());
         assertEquals(actual.getBeds(), detailedRoomDto.getBeds());
+        assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), detailedRoomDto.getPossibleExtraBeds());
     }
     
@@ -121,6 +124,7 @@ public class RoomServiceImplTest {
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
         assertEquals(actual.getBeds(), room.getBeds());
+        assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
     

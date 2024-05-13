@@ -1,7 +1,5 @@
 package com.example.shabbyshackinn;
 
-import com.example.shabbyshackinn.models.Customer;
-import org.springframework.boot.CommandLineRunner;
 import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
@@ -36,7 +34,6 @@ public class ShabbyShackInnApplication {
     }
 
 
-
 //    @Bean
 //    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
 //        return (args) -> {
@@ -57,7 +54,6 @@ public class ShabbyShackInnApplication {
 //            Customer cust15 = new Customer("John", "Klein", "0710000110", "john.klein@domain.com");
 //
 //
-//
 //            customerRepo.save(cust1);
 //            customerRepo.save(cust2);
 //            customerRepo.save(cust3);
@@ -75,21 +71,21 @@ public class ShabbyShackInnApplication {
 //            customerRepo.save(cust15);
 //
 //
-//            Room room1 = new Room(1, RoomType.DOUBLE, 2, 1);
-//            Room room2 = new Room(2, RoomType.SINGLE, 1, 0);
-//            Room room3 = new Room(3, RoomType.DOUBLE, 2, 2);
-//            Room room4 = new Room(4, RoomType.DOUBLE, 2, 0);
-//            Room room5 = new Room(5, RoomType.SINGLE, 1, 0);
-//            Room room6 = new Room(6, RoomType.SINGLE, 1, 0);
-//            Room room7 = new Room(7, RoomType.DOUBLE, 2, 1);
-//            Room room8 = new Room(8, RoomType.DOUBLE, 2, 2);
-//            Room room9 = new Room(9, RoomType.SINGLE, 1, 0);
-//            Room room10 = new Room(10, RoomType.DOUBLE, 2, 0);
-//            Room room11 = new Room(11, RoomType.SINGLE, 1, 0);
-//            Room room12 = new Room(12, RoomType.DOUBLE, 2, 1);
-//            Room room13 = new Room(13, RoomType.DOUBLE, 2, 2);
-//            Room room14 = new Room(14, RoomType.SINGLE, 1, 0);
-//            Room room15 = new Room(15, RoomType.DOUBLE, 2, 0);
+//            Room room1 = new Room(1, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room2 = new Room(2, RoomType.SINGLE, 1, 1000, 0);
+//            Room room3 = new Room(3, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room4 = new Room(4, RoomType.DOUBLE, 2, 2000, 0);
+//            Room room5 = new Room(5, RoomType.SINGLE, 1, 1000, 0);
+//            Room room6 = new Room(6, RoomType.SINGLE, 1, 1000, 0);
+//            Room room7 = new Room(7, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room8 = new Room(8, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room9 = new Room(9, RoomType.SINGLE, 1, 1000, 0);
+//            Room room10 = new Room(10, RoomType.DOUBLE, 2, 2000, 0);
+//            Room room11 = new Room(11, RoomType.SINGLE, 1, 1000, 0);
+//            Room room12 = new Room(12, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room13 = new Room(13, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room14 = new Room(14, RoomType.SINGLE, 1, 1000, 0);
+//            Room room15 = new Room(15, RoomType.DOUBLE, 2, 2000, 0);
 //
 //            roomRepo.save(room1);
 //            roomRepo.save(room2);
@@ -109,11 +105,11 @@ public class ShabbyShackInnApplication {
 //
 //            LocalDate today = LocalDate.now();
 //
-//            Booking b1 = new Booking(cust1, today.plusDays(1),today.plusDays(5),12345,1,room1);
-//            Booking b2 = new Booking(cust3,today.plusDays(1),today.plusDays(5),54321,0,room2);
-//            Booking b3 = new Booking(cust5, today.plusDays(1),today.plusDays(5),98765,2,room3);
-//            Booking b4 = new Booking(cust2, today.plusDays(1),today.plusDays(5),98765,0,room4);
-//            Booking b5 = new Booking(cust1, today.plusDays(1),today.plusDays(5),98765,0,room5);
+//            Booking b1 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 12345, 1, room1);
+//            Booking b2 = new Booking(cust3, today.plusDays(1), today.plusDays(5), 54321, 0, room2);
+//            Booking b3 = new Booking(cust5, today.plusDays(1), today.plusDays(5), 98765, 2, room3);
+//            Booking b4 = new Booking(cust2, today.plusDays(1), today.plusDays(5), 98765, 0, room4);
+//            Booking b5 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 98765, 0, room5);
 //            Booking booking6 = new Booking(cust6, today.plusDays(5), today.plusDays(7), 6001, 0, room6);
 //            Booking booking7 = new Booking(cust7, today.plusDays(5), today.plusDays(7), 6002, 1, room7);
 //            Booking booking8 = new Booking(cust8, today.plusDays(5), today.plusDays(7), 6003, 2, room8);
@@ -141,5 +137,4 @@ public class ShabbyShackInnApplication {
 //            bookingRepo.save(booking15);
 //        };
 //    }
-
 }

@@ -16,12 +16,14 @@ public class DetailedRoomDto {
     private RoomType roomType;
     private int roomNumber;
     private int beds;
+    private int price;
     private int possibleExtraBeds;
 
-    public DetailedRoomDto(RoomType roomType, int roomNumber, int beds, int possibleExtraBeds) {
+    public DetailedRoomDto(RoomType roomType, int roomNumber, int beds, int price, int possibleExtraBeds) {
         this.roomType = roomType;
         this.roomNumber = roomNumber;
         this.beds = beds;
+        this.price = price;
         this.possibleExtraBeds = possibleExtraBeds;
     }
 }

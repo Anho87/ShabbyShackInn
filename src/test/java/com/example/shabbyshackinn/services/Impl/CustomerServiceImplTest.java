@@ -48,11 +48,12 @@ class CustomerServiceImplTest {
     int roomNumber = 1;
     RoomType roomType = RoomType.DOUBLE;
     int beds = 2;
+    int price = 1000;
     int possibleExtraBeds = 1;
     List<Booking> bookings = new ArrayList<>();
     Long bookingId = 1L;
 
-    Room room = new Room(roomId, roomType, roomNumber, beds, possibleExtraBeds);
+    Room room = new Room(roomId, roomType, roomNumber, beds, price, possibleExtraBeds);
 
     Customer customer = new Customer(customerId, firstName, lastName, phone, email, bookings);
 
