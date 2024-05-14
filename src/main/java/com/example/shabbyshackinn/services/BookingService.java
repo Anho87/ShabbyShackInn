@@ -20,5 +20,4 @@ public interface BookingService {
     String deleteBooking(Long id);
     boolean checkIfBookingPossible(DetailedBookingDto booking);
     DetailedBookingDto findDetailedBookingById(Long id);
-    boolean isCustomerOkInBlacklist(String eMail);
 }
