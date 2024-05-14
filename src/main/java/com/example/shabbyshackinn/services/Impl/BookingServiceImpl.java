@@ -144,24 +144,24 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean isCustomerOkInBlacklist(String eMail) {
-        try {
-            ObjectMapper mapper = new JsonMapper();
-            List<BlackListedCustomer> blackListedCustomers = mapper.readValue(new URL("https://javabl.systementor.se/api/stefan/blacklist"),
-                    mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
-
-            BlackListedCustomer b = blackListedCustomers.stream()
-                    .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
-                    .findFirst()
-                    .orElse(null);
-
-            if (b != null) {
-                return b.ok;
-            }
-            return true;
-        } catch (IOException e) {
-
-            e.printStackTrace();
-            return false;
-        }
+//        try {
+//            List<BlackListedCustomer> blackListedCustomers = getBlacklistedCustomersFromAPI();
+//
+//
+//            BlackListedCustomer b = blackListedCustomers.stream()
+//                    .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
+//                    .findFirst()
+//                    .orElse(null);
+//
+//            if (b != null) {
+//                return b.ok;
+//            }
+//            return true;
+//        } catch (IOException e) {
+//
+//            e.printStackTrace();
+//            return false;
+//        }
+        return true;
     }
 }

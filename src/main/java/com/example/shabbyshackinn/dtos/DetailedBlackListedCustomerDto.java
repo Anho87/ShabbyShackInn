@@ -1,4 +1,4 @@
-package com.example.shabbyshackinn.models;
+package com.example.shabbyshackinn.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BlackListedCustomer {
+public class DetailedBlackListedCustomerDto {
 
     public long id;
     public String email;
@@ -20,10 +20,4 @@ public class BlackListedCustomer {
     public Date created;
     public boolean ok;
 
-    public BlackListedCustomer(long id, String email, String name, boolean ok) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.ok = ok;
-    }
 }

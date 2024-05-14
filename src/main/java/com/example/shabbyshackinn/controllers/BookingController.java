@@ -4,6 +4,8 @@ import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
+import com.example.shabbyshackinn.models.BlackListedCustomer;
+import com.example.shabbyshackinn.services.BlacklistService;
 import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.CustomerService;
 import com.example.shabbyshackinn.services.RoomService;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -23,11 +26,13 @@ public class BookingController {
     private final BookingService bookingService;
     private final RoomService roomService;
     private final CustomerService customerService;
+    private final BlacklistService blacklistService;
 
-    public BookingController(BookingService bookingService,RoomService roomService,CustomerService customerService){
+    public BookingController(BookingService bookingService, RoomService roomService, CustomerService customerService, BlacklistService blacklistService){
         this.bookingService = bookingService;
         this.roomService= roomService;
         this.customerService = customerService;
+        this.blacklistService = blacklistService;
     }
 
     
@@ -95,6 +100,12 @@ public class BookingController {
         String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,random.nextInt(9999),extraBedsWanted, customer, room));
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
+    }
+
+    @RequestMapping("/post")
+    public void postBlacklistCustomerToApi(){
+        BlackListedCustomer b = new BlackListedCustomer(104,"email","name", true);
+        System.out.println(blacklistService.checkIfEmailIsBlacklisted("stefan6@aaa.com").isOk());
     }
 
 }

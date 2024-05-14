@@ -1,6 +1,9 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.services.BlacklistService;
+import com.example.shabbyshackinn.services.BookingService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
