@@ -1,15 +1,19 @@
 package com.example.shabbyshackinn;
 
-import com.example.shabbyshackinn.models.BlackListedCustomer;
+import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.services.BlacklistService;
-import com.example.shabbyshackinn.services.BookingService;
+import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.repos.BookingRepo;
+import com.example.shabbyshackinn.repos.CustomerRepo;
+import com.example.shabbyshackinn.repos.RoomRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -27,8 +31,7 @@ public class ShabbyShackInnApplication {
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
         }
-
-
+    }
 
 
 //    @Bean
@@ -68,21 +71,21 @@ public class ShabbyShackInnApplication {
 //            customerRepo.save(cust15);
 //
 //
-//            Room room1 = new Room(1, RoomType.DOUBLE, 2, 1);
-//            Room room2 = new Room(2, RoomType.SINGLE, 1, 0);
-//            Room room3 = new Room(3, RoomType.DOUBLE, 2, 2);
-//            Room room4 = new Room(4, RoomType.DOUBLE, 2, 0);
-//            Room room5 = new Room(5, RoomType.SINGLE, 1, 0);
-//            Room room6 = new Room(6, RoomType.SINGLE, 1, 0);
-//            Room room7 = new Room(7, RoomType.DOUBLE, 2, 1);
-//            Room room8 = new Room(8, RoomType.DOUBLE, 2, 2);
-//            Room room9 = new Room(9, RoomType.SINGLE, 1, 0);
-//            Room room10 = new Room(10, RoomType.DOUBLE, 2, 0);
-//            Room room11 = new Room(11, RoomType.SINGLE, 1, 0);
-//            Room room12 = new Room(12, RoomType.DOUBLE, 2, 1);
-//            Room room13 = new Room(13, RoomType.DOUBLE, 2, 2);
-//            Room room14 = new Room(14, RoomType.SINGLE, 1, 0);
-//            Room room15 = new Room(15, RoomType.DOUBLE, 2, 0);
+//            Room room1 = new Room(1, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room2 = new Room(2, RoomType.SINGLE, 1, 1000, 0);
+//            Room room3 = new Room(3, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room4 = new Room(4, RoomType.DOUBLE, 2, 2000, 0);
+//            Room room5 = new Room(5, RoomType.SINGLE, 1, 1000, 0);
+//            Room room6 = new Room(6, RoomType.SINGLE, 1, 1000, 0);
+//            Room room7 = new Room(7, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room8 = new Room(8, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room9 = new Room(9, RoomType.SINGLE, 1, 1000, 0);
+//            Room room10 = new Room(10, RoomType.DOUBLE, 2, 2000, 0);
+//            Room room11 = new Room(11, RoomType.SINGLE, 1, 1000, 0);
+//            Room room12 = new Room(12, RoomType.DOUBLE, 2, 3000, 1);
+//            Room room13 = new Room(13, RoomType.DOUBLE, 2, 4000, 2);
+//            Room room14 = new Room(14, RoomType.SINGLE, 1, 1000, 0);
+//            Room room15 = new Room(15, RoomType.DOUBLE, 2, 2000, 0);
 //
 //            roomRepo.save(room1);
 //            roomRepo.save(room2);
@@ -134,5 +137,4 @@ public class ShabbyShackInnApplication {
 //            bookingRepo.save(booking15);
 //        };
 //    }
-    }
 }

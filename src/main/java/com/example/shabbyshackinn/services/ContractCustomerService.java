@@ -3,6 +3,7 @@ package com.example.shabbyshackinn.services;
 import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface ContractCustomerService {
     DetailedContractCustomerDto contractCustomerToDetailedContractCustomerDto(ContractCustomer contractCustomer);
     ContractCustomer detailedContractCustomerToContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto);
     DetailedContractCustomerDto findDetailedContractCustomerById(Long id);
+    List<MiniContractCustomerDto> findAllBySearchAndSortOrder(String searchWord, Sort sort);
 }

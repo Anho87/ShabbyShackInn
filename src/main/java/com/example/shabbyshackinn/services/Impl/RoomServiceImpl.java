@@ -23,7 +23,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public DetailedRoomDto roomToDetailedRoomDTO(Room room) {
-        return DetailedRoomDto.builder().id(room.getId()).roomType(room.getRoomType()).beds(room.getBeds())
+        return DetailedRoomDto.builder().id(room.getId()).roomType(room.getRoomType()).price(room.getPrice()).beds(room.getBeds())
                 .possibleExtraBeds(room.getPossibleExtraBeds()).roomNumber(room.getRoomNumber()).build();
     }
 
@@ -35,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room detailedRoomToRoom(DetailedRoomDto room) {
-        return Room.builder().id(room.getId()).roomType(room.getRoomType()).beds(room.getBeds())
+        return Room.builder().id(room.getId()).roomType(room.getRoomType()).beds(room.getBeds()).price(room.getPrice())
                 .possibleExtraBeds(room.getPossibleExtraBeds()).roomNumber(room.getRoomNumber()).build();
     }
 

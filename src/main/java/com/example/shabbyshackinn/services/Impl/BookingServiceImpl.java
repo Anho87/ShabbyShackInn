@@ -94,7 +94,10 @@ public class BookingServiceImpl implements BookingService {
     public String addBooking(DetailedBookingDto detailedBookingDto) {
 
         System.out.println("isCustomerOkInBlacklist " + isCustomerOkInBlacklist(detailedBookingDto.getMiniCustomerDto().getEMail()));
-
+        if(!isCustomerOkInBlacklist(detailedBookingDto.getMiniCustomerDto().getEMail())){
+            return "Booking not added, " + detailedBookingDto.getMiniCustomerDto().getEMail() + " is blacklisted!";
+        }
+        
         if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())) {
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();

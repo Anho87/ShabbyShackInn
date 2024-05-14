@@ -29,10 +29,11 @@ public class DetailedBookingDto {
         this.miniRoomDto = miniRoomDto;
     }
 
-    public DetailedBookingDto(Long id, LocalDate startDate, LocalDate endDate, int extraBedsWanted, MiniRoomDto miniRoomDto) {
+    public DetailedBookingDto(Long id, LocalDate startDate, LocalDate endDate, int bookingNumber,int extraBedsWanted, MiniRoomDto miniRoomDto) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.bookingNumber = bookingNumber;
         this.extraBedsWanted = extraBedsWanted;
         this.miniRoomDto = miniRoomDto;
     }
@@ -40,7 +41,7 @@ public class DetailedBookingDto {
     public DetailedBookingDto (LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, MiniCustomerDto miniCustomerDto, MiniRoomDto miniRoomDto) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.bookingNumber = new Random().nextInt(9999);
+        this.bookingNumber = bookingNumber;
         this.extraBedsWanted = extraBedsWanted;
         this.miniCustomerDto = miniCustomerDto;
         this.miniRoomDto = miniRoomDto;
