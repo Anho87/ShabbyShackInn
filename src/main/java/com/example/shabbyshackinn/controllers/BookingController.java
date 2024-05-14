@@ -102,10 +102,4 @@ public class BookingController {
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/post")
-    public void postBlacklistCustomerToApi(){
-        BlackListedCustomer b = new BlackListedCustomer(104,"email","name", true);
-        System.out.println(blacklistService.checkIfEmailIsBlacklisted("stefan6@aaa.com").isOk());
-    }
-
 }

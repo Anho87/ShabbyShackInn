@@ -1,6 +1,5 @@
 package com.example.shabbyshackinn.services.Impl;
 
-import com.example.shabbyshackinn.dtos.DetailedBlackListedCustomerDto;
 import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.models.BlacklistResponse;
 import com.example.shabbyshackinn.services.BlacklistService;
@@ -22,7 +21,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
 
     private final ObjectMapper mapper = new JsonMapper();
-    private final String apiUrl = "https://javabl.systementor.se/api/stefan/blacklist";
+    private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
 
     @Override
     public void addBlackListedCustomer(BlackListedCustomer customer) {
@@ -55,7 +54,7 @@ public class BlacklistServiceImpl implements BlacklistService {
         try {
             ObjectMapper mapper = new JsonMapper();
             mapper.registerModule(new JavaTimeModule());
-           return mapper.readValue(new URL("https://javabl.systementor.se/api/stefan/blacklistcheck/" + email), BlacklistResponse.class);
+           return mapper.readValue(new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklistcheck/" + email), BlacklistResponse.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

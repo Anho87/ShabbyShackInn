@@ -4,16 +4,12 @@ import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.dtos.MiniCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
-import com.example.shabbyshackinn.models.BlackListedCustomer;
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.*;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
+import com.example.shabbyshackinn.services.BlacklistService;
 import com.example.shabbyshackinn.services.BookingService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -28,11 +24,13 @@ public class BookingServiceImpl implements BookingService {
     final private BookingRepo bookingRepo;
     final private CustomerRepo customerRepo;
     final private RoomRepo roomRepo;
+    final private BlacklistService blacklistService;
 
-    public BookingServiceImpl(BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo) {
+    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
+        this.blacklistService = blacklistService;
     }
 
     @Override
@@ -92,9 +90,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public String addBooking(DetailedBookingDto detailedBookingDto) {
-
-        System.out.println("isCustomerOkInBlacklist " + isCustomerOkInBlacklist(detailedBookingDto.getMiniCustomerDto().getEMail()));
-        if(!isCustomerOkInBlacklist(detailedBookingDto.getMiniCustomerDto().getEMail())){
+        BlacklistResponse br = blacklistService.checkIfEmailIsBlacklisted(detailedBookingDto.getMiniCustomerDto().getEMail());
+        System.out.println("isCustomerOkInBlacklist " + detailedBookingDto.getMiniCustomerDto().getEMail() + br.isOk());
+        if(!br.isOk()){
             return "Booking not added, " + detailedBookingDto.getMiniCustomerDto().getEMail() + " is blacklisted!";
         }
         
@@ -145,26 +143,4 @@ public class BookingServiceImpl implements BookingService {
         return overlappingBookings.isEmpty();
     }
 
-    @Override
-    public boolean isCustomerOkInBlacklist(String eMail) {
-//        try {
-//            List<BlackListedCustomer> blackListedCustomers = getBlacklistedCustomersFromAPI();
-//
-//
-//            BlackListedCustomer b = blackListedCustomers.stream()
-//                    .filter(blackListedCustomer -> blackListedCustomer.getEmail().equals(eMail))
-//                    .findFirst()
-//                    .orElse(null);
-//
-//            if (b != null) {
-//                return b.ok;
-//            }
-//            return true;
-//        } catch (IOException e) {
-//
-//            e.printStackTrace();
-//            return false;
-//        }
-        return true;
-    }
 }
