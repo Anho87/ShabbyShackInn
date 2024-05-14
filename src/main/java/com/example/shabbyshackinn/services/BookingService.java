@@ -18,6 +18,5 @@ public interface BookingService {
     String addBooking(DetailedBookingDto booking);
     String updateBooking(DetailedBookingDto booking);
     String deleteBooking(Long id);
-    boolean checkIfBookingPossible(DetailedBookingDto booking);
     DetailedBookingDto findDetailedBookingById(Long id);
 }

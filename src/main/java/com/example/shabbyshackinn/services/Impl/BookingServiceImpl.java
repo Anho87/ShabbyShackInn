@@ -126,21 +126,4 @@ public class BookingServiceImpl implements BookingService {
         return "Booking deleted";
     }
 
-    @Override
-    public boolean checkIfBookingPossible(DetailedBookingDto booking) {
-        Long roomId = booking.getMiniRoomDto().getId();
-        LocalDate startDate = booking.getStartDate();
-        LocalDate endDate = booking.getEndDate();
-        Long currentBookingId = booking.getId();
-
-        List<Booking> overlappingBookings = bookingRepo.findAll()
-                .stream()
-                .filter(b -> !b.getId().equals(currentBookingId))
-                .filter(b -> b.getRoom().getId().equals(roomId))
-                .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
-                .toList();
-
-        return overlappingBookings.isEmpty();
-    }
-
 }
