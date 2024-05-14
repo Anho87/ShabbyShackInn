@@ -1,19 +1,9 @@
 package com.example.shabbyshackinn;
 
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.models.RoomType;
-import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
-import com.example.shabbyshackinn.repos.RoomRepo;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -30,12 +20,17 @@ public class ShabbyShackInnApplication {
             SpringApplication application = new SpringApplication(FetchShippers.class);
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
+        } else if (Objects.equals(args[0], "readQueue")) {
+            SpringApplication application = new SpringApplication(ReadQueueApp.class);
+            application.setWebApplicationType(WebApplicationType.NONE);
+            application.run(args);
+            
         }
     }
 
 
 //    @Bean
-//    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo) {
+//    public CommandLineRunner demo(CustomerRepo customerRepo, RoomRepo roomRepo, BookingRepo bookingRepo, RoomEventRepo roomEventRepo) {
 //        return (args) -> {
 //            Customer cust1 = new Customer("Andreas", "Holmberg", "0702879445", "Andreas.holmber@airbnb.se");
 //            Customer cust2 = new Customer("Johan", "Johnsson", "0702345116", "johan.johnsson@airbnb.se");
@@ -135,6 +130,40 @@ public class ShabbyShackInnApplication {
 //            bookingRepo.save(booking13);
 //            bookingRepo.save(booking14);
 //            bookingRepo.save(booking15);
+//
+//            LocalDateTime localDateTime = LocalDateTime.now();
+//            RoomEvent roomEvent1 = new RoomEvent("Dörren stängd", 1, localDateTime);
+//            RoomEvent roomEvent2 = new RoomEvent("Dörren Öppen", 2, localDateTime);
+//            RoomEvent roomEvent3 = new RoomEvent("Städning påbörjad", 3, localDateTime);
+//            RoomEvent roomEvent4 = new RoomEvent("Dörren stängd", 4, localDateTime);
+//            RoomEvent roomEvent5 = new RoomEvent("Dörren stängd", 5, localDateTime);
+//            RoomEvent roomEvent6 = new RoomEvent("Dörren stängd", 6, localDateTime);
+//            RoomEvent roomEvent7 = new RoomEvent("Dörren stängd", 7, localDateTime);
+//            RoomEvent roomEvent8 = new RoomEvent("Dörren stängd", 8, localDateTime);
+//            RoomEvent roomEvent9 = new RoomEvent("Dörren stängd", 9, localDateTime);
+//            RoomEvent roomEvent10 = new RoomEvent("Dörren stängd", 10, localDateTime);
+//            RoomEvent roomEvent11 = new RoomEvent("Dörren stängd", 11, localDateTime);
+//            RoomEvent roomEvent12 = new RoomEvent("Dörren stängd", 12, localDateTime);
+//            RoomEvent roomEvent13 = new RoomEvent("Dörren stängd", 13, localDateTime);
+//            RoomEvent roomEvent14 = new RoomEvent("Dörren stängd", 14, localDateTime);
+//            RoomEvent roomEvent15 = new RoomEvent("Dörren stängd", 15, localDateTime);
+//
+//            roomEventRepo.save(roomEvent1);
+//            roomEventRepo.save(roomEvent2);
+//            roomEventRepo.save(roomEvent3);
+//            roomEventRepo.save(roomEvent4);
+//            roomEventRepo.save(roomEvent5);
+//            roomEventRepo.save(roomEvent6);
+//            roomEventRepo.save(roomEvent7);
+//            roomEventRepo.save(roomEvent8);
+//            roomEventRepo.save(roomEvent9);
+//            roomEventRepo.save(roomEvent10);
+//            roomEventRepo.save(roomEvent11);
+//            roomEventRepo.save(roomEvent12);
+//            roomEventRepo.save(roomEvent13);
+//            roomEventRepo.save(roomEvent14);
+//            roomEventRepo.save(roomEvent15);
+//
 //        };
 //    }
 }

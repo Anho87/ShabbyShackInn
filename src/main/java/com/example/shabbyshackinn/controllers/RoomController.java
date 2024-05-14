@@ -2,12 +2,15 @@ package com.example.shabbyshackinn.controllers;
 
 
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
+import com.example.shabbyshackinn.models.RoomEvent;
+import com.example.shabbyshackinn.services.RoomEventService;
 import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,9 +19,11 @@ import java.util.List;
 @RequestMapping("/shabbyShackInn")
 public class RoomController {
     private final RoomService roomService;
+    private final RoomEventService roomEventService;
 
-    public RoomController(RoomService roomService){
+    public RoomController(RoomService roomService, RoomEventService roomEventService){
         this.roomService = roomService;
+        this.roomEventService = roomEventService;
     }
 
 
@@ -31,5 +36,19 @@ public class RoomController {
         List<DetailedRoomDto> availableRooms = roomService.findAvailableRooms(startDate,endDate,numberOfGuests);
         model.addAttribute("searchResults", availableRooms);
         return "searchResults";
+    }
+    
+    @RequestMapping("/allRooms")
+    public String allRooms(Model model){
+        List<DetailedRoomDto> roomList = roomService.getAllRooms();
+        model.addAttribute("roomList", roomList);
+        return "roomEventUI";
+    }
+    
+    @GetMapping("/roomLog/{id}")
+    public String roomLog(@PathVariable Long id, Model model){
+        List<RoomEvent> roomEventList = roomEventService.getAllRoomEvents(id);
+        model.addAttribute("roomEventList", roomEventList);
+        return "roomLog";
     }
 }
