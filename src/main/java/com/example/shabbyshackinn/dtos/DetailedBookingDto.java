@@ -19,30 +19,26 @@ public class DetailedBookingDto {
     private LocalDate endDate;
     private int bookingNumber;
     private int extraBedsWanted;
+    private int totalPrice;
     private MiniCustomerDto miniCustomerDto;
     private MiniRoomDto miniRoomDto;
 
-    public DetailedBookingDto(LocalDate startDate, LocalDate endDate,MiniCustomerDto miniCustomerDto,MiniRoomDto miniRoomDto) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.miniCustomerDto = miniCustomerDto;
-        this.miniRoomDto = miniRoomDto;
-    }
-
-    public DetailedBookingDto(Long id, LocalDate startDate, LocalDate endDate, int bookingNumber,int extraBedsWanted, MiniRoomDto miniRoomDto) {
+    public DetailedBookingDto(Long id, LocalDate startDate, LocalDate endDate, int bookingNumber,int extraBedsWanted, int totalPrice, MiniRoomDto miniRoomDto) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookingNumber = bookingNumber;
+        this.totalPrice = totalPrice;
         this.extraBedsWanted = extraBedsWanted;
         this.miniRoomDto = miniRoomDto;
     }
 
-    public DetailedBookingDto (LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, MiniCustomerDto miniCustomerDto, MiniRoomDto miniRoomDto) {
+    public DetailedBookingDto (LocalDate startDate, LocalDate endDate, int bookingNumber, int extraBedsWanted, int totalPrice, MiniCustomerDto miniCustomerDto, MiniRoomDto miniRoomDto) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.bookingNumber = bookingNumber;
         this.extraBedsWanted = extraBedsWanted;
+        this.totalPrice = totalPrice;
         this.miniCustomerDto = miniCustomerDto;
         this.miniRoomDto = miniRoomDto;
     }

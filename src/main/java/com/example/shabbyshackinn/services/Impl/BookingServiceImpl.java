@@ -56,6 +56,7 @@ public class BookingServiceImpl implements BookingService {
                 .endDate(booking.getEndDate())
                 .bookingNumber(booking.getBookingNumber())
                 .extraBedsWanted(booking.getExtraBedsWanted())
+                .totalPrice(booking.getTotalPrice())
                 .miniCustomerDto(miniCustomerDto)
                 .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
                 .build();
@@ -72,7 +73,8 @@ public class BookingServiceImpl implements BookingService {
     public Booking detailedBookingDtoToBooking(DetailedBookingDto detailedBookingDto, Customer customer, Room room) {
         return Booking.builder().id(detailedBookingDto.getId()).startDate(detailedBookingDto.getStartDate())
                 .endDate(detailedBookingDto.getEndDate()).bookingNumber(detailedBookingDto.getBookingNumber())
-                .extraBedsWanted(detailedBookingDto.getExtraBedsWanted()).customer(customer).room(room).build();
+                .extraBedsWanted(detailedBookingDto.getExtraBedsWanted()).customer(customer).room(room).
+                totalPrice(detailedBookingDto.getTotalPrice()).build();
     }
 
     @Override
@@ -133,8 +135,8 @@ public class BookingServiceImpl implements BookingService {
 
         List<Booking> overlappingBookings = bookingRepo.findAll()
                 .stream()
-                .filter(b -> !b.getId().equals(currentBookingId))
-                .filter(b -> b.getRoom().getId().equals(roomId))
+                .filter(b -> !b.getId().equals(currentBookingId)) // Exclude current booking
+                .filter(b -> b.getRoom().getId().equals(roomId))  // Same room
                 .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
                 .toList();
 

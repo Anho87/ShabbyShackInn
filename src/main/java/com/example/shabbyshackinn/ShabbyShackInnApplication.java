@@ -1,9 +1,11 @@
 package com.example.shabbyshackinn;
 
-import com.example.shabbyshackinn.models.*;
+import com.example.shabbyshackinn.models.Booking;
+import com.example.shabbyshackinn.models.Customer;
+import com.example.shabbyshackinn.models.Room;
+import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
-import com.example.shabbyshackinn.repos.RoomEventRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @SpringBootApplication
@@ -33,7 +34,12 @@ public class ShabbyShackInnApplication {
             SpringApplication application = new SpringApplication(ReadQueueApp.class);
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
-            
+
+        } else if (Objects.equals(args[0], "runBean")) {
+            SpringApplication application = new SpringApplication(RunBean.class);
+            application.setWebApplicationType(WebApplicationType.NONE);
+            application.run(args);
+
         }
     }
 
@@ -109,36 +115,37 @@ public class ShabbyShackInnApplication {
 //
 //            LocalDate today = LocalDate.now();
 //
-//            Booking b1 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 12345, 1, room1);
-//            Booking b2 = new Booking(cust3, today.plusDays(1), today.plusDays(5), 54321, 0, room2);
-//            Booking b3 = new Booking(cust5, today.plusDays(1), today.plusDays(5), 98765, 2, room3);
-//            Booking b4 = new Booking(cust2, today.plusDays(1), today.plusDays(5), 98765, 0, room4);
-//            Booking b5 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 98765, 0, room5);
-//            Booking booking6 = new Booking(cust6, today.plusDays(5), today.plusDays(7), 6001, 0, room6);
-//            Booking booking7 = new Booking(cust7, today.plusDays(5), today.plusDays(7), 6002, 1, room7);
-//            Booking booking8 = new Booking(cust8, today.plusDays(5), today.plusDays(7), 6003, 2, room8);
-//            Booking booking9 = new Booking(cust9, today.plusDays(5), today.plusDays(7), 6004, 0, room9);
-//            Booking booking10 = new Booking(cust10, today.plusDays(5), today.plusDays(7), 6005, 0, room10);
-//            Booking booking11 = new Booking(cust11, today.plusDays(6), today.plusDays(9), 6006, 0, room11);
-//            Booking booking12 = new Booking(cust12, today.plusDays(6), today.plusDays(9), 6007, 1, room12);
-//            Booking booking13 = new Booking(cust1, today.plusDays(6), today.plusDays(9), 6008, 2, room13);
-//            Booking booking14 = new Booking(cust2, today.plusDays(6), today.plusDays(9), 6009, 0, room14);
-//            Booking booking15 = new Booking(cust3, today.plusDays(6), today.plusDays(9), 6010, 0, room15);
+//            Booking b1 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 12345, 1, 4000, room1);
+//            Booking b2 = new Booking(cust3, today.plusDays(1), today.plusDays(5), 54321, 0, 4000, room2);
+//            Booking b3 = new Booking(cust5, today.plusDays(1), today.plusDays(5), 98765, 2, 4000, room3);
+//            Booking b4 = new Booking(cust2, today.plusDays(1), today.plusDays(5), 98765, 0, 4000, room4);
+//            Booking b5 = new Booking(cust1, today.plusDays(1), today.plusDays(5), 98765, 0, 4000, room5);
+//            Booking b6 = new Booking(cust6, today.plusDays(5), today.plusDays(7), 6001, 0, 2000, room6);
+//            Booking b7 = new Booking(cust7, today.plusDays(5), today.plusDays(7), 6002, 1, 2000, room7);
+//            Booking b8 = new Booking(cust8, today.plusDays(5), today.plusDays(7), 6003, 2, 2000, room8);
+//            Booking b9 = new Booking(cust9, today.plusDays(5), today.plusDays(7), 6004, 0, 2000, room9);
+//            Booking b10 = new Booking(cust10, today.plusDays(5), today.plusDays(7), 6005, 0, 2000, room10);
+//            Booking b11 = new Booking(cust11, today.plusDays(6), today.plusDays(9), 6006, 0, 3000, room11);
+//            Booking b12 = new Booking(cust12, today.plusDays(6), today.plusDays(9), 6007, 1, 3000, room12);
+//            Booking b13 = new Booking(cust1, today.plusDays(6), today.plusDays(9), 6008, 2, 3000, room13);
+//            Booking b14 = new Booking(cust2, today.plusDays(6), today.plusDays(9), 6009, 0, 3000, room14);
+//            Booking b15 = new Booking(cust3, today.plusDays(6), today.plusDays(9), 6010, 0, 3000, room15);
 //            bookingRepo.save(b1);
 //            bookingRepo.save(b2);
 //            bookingRepo.save(b3);
 //            bookingRepo.save(b4);
 //            bookingRepo.save(b5);
-//            bookingRepo.save(booking6);
-//            bookingRepo.save(booking7);
-//            bookingRepo.save(booking8);
-//            bookingRepo.save(booking9);
-//            bookingRepo.save(booking10);
-//            bookingRepo.save(booking11);
-//            bookingRepo.save(booking12);
-//            bookingRepo.save(booking13);
-//            bookingRepo.save(booking14);
-//            bookingRepo.save(booking15);
+//            bookingRepo.save(b6);
+//            bookingRepo.save(b7);
+//            bookingRepo.save(b8);
+//            bookingRepo.save(b9);
+//            bookingRepo.save(b10);
+//            bookingRepo.save(b11);
+//            bookingRepo.save(b12);
+//            bookingRepo.save(b13);
+//            bookingRepo.save(b14);
+//            bookingRepo.save(b15);
+
 //
 //            LocalDateTime localDateTime = LocalDateTime.now();
 //            RoomEvent roomEvent1 = new RoomEvent("Dörren stängd", 1, localDateTime);
