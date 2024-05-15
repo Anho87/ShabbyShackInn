@@ -44,6 +44,7 @@ class CustomerServiceImplTest {
     LocalDate endDate = LocalDate.of(2020, 1, 3);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
+    int totalPrice = 9999999;
     Long roomId = 1L;
     int roomNumber = 1;
     RoomType roomType = RoomType.DOUBLE;
@@ -57,7 +58,7 @@ class CustomerServiceImplTest {
 
     Customer customer = new Customer(customerId, firstName, lastName, phone, email, bookings);
 
-    Booking booking = new Booking(bookingId, customer, startDate, endDate, bookingNumber, extraBedsWanted, room);
+    Booking booking = new Booking(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
 
     MiniRoomDto miniRoomDto = new MiniRoomDto(roomId, roomType, roomNumber);
 
@@ -70,7 +71,7 @@ class CustomerServiceImplTest {
 
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
