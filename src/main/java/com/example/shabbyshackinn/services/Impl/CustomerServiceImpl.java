@@ -123,6 +123,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customer.getBookings().stream()
                 .allMatch(booking -> LocalDate.now().isAfter(booking.getEndDate()));
     }
+
 }
 
 

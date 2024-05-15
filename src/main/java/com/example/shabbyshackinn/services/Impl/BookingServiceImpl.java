@@ -23,12 +23,14 @@ public class BookingServiceImpl implements BookingService {
     final private CustomerRepo customerRepo;
     final private RoomRepo roomRepo;
     final private BlacklistService blacklistService;
+    final private DiscountServiceImpl discountService;
 
-    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo) {
+    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.blacklistService = blacklistService;
+        this.discountService = discountService;
     }
 
     @Override
@@ -92,11 +94,13 @@ public class BookingServiceImpl implements BookingService {
     public String addBooking(DetailedBookingDto detailedBookingDto) {
         BlacklistResponse br = blacklistService.checkIfEmailIsBlacklisted(detailedBookingDto.getMiniCustomerDto().getEMail());
         System.out.println("isCustomerOkInBlacklist " + detailedBookingDto.getMiniCustomerDto().getEMail() + br.isOk());
-        if(!br.isOk()){
+        if (!br.isOk()) {
             return "Booking not added, " + detailedBookingDto.getMiniCustomerDto().getEMail() + " is blacklisted!";
         }
-        
+
         if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())) {
+            System.out.println(detailedBookingDto.getTotalPrice());
+            System.out.println(discountService.calculateDiscount(detailedBookingDto.getMiniRoomDto().getId(), detailedBookingDto.getMiniCustomerDto().getId(), detailedBookingDto));
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
             bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
@@ -142,5 +146,4 @@ public class BookingServiceImpl implements BookingService {
 
         return overlappingBookings.isEmpty();
     }
-
 }

@@ -75,7 +75,7 @@ public class BookingController {
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}")
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}/{price}")
     public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
             ,@PathVariable LocalDate endDate,@PathVariable int numberOfGuests){
         if(id == null){
