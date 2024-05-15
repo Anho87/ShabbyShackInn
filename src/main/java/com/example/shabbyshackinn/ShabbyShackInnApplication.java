@@ -24,7 +24,12 @@ public class ShabbyShackInnApplication {
             SpringApplication application = new SpringApplication(ReadQueueApp.class);
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
-            
+
+        } else if (Objects.equals(args[0], "runBean")) {
+            SpringApplication application = new SpringApplication(RunBean.class);
+            application.setWebApplicationType(WebApplicationType.NONE);
+            application.run(args);
+
         }
     }
 
