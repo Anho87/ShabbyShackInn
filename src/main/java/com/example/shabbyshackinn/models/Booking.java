@@ -28,7 +28,7 @@ public class Booking {
     @FutureOrPresent
     private LocalDate startDate;
 
-    @PositiveOrZero
+    @Positive
     private int bookingNumber;
 
     @PositiveOrZero
