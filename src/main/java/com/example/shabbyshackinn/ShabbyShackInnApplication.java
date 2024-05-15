@@ -1,9 +1,18 @@
 package com.example.shabbyshackinn;
 
+import com.example.shabbyshackinn.models.*;
+import com.example.shabbyshackinn.repos.BookingRepo;
+import com.example.shabbyshackinn.repos.CustomerRepo;
+import com.example.shabbyshackinn.repos.RoomEventRepo;
+import com.example.shabbyshackinn.repos.RoomRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @SpringBootApplication

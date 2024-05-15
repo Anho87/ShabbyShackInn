@@ -123,12 +123,14 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public List<MiniContractCustomerDto> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
-        return contractCustomerRepo.findAll(sort).stream()
-                .filter(contractCustomer ->
-                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())
-                                || contractCustomer.contactName.toLowerCase().contains(searchWord.toLowerCase())
-                                || contractCustomer.country.toLowerCase().contains(searchWord.toLowerCase()))
-                .map(this::contractCustomerToMiniContractCustomerDto)
-                .toList();
+//        return contractCustomerRepo.findAll(sort).stream()
+//                .filter(contractCustomer ->
+//                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())
+//                                || contractCustomer.contactName.toLowerCase().contains(searchWord.toLowerCase())
+//                                || contractCustomer.country.toLowerCase().contains(searchWord.toLowerCase()))
+//                .map(this::contractCustomerToMiniContractCustomerDto)
+//                .toList();
+        return contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
+                (searchWord,searchWord,searchWord,sort);
     }
 }
