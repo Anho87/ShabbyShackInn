@@ -55,7 +55,7 @@
                 <td th:text="${room.beds}"></td>
                 <td th:text="${room.possibleExtraBeds}"></td>
                 <td>
-                    <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}(id=${room.id},startDate=${startDate},endDate=${endDate},numberOfGuests=${numberOfGuests})}">Book</a>
+                    <a th:href="@{/shabbyShackInn/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}/{price}(id=${room.id},startDate=${startDate},endDate=${endDate},numberOfGuests=${numberOfGuests},price=${room.price})}">Book</a>
                 </td>
             </tr>
             </tbody>

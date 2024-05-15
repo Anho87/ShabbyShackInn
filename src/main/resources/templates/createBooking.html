@@ -44,7 +44,7 @@
             <td th:text="${c.lastName}"></td>
             <td th:text="${c.eMail}"></td>
             <td>
-                <a th:href="@{/shabbyShackInn/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}(customerId=${c.id}, roomId=${room.id}, startDate=${startDate}, endDate=${endDate}, extraBedsWanted=${extraBedsWanted})}">Book
+                <a th:href="@{/shabbyShackInn/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}/{price}(customerId=${c.id}, roomId=${room.id}, startDate=${startDate}, endDate=${endDate}, extraBedsWanted=${extraBedsWanted}, price=${room.price})}">Book
                     with this customer</a></td>
         </tr>
         </tbody>
