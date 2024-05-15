@@ -5,6 +5,7 @@ import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
 import com.example.shabbyshackinn.services.ContractCustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +123,7 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     }
 
     @Override
-    public List<MiniContractCustomerDto> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
+    public List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
 //        return contractCustomerRepo.findAll(sort).stream()
 //                .filter(contractCustomer ->
 //                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())

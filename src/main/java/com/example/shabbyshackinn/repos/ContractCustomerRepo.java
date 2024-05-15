@@ -10,6 +10,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ContractCustomerRepo extends JpaRepository<ContractCustomer, Long> {
-    List<MiniContractCustomerDto> findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
+    List<ContractCustomer> findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
             (String CompanyName,String ContactName,String Country,Sort sort);
 }

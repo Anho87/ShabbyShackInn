@@ -13,16 +13,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = RoomClosed.class,name="RoomClosed"),
-        @JsonSubTypes.Type(value = RoomCleaningFinished.class,name="RoomCleaningFinished"),
-        @JsonSubTypes.Type(value = RoomCleaningStarted.class,name="RoomCleaningStarted"),
-        @JsonSubTypes.Type(value = RoomOpened.class,name="RoomOpened")
-})
+    //@JsonTypeInfo(
+    //        use = JsonTypeInfo.Id.NAME,
+    //        include = JsonTypeInfo.As.PROPERTY,
+    //        property = "type")
+    //@JsonSubTypes({
+    //        @JsonSubTypes.Type(value = RoomClosed.class,name="RoomClosed"),
+    //        @JsonSubTypes.Type(value = RoomCleaningFinished.class,name="RoomCleaningFinished"),
+    //        @JsonSubTypes.Type(value = RoomCleaningStarted.class,name="RoomCleaningStarted"),
+    //        @JsonSubTypes.Type(value = RoomOpened.class,name="RoomOpened")
+    //})
 // [x] Received '{"type":"RoomOpened","TimeStamp":"2024-05-13T17:36:27.15293805","RoomNo":"7"}'
 
 @Entity
