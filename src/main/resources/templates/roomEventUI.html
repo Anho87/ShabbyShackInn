@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomEvent</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>All Rooms</h1>
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Roomnumber</th>
+                <th>Roomtype</th>
+            </tr>
+            </thead>
+        <tbody>
+        <tr th:each="room : ${roomList}" th:onclick="'window.location.href=\'/shabbyShackInn/roomLog/' + ${room.id} + '\''" style="cursor:pointer;">
+            <td th:text="${room.getRoomNumber()}"></td>
+            <td th:text="${room.getRoomType()}"></td>
+        </tr>
+        </tBody>
+        </table>
+    </div>
+   
+</div>
+</body>
+</html>
