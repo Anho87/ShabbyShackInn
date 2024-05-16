@@ -65,15 +65,17 @@ public class BookingController {
 
     @PostMapping("/updateOrAddBooking")
     public String updateOrAddBooking(@RequestParam Long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate, @RequestParam int bookingNumber,
-                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber, RedirectAttributes redirectAttributes){
+                                     @RequestParam int extraBedsWanted, @RequestParam int roomNumber,
+                                     @RequestParam int totalPrice, RedirectAttributes redirectAttributes){
         MiniRoomDto miniRoomDto = roomService.findMiniRoomByRoomNumber(roomNumber);
-        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, bookingNumber, extraBedsWanted,miniRoomDto);
+        DetailedBookingDto bookingDto = new DetailedBookingDto(id,startDate,endDate, bookingNumber, extraBedsWanted,
+                totalPrice, miniRoomDto);
         String feedback = bookingService.updateBooking(bookingDto);
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 
-    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}")
+    @RequestMapping("/createBooking/{id}/{startDate}/{endDate}/{numberOfGuests}/{price}")
     public String createBooking(Model model, @PathVariable Long id, @PathVariable LocalDate startDate
             ,@PathVariable LocalDate endDate,@PathVariable int numberOfGuests){
         if(id == null){
@@ -91,13 +93,14 @@ public class BookingController {
         return "createBooking";
     }
 
-    @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}")
+    @RequestMapping("/finishBooking/{customerId}/{roomId}/{startDate}/{endDate}/{extraBedsWanted}/{totalPrice}")
     public String finishBooking(@PathVariable Long customerId, @PathVariable Long roomId,
-                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted, RedirectAttributes redirectAttributes){
+                                @PathVariable LocalDate startDate, @PathVariable LocalDate endDate, @PathVariable int extraBedsWanted,
+                                @PathVariable int totalPrice, RedirectAttributes redirectAttributes){
         MiniCustomerDto customer = customerService.findMiniCustomerById(customerId);
         MiniRoomDto room = roomService.findMiniRoomById(roomId);
         Random random = new Random();
-        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,random.nextInt(9999),extraBedsWanted, customer, room));
+        String feedback =  bookingService.addBooking(new DetailedBookingDto(startDate,endDate,random.nextInt(9999),extraBedsWanted, totalPrice, customer, room));
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }

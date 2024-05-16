@@ -37,9 +37,11 @@ class BookingServiceImplTest {
 
     @Mock
     private BlacklistService blacklistService;
+    @Mock
+    private DiscountServiceImpl discountService;
 
     @InjectMocks
-    private BookingServiceImpl service = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+    private BookingServiceImpl service = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
 
     Long customerId = 1L;
     String firstName = "John";
@@ -51,6 +53,7 @@ class BookingServiceImplTest {
     LocalDate endDate = startDate.plusDays(1);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
+    int totalPrice = 999999999;
     Long roomId = 1L;
     int roomNumber = 1;
     RoomType roomType = RoomType.DOUBLE;
@@ -64,7 +67,7 @@ class BookingServiceImplTest {
 
     Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
 
-    Booking booking = new Booking(bookingId, customer, startDate, endDate, bookingNumber, extraBedsWanted, room);
+    Booking booking = new Booking(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
 
     MiniRoomDto miniRoomDto = new MiniRoomDto(roomId, roomType, roomNumber);
 
@@ -78,7 +81,7 @@ class BookingServiceImplTest {
 
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice) .build();
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
@@ -86,7 +89,7 @@ class BookingServiceImplTest {
     @Test
     void getMiniAllBookings(){
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         List<MiniBookingDto> allCustomers = service2.getAllMiniBookings();
 
         assertEquals(1, allCustomers.size());
@@ -119,6 +122,7 @@ class BookingServiceImplTest {
         assertEquals(actual.getEndDate(), booking.getEndDate());
         assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
         assertEquals(actual.getExtraBedsWanted(), booking.getExtraBedsWanted());
+        assertEquals(actual.getTotalPrice(), booking.getTotalPrice());
         
         assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
         assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
@@ -139,7 +143,8 @@ class BookingServiceImplTest {
         assertEquals(actual.getEndDate(), detailedBookingDto.getEndDate());
         assertEquals(actual.getBookingNumber(), detailedBookingDto.getBookingNumber());
         assertEquals(actual.getExtraBedsWanted(), detailedBookingDto.getExtraBedsWanted());
-        
+        assertEquals(actual.getTotalPrice(), detailedBookingDto.getTotalPrice());
+
         assertEquals(actual.getCustomer().getId(), detailedBookingDto.getMiniCustomerDto().getId());
         assertEquals(actual.getCustomer().getFirstName(), detailedBookingDto.getMiniCustomerDto().getFirstName());
         assertEquals(actual.getCustomer().getLastName(), detailedBookingDto.getMiniCustomerDto().getLastName());
@@ -154,10 +159,10 @@ class BookingServiceImplTest {
     void getAllCurrentAndFutureMiniBookings(){
         LocalDate todaysDate = LocalDate.now();
         LocalDate tomorrowsDate = todaysDate.plusDays(1);
-        Booking booking2 = new Booking(bookingId, customer, todaysDate, tomorrowsDate, bookingNumber, extraBedsWanted, room);
+        Booking booking2 = new Booking(bookingId, todaysDate, tomorrowsDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
         
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking2));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         List<MiniBookingDto> allCustomers = service2.getAllCurrentAndFutureMiniBookings();
 
         assertEquals(1, allCustomers.size());
@@ -168,7 +173,7 @@ class BookingServiceImplTest {
         when(bookingRepo.save(booking)).thenReturn(booking);
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         
         String feedback = service2.addBooking(detailedBookingDto);
         System.out.println("Feedback: " + feedback);
@@ -180,7 +185,7 @@ class BookingServiceImplTest {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         String feedBack = service2.updateBooking(detailedBookingDto);
         System.out.println("feedback" + feedBack);
         assertTrue(feedBack.equalsIgnoreCase("Booking updated"));
@@ -191,7 +196,7 @@ class BookingServiceImplTest {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         service2.addBooking(detailedBookingDto);
         String feedback = service2.deleteBooking(bookingId);
         System.out.println("Feedback: " + feedback);
@@ -200,20 +205,24 @@ class BookingServiceImplTest {
     
     @Test
     void checkIfBookingPossible(){
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        Booking differentDates = new Booking(2L, startDate.plusDays(3), endDate.plusDays(3), bookingNumber, extraBedsWanted, totalPrice, customer, room);
+
+        List<Booking> allBookings = Arrays.asList(booking, differentDates);
+
+        when(bookingRepo.findAll()).thenReturn(allBookings);
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
 
-        DetailedBookingDto DifferentBookingIdSameDates = DetailedBookingDto.builder().id(2L)
-                .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+        DetailedBookingDto DifferentBookingIdSameDates = DetailedBookingDto.builder().id(3L)
+                .startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
-        DetailedBookingDto DifferentBookingIdDifferentDates = DetailedBookingDto.builder().id(2L)
-                .startDate(startDate.plusDays(1)).endDate(startDate.plusDays(2)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).build();
+        DetailedBookingDto DifferentBookingIdDifferentDates = DetailedBookingDto.builder().id(3L)
+                .startDate(startDate.plusDays(1)).endDate(endDate.plusDays(2)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService,bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService,bookingRepo, customerRepo, roomRepo, discountService);
 
         boolean feedbackSameBooking = service2.checkIfBookingPossible(detailedBookingDto);
         boolean feedbackDifferentBookingIdSameDates = service2.checkIfBookingPossible(DifferentBookingIdSameDates);
@@ -227,7 +236,7 @@ class BookingServiceImplTest {
     @Test
     void findDetailedBookingById(){
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo);
+        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         DetailedBookingDto actual = service2.findDetailedBookingById(booking.getId());
         
         assertEquals(actual.getId(), booking.getId());
@@ -235,7 +244,8 @@ class BookingServiceImplTest {
         assertEquals(actual.getEndDate(), booking.getEndDate());
         assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
         assertEquals(actual.getExtraBedsWanted(),booking.getExtraBedsWanted());
-        
+        assertEquals(actual.getTotalPrice(), booking.getTotalPrice());
+
         assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
         assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
         assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
