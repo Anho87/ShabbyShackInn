@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageBlacklist</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" id="update-tab" data-toggle="tab" href="#update-form">Update Blacklist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="add-tab" data-toggle="tab" href="#add-form">Add to Blacklist</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="update-form">
+                    <form id="updateCustomerForm" method="post" th:action="@{/shabbyShackInn/updateBlacklist}">
+                        <!-- Update Blacklist form fields -->
+                        <label for="updateFirstName">First Name:</label><br>
+                        <input type="text" id="updateFirstName" name="updateFirstName" required pattern="^[A-Za-z]{1,20}$"><br>
+
+                        <label for="updateLastName">Last Name:</label><br>
+                        <input type="text" id="updateLastName" name="updateLastName" required pattern="^[A-Za-z]{1,20}$"><br>
+
+                        <label for="updateEmail">Email:</label><br>
+                        <input type="email" id="updateEmail" name="updateEmail" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
+
+                        <label>Blacklist email:</label><br>
+                        <input type="radio" id="updateBlacklistedYes" name="okInBlacklist" required>
+                        <label for="updateBlacklistedYes">Yes</label>
+                        <input type="radio" id="updateBlacklistedNo" name="okInBlacklist" required>
+                        <label for="updateBlacklistedNo">No</label><br>
+
+                        <button class="btn btn-success mt-3" type="submit">Update Blacklist</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="add-form">
+                    <form id="addToBlacklistForm" method="post" th:action="@{/shabbyShackInn/addToBlacklist}">
+                        <!-- Add to Blacklist form fields -->
+                        <label for="addFirstName">First Name:</label><br>
+                        <input type="text" id="addFirstName" name="addFirstName" required pattern="^[A-Za-z]{1,20}$"><br>
+
+                        <label for="addLastName">Last Name:</label><br>
+                        <input type="text" id="addLastName" name="addLastName" required pattern="^[A-Za-z]{1,20}$"><br>
+
+                        <label for="addEmail">Email:</label><br>
+                        <input type="email" id="addEmail" name="addEmail" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
+
+                        <label>Blacklist email:</label><br>
+                        <input type="radio" id="addBlacklistedYes" name="okInBlacklist" required>
+                        <label for="addBlacklistedYes">Yes</label>
+                        <input type="radio" id="addBlacklistedNo" name="okInBlacklist" required>
+                        <label for="addBlacklistedNo">No</label><br>
+
+                        <button class="btn btn-success mt-3" type="submit">Add to Blacklist</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and jQuery (needed for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
