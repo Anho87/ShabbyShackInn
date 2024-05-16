@@ -24,9 +24,9 @@ public class BlacklistServiceImpl implements BlacklistService {
     private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
 
     @Override
-    public void addBlackListedCustomer(BlackListedCustomer customer) {
+    public String addBlackListedCustomer(BlackListedCustomer customer) {
         try {
-            URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist");
+            URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -38,32 +38,34 @@ public class BlacklistServiceImpl implements BlacklistService {
             os.close();
 
             int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 System.out.println("Blacklisted customer added successfully");
+                return "Blacklisted customer added successfully";
             } else {
                 System.out.println("Failed to add blacklisted customer. Response code: " + responseCode);
+                return "Failed to add blacklisted customer";
             }
-
-            connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
+            return "Failed to add blacklisted customer";
         }
     }
+
     @Override
     public BlacklistResponse checkIfEmailIsBlacklisted(String email){
         try {
-            ObjectMapper mapper = new JsonMapper();
             mapper.registerModule(new JavaTimeModule());
-           return mapper.readValue(new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklistcheck/" + email), BlacklistResponse.class);
+           return mapper.readValue(new URL( apiUrl + "check/" + email), BlacklistResponse.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return BlacklistResponse.builder().build();
     }
     @Override
-    public void updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer){
+    public String updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer){
         try {
-            URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist/" + blackListedCustomer.getEmail());
+            System.out.println(blackListedCustomer.ok);
+            URL url = new URL(apiUrl + "/" + blackListedCustomer.getEmail());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -75,15 +77,16 @@ public class BlacklistServiceImpl implements BlacklistService {
             os.close();
 
             int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+            if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 System.out.println("Blacklisted customer updated successfully");
+                return "Blacklisted customer updated successfully";
             } else {
                 System.out.println("Failed to update blacklisted customer. Response code: " + responseCode);
+                return "Failed to update blacklisted customer";
             }
-
-            connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
+            return "Failed to update blacklisted customer";
         }
 
     }

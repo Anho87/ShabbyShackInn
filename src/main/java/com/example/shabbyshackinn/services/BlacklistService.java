@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface BlacklistService {
 
-    void addBlackListedCustomer(BlackListedCustomer customer);
+    String addBlackListedCustomer(BlackListedCustomer customer);
 
     BlacklistResponse checkIfEmailIsBlacklisted(String email);
 
-    void updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer);
+    String updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer);
 
     List<BlackListedCustomer> getBlacklistedCustomersFromAPI();
 
