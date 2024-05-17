@@ -60,6 +60,7 @@ public class BookingController {
         model.addAttribute("firstName", b.getMiniCustomerDto().getFirstName());
         model.addAttribute("lastName", b.getMiniCustomerDto().getLastName());
         model.addAttribute("eMail", b.getMiniCustomerDto().getEMail());
+        model.addAttribute("totalPrice", b.getTotalPrice());
         return "bookingAddAndUpdate";
     }
 
