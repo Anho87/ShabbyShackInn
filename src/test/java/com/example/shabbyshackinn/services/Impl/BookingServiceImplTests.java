@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class BookingServiceImplTest {
+class BookingServiceImplTests {
 
     @Mock
     private CustomerRepo customerRepo;

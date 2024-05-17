@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class CustomerServiceImplTest {
+class CustomerServiceImplTests {
 
     @Mock
     private CustomerRepo customerRepo;
