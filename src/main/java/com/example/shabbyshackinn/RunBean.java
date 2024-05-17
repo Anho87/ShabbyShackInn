@@ -106,6 +106,7 @@ public class RunBean implements CommandLineRunner {
             Booking b13 = new Booking(cust1, today.plusDays(6), today.plusDays(9), 6008, 2, 3000, room13);
             Booking b14 = new Booking(cust2, today.plusDays(6), today.plusDays(9), 6009, 0, 3000, room14);
             Booking b15 = new Booking(cust3, today.plusDays(6), today.plusDays(9), 6010, 0, 3000, room15);
+            Booking b16 = new Booking(cust1, today.minusDays(16), today.minusDays(3), 6010, 0, 3000, room15);
             bookingRepo.save(b1);
             bookingRepo.save(b2);
             bookingRepo.save(b3);
@@ -121,6 +122,7 @@ public class RunBean implements CommandLineRunner {
             bookingRepo.save(b13);
             bookingRepo.save(b14);
             bookingRepo.save(b15);
+            bookingRepo.save(b16);
 
         };
     }
