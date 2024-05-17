@@ -1,10 +1,7 @@
 package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.dtos.*;
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.models.*;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
@@ -173,6 +170,7 @@ class BookingServiceImplTests {
         when(bookingRepo.save(booking)).thenReturn(booking);
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         
         String feedback = service2.addBooking(detailedBookingDto);

@@ -34,6 +34,7 @@ public class BlacklistController {
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
+
     @PostMapping("/addToBlacklist")
     public String addToBlacklist(@RequestParam String addFirstName, @RequestParam String addLastName,
                                  @RequestParam String addEmail, @RequestParam boolean okInBlacklist, RedirectAttributes redirectAttributes){
