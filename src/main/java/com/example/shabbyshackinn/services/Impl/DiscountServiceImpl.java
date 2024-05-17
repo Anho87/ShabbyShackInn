@@ -18,7 +18,7 @@ public class DiscountServiceImpl implements DiscountService {
     final private BookingRepo bookingRepo;
     final private RoomRepo roomRepo;
 
-    public DiscountServiceImpl(BookingRepo bookingRepo,RoomRepo roomRepo) {
+    public DiscountServiceImpl(BookingRepo bookingRepo, RoomRepo roomRepo) {
         this.bookingRepo = bookingRepo;
         this.roomRepo = roomRepo;
     }
@@ -29,40 +29,37 @@ public class DiscountServiceImpl implements DiscountService {
         LocalDate start = detailedBookingDto.getStartDate();
         LocalDate end = detailedBookingDto.getEndDate();
         long daysBooked = ChronoUnit.DAYS.between(start, end);
-
-        double totalDiscountedPrice = 0;
+        double totalDiscount = 0;
         double pricePerNight = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get().getPrice();
+        double totalStandardPrice = daysBooked * pricePerNight;
 
-        // 2% discount for nights between Sunday and Monday
+        // 2% discount for nights between Sunday and Monday pricePerNight * 0.005 - total
         while (start.isBefore(end)) {
             if (start.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                totalDiscountedPrice += pricePerNight * 0.98;
-            } else {
-                totalDiscountedPrice += pricePerNight;
+                totalDiscount += pricePerNight * 0.02;
             }
             start = start.plusDays(1);
         }
-
-        System.out.println(totalDiscountedPrice + "här");
+        System.out.println("2% Discount after Sunday deal: "+totalDiscount);
 
         // 0.5% discount for booking longer than 1 night
         if (daysBooked >= 2) {
-            totalDiscountedPrice *= 0.995;
+            totalDiscount += totalStandardPrice * 0.005;
         }
-        System.out.println(totalDiscountedPrice);
+        System.out.println("0.5% Discount after booking minimum 2 nights: "+totalDiscount);
 
         // 2% discount for customer with >= 10 nights booked last year
         LocalDate today = LocalDate.now();
-        LocalDate lastYearStart = today.minusYears(1).withDayOfYear(1);
-        LocalDate thisYearStart = today.withDayOfYear(1);
+        LocalDate lastYearStart = today.minusYears(1);
+        LocalDate thisYearStart = today;
         Optional<Integer> nightsOptional = bookingRepo.sumNightsByCustomerIdAndYear(customerId, lastYearStart, thisYearStart);
         int nightsBookedLastYear = nightsOptional.orElse(0);
         if (nightsBookedLastYear >= 10) {
-            totalDiscountedPrice *= 0.98;
+            totalDiscount += totalStandardPrice * 0.02;
         }
-        System.out.println("nights booked last year" + nightsBookedLastYear);
+        System.out.println("2% discount: " + totalDiscount + " nights booked last year: " + nightsBookedLastYear);
 
-        return (int) Math.round(totalDiscountedPrice);
+        return (int) Math.round(totalStandardPrice - totalDiscount);
 
     }
 

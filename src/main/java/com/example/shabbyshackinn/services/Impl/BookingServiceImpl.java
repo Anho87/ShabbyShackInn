@@ -99,8 +99,8 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if (checkIfBookingPossible(detailedBookingDto) && detailedBookingDto.getStartDate().isBefore(detailedBookingDto.getEndDate())) {
-            System.out.println(detailedBookingDto.getTotalPrice());
-            System.out.println(discountService.calculateDiscount(detailedBookingDto.getMiniRoomDto().getId(), detailedBookingDto.getMiniCustomerDto().getId(), detailedBookingDto));
+            detailedBookingDto.setTotalPrice(discountService.calculateDiscount(detailedBookingDto.getMiniRoomDto().getId()
+                    , detailedBookingDto.getMiniCustomerDto().getId(), detailedBookingDto));
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
             bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
