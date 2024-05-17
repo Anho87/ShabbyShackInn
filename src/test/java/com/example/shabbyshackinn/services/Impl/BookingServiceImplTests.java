@@ -216,7 +216,7 @@ class BookingServiceImplTests {
                 .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
         DetailedBookingDto DifferentBookingIdDifferentDates = DetailedBookingDto.builder().id(3L)
-                .startDate(startDate.plusDays(1)).endDate(endDate.plusDays(2)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
+                .startDate(startDate.plusDays(5)).endDate(endDate.plusDays(6)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
                 .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService,bookingRepo, customerRepo, roomRepo, discountService);
