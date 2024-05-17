@@ -46,8 +46,8 @@ class BookingServiceImplTests {
     String phone = "123456789";
     String email = "john.doe@example.com";
 
-    LocalDate startDate = LocalDate.now();
-    LocalDate endDate = startDate.plusDays(1);
+    LocalDate startDate = LocalDate.now().plusDays(1);
+    LocalDate endDate = startDate.plusDays(2);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
     int totalPrice = 999999999;
@@ -158,12 +158,7 @@ class BookingServiceImplTests {
     
     @Test
     void getAllCurrentAndFutureMiniBookings(){
-        LocalDate todaysDate = LocalDate.now();
-        LocalDate tomorrowsDate = todaysDate.plusDays(1);
-        Booking booking2 = new Booking(bookingId, todaysDate, tomorrowsDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
-        
-        //when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking2));
+        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         List<MiniBookingDto> allCustomers = service2.getAllCurrentAndFutureMiniBookings();
 
