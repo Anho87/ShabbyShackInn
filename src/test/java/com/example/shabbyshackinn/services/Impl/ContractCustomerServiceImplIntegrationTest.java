@@ -58,7 +58,7 @@ public class ContractCustomerServiceImplIntegrationTest {
     }
 
     @Test
-    void fetchAndSaveBooksShouldSaveToDatabase() throws IOException {
+    void saveOrUpdateContractCustomerShouldSaveToDatabase() throws IOException {
         XmlStreamProvider xmlStreamProvider = mock(XmlStreamProvider.class);
         when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("contractCustomer.xml"));
 
@@ -68,7 +68,7 @@ public class ContractCustomerServiceImplIntegrationTest {
         contractCustomerRepo.deleteAll();
 
         // Act
-        sut.saveOrUpdateContractCustomer(new ContractCustomer());
+        sut.fetchAndSaveContractCustomers();
 
         //Assert
         assertEquals(3,contractCustomerRepo.count());
