@@ -58,13 +58,7 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public ContractCustomer getContractCustomerByExternalSystemId(int externalSystemId) {
-        List<ContractCustomer> contractCustomers =  getAllContractCustomers();
-        for (ContractCustomer contractCustomer : contractCustomers) {
-            if (contractCustomer.externalSystemId == externalSystemId){
-                return contractCustomer;
-            }
-        }
-        return null;
+        return contractCustomerRepo.findContractCustomerByExternalSystemId(externalSystemId);
     }
 
     @Override
@@ -124,13 +118,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
-//        return contractCustomerRepo.findAll(sort).stream()
-//                .filter(contractCustomer ->
-//                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())
-//                                || contractCustomer.contactName.toLowerCase().contains(searchWord.toLowerCase())
-//                                || contractCustomer.country.toLowerCase().contains(searchWord.toLowerCase()))
-//                .map(this::contractCustomerToMiniContractCustomerDto)
-//                .toList();
         return contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
                 (searchWord,searchWord,searchWord,sort);
     }
