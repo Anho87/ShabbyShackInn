@@ -1,10 +1,7 @@
 package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.dtos.*;
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.models.RoomType;
+import com.example.shabbyshackinn.models.*;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
@@ -69,6 +66,10 @@ class BookingServiceImplTests {
 
     Booking booking = new Booking(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
 
+    BlacklistResponse blacklistResponseNotBlacklisted = new BlacklistResponse("OK", true);
+
+    BlacklistResponse blacklistResponseBlacklisted = new BlacklistResponse("Blacklisted", false);
+    
     MiniRoomDto miniRoomDto = new MiniRoomDto(roomId, roomType, roomNumber);
 
     MiniCustomerDto miniCustomerDto = new MiniCustomerDto(customerId, firstName, lastName, email);
@@ -161,6 +162,7 @@ class BookingServiceImplTests {
         LocalDate tomorrowsDate = todaysDate.plusDays(1);
         Booking booking2 = new Booking(bookingId, todaysDate, tomorrowsDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
         
+        //when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking2));
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         List<MiniBookingDto> allCustomers = service2.getAllCurrentAndFutureMiniBookings();
@@ -173,8 +175,8 @@ class BookingServiceImplTests {
         when(bookingRepo.save(booking)).thenReturn(booking);
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        
         String feedback = service2.addBooking(detailedBookingDto);
         System.out.println("Feedback: " + feedback);
         assertTrue(feedback.equalsIgnoreCase("Booking added"));
@@ -196,6 +198,7 @@ class BookingServiceImplTests {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseBlacklisted);
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         service2.addBooking(detailedBookingDto);
         String feedback = service2.deleteBooking(bookingId);
@@ -213,6 +216,7 @@ class BookingServiceImplTests {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        //when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
 
         DetailedBookingDto DifferentBookingIdSameDates = DetailedBookingDto.builder().id(3L)
                 .startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
