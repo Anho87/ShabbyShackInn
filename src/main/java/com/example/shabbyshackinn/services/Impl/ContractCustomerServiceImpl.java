@@ -1,28 +1,34 @@
 package com.example.shabbyshackinn.services.Impl;
 
-import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
+import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
 import com.example.shabbyshackinn.services.ContractCustomerService;
+import com.example.shabbyshackinn.services.XmlStreamProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
     
-    private final ContractCustomerRepo contractCustomerRepo;
-
-
+    @Autowired
+    public ContractCustomerServiceImpl(XmlStreamProvider xmlStreamProvider, ContractCustomerRepo contractCustomerRepo) {
+        this.xmlStreamProvider = xmlStreamProvider;
+        this.contractCustomerRepo = contractCustomerRepo;
+    }
+    
     public ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo) {
         this.contractCustomerRepo = contractCustomerRepo;
     }
-
-
+    
+    XmlStreamProvider xmlStreamProvider;
+    final ContractCustomerRepo contractCustomerRepo;
+    
+    
     @Override
     public List<ContractCustomer> getAllContractCustomers() {
         return contractCustomerRepo.findAll();
