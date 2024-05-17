@@ -1,6 +1,22 @@
 package com.example.shabbyshackinn.models;
 
-public class RoomCleaningFinished extends RoomEvent{
-    private String RoomNo;
-    private String CleaningByUser;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@DiscriminatorValue("RoomCleaningFinished")
+public class RoomCleaningFinished extends RoomEvent {
+    @Getter(onMethod_ = {@JsonProperty("CleaningByUser")})
+    public String CleaningByUser;
+
+    @Override
+    public String getType() {
+        return "RoomCleaningFinished";
+    }
+
+
 }
