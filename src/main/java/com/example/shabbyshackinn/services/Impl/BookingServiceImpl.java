@@ -139,8 +139,8 @@ public class BookingServiceImpl implements BookingService {
 
         List<Booking> overlappingBookings = bookingRepo.findAll()
                 .stream()
-                .filter(b -> !b.getId().equals(currentBookingId)) // Exclude current booking
-                .filter(b -> b.getRoom().getId().equals(roomId))  // Same room
+                .filter(b -> !b.getId().equals(currentBookingId)) 
+                .filter(b -> b.getRoom().getId().equals(roomId))  
                 .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
                 .toList();
 
