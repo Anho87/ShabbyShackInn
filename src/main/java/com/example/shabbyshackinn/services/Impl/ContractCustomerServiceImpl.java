@@ -2,15 +2,22 @@ package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
+import com.example.shabbyshackinn.models.AllContractCustomers;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
 import com.example.shabbyshackinn.services.ContractCustomerService;
 import com.example.shabbyshackinn.services.XmlStreamProvider;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.xml.catalog.Catalog;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
@@ -64,13 +71,7 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public ContractCustomer getContractCustomerByExternalSystemId(int externalSystemId) {
-        List<ContractCustomer> contractCustomers =  getAllContractCustomers();
-        for (ContractCustomer contractCustomer : contractCustomers) {
-            if (contractCustomer.externalSystemId == externalSystemId){
-                return contractCustomer;
-            }
-        }
-        return null;
+        return contractCustomerRepo.findContractCustomerByExternalSystemId(externalSystemId);
     }
 
     @Override
@@ -130,14 +131,40 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
 
     @Override
     public List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
-//        return contractCustomerRepo.findAll(sort).stream()
-//                .filter(contractCustomer ->
-//                        contractCustomer.companyName.toLowerCase().contains(searchWord.toLowerCase())
-//                                || contractCustomer.contactName.toLowerCase().contains(searchWord.toLowerCase())
-//                                || contractCustomer.country.toLowerCase().contains(searchWord.toLowerCase()))
-//                .map(this::contractCustomerToMiniContractCustomerDto)
-//                .toList();
         return contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
                 (searchWord,searchWord,searchWord,sort);
+    }
+
+    @Override
+    public List<ContractCustomer> getContractCustomers() throws IOException {
+        JacksonXmlModule module = new JacksonXmlModule();
+        module.setDefaultUseWrapper(false);
+        XmlMapper xmlMapper = new XmlMapper(module);
+        InputStream stream =  xmlStreamProvider.getDataStream();
+        AllContractCustomers allContractCustomers = xmlMapper.readValue(stream,
+                AllContractCustomers.class
+        );
+
+        return allContractCustomers.contractCustomers;
+    }
+    @Override
+    public void fetchAndSaveContractCustomers() throws IOException {
+        for(ContractCustomer contractCustomer : getContractCustomers()){
+            ContractCustomer c = contractCustomerRepo.findContractCustomerByExternalSystemId(contractCustomer.externalSystemId);
+            if(c == null){
+                c = (new ContractCustomer());
+            }
+            c.externalSystemId= contractCustomer.externalSystemId;
+            c.companyName = contractCustomer.companyName;
+            c.contactName= contractCustomer.contactName;
+            c.contactTitle= contractCustomer.contactTitle;
+            c.streetAddress= contractCustomer.streetAddress;
+            c.city= contractCustomer.city;
+            c.postalCode= contractCustomer.postalCode;
+            c.country= contractCustomer.country;
+            c.phone= contractCustomer.phone;
+            c.fax= contractCustomer.fax;
+            contractCustomerRepo.save(c);
+        }
     }
 }

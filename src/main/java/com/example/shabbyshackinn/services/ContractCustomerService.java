@@ -5,6 +5,7 @@ import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.models.ContractCustomer;
 import org.springframework.data.domain.Sort;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ContractCustomerService {
@@ -20,4 +21,6 @@ public interface ContractCustomerService {
     ContractCustomer detailedContractCustomerToContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto);
     DetailedContractCustomerDto findDetailedContractCustomerById(Long id);
     List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort);
+    void fetchAndSaveContractCustomers()throws IOException;
+    List<ContractCustomer> getContractCustomers()throws IOException;
 }
