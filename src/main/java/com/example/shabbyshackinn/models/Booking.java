@@ -21,12 +21,12 @@ public class Booking {
     private Long id;
 
     @NotNull
-    //@Future
-    private LocalDate endDate;
-
-    @NotNull
     //@FutureOrPresent
     private LocalDate startDate;
+
+    @NotNull
+    //@Future
+    private LocalDate endDate;
 
     @Positive
     private int bookingNumber;
