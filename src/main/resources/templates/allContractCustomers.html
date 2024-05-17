@@ -50,9 +50,9 @@
         </thead>
         <tbody>
         <tr th:each="customer : ${allContractCustomer}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
-            <td th:text="${customer.getCompanyName()}"></td>
-            <td th:text="${customer.getContactName()}"></td>
-            <td th:text="${customer.getCountry()}"></td>
+            <td th:text="${customer.companyName}"></td>
+            <td th:text="${customer.contactName}"></td>
+            <td th:text="${customer.country}"></td>
         </tr>
         </tbody>
     </table>

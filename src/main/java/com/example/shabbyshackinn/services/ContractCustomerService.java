@@ -19,5 +19,5 @@ public interface ContractCustomerService {
     DetailedContractCustomerDto contractCustomerToDetailedContractCustomerDto(ContractCustomer contractCustomer);
     ContractCustomer detailedContractCustomerToContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto);
     DetailedContractCustomerDto findDetailedContractCustomerById(Long id);
-    List<MiniContractCustomerDto> findAllBySearchAndSortOrder(String searchWord, Sort sort);
+    List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort);
 }

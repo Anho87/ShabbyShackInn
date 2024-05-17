@@ -3,6 +3,7 @@ package com.example.shabbyshackinn.controllers;
 import com.example.shabbyshackinn.dtos.DetailedContractCustomerDto;
 import com.example.shabbyshackinn.dtos.DetailedCustomerDto;
 import com.example.shabbyshackinn.dtos.MiniContractCustomerDto;
+import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.services.ContractCustomerService;
 import com.example.shabbyshackinn.services.CustomerService;
 import org.springframework.data.domain.Sort;
@@ -78,7 +79,7 @@ public class CustomerController {
         System.out.println(sortCol);
         System.out.println(sortOrder);
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
-        List<MiniContractCustomerDto> searchedContractCustomerList = contractCustomerService.findAllBySearchAndSortOrder(q, sort);
+        List<ContractCustomer> searchedContractCustomerList = contractCustomerService.findAllBySearchAndSortOrder(q, sort);
         model.addAttribute("allContractCustomer", searchedContractCustomerList);
         model.addAttribute("q", q);
         return "allContractCustomers";
