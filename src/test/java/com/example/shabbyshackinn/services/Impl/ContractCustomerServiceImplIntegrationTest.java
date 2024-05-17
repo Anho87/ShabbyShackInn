@@ -1,6 +1,5 @@
 package com.example.shabbyshackinn.services.Impl;
 
-import com.example.shabbyshackinn.models.ContractCustomer;
 import com.example.shabbyshackinn.repos.ContractCustomerRepo;
 import com.example.shabbyshackinn.services.XmlStreamProvider;
 import org.junit.jupiter.api.Test;
