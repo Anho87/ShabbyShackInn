@@ -22,8 +22,7 @@ public class BlacklistController {
     }
 
     @RequestMapping("/manageBlacklist")
-    public String manageBlacklist(Model model){
-
+    public String manageBlacklist(){
         return "manageBlacklist";
     }
 
@@ -31,14 +30,16 @@ public class BlacklistController {
     public String updateBlacklist(@RequestParam String updateFirstName, @RequestParam String updateLastName,
                                       @RequestParam String updateEmail, @RequestParam boolean okInBlacklist, RedirectAttributes redirectAttributes) {
         BlackListedCustomer blackListedCustomer = BlackListedCustomer.builder().name(updateFirstName + " " + updateLastName).email(updateEmail).ok(okInBlacklist).group("shabbyShackInn").build();
-        blacklistService.updateBlacklistedCustomer(blackListedCustomer);
+        String feedback = blacklistService.updateBlacklistedCustomer(blackListedCustomer);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
     @PostMapping("/addToBlacklist")
     public String addToBlacklist(@RequestParam String addFirstName, @RequestParam String addLastName,
                                  @RequestParam String addEmail, @RequestParam boolean okInBlacklist, RedirectAttributes redirectAttributes){
         BlackListedCustomer blackListedCustomer = BlackListedCustomer.builder().name(addFirstName + " " + addLastName).email(addEmail).ok(okInBlacklist).group("shabbyShackInn").build();
-        blacklistService.addBlackListedCustomer(blackListedCustomer);
+        String feedback = blacklistService.addBlackListedCustomer(blackListedCustomer);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
 }

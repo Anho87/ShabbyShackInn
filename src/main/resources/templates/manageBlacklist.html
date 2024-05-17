@@ -34,9 +34,9 @@
                         <input type="email" id="updateEmail" name="updateEmail" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
 
                         <label>Blacklist email:</label><br>
-                        <input type="radio" id="updateBlacklistedYes" name="okInBlacklist" required>
+                        <input type="radio" id="updateBlacklistedYes" name="okInBlacklist" th:value="false" required>
                         <label for="updateBlacklistedYes">Yes</label>
-                        <input type="radio" id="updateBlacklistedNo" name="okInBlacklist" required>
+                        <input type="radio" id="updateBlacklistedNo" name="okInBlacklist" th:value="true" required>
                         <label for="updateBlacklistedNo">No</label><br>
 
                         <button class="btn btn-success mt-3" type="submit">Update Blacklist</button>
@@ -55,9 +55,9 @@
                         <input type="email" id="addEmail" name="addEmail" required pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"><br>
 
                         <label>Blacklist email:</label><br>
-                        <input type="radio" id="addBlacklistedYes" name="okInBlacklist" required>
+                        <input type="radio" id="addBlacklistedYes" name="okInBlacklist" th:value="false" required>
                         <label for="addBlacklistedYes">Yes</label>
-                        <input type="radio" id="addBlacklistedNo" name="okInBlacklist" required>
+                        <input type="radio" id="addBlacklistedNo" name="okInBlacklist" th:value="true" required>
                         <label for="addBlacklistedNo">No</label><br>
 
                         <button class="btn btn-success mt-3" type="submit">Add to Blacklist</button>
