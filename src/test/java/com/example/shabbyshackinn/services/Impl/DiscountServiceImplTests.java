@@ -6,12 +6,10 @@ import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
@@ -21,6 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
 class DiscountServiceImplTests {
@@ -34,9 +33,6 @@ class DiscountServiceImplTests {
 
     @InjectMocks
     private DiscountServiceImpl service;
-
-    @InjectMocks
-    private BookingServiceImpl bookingService;
 
     Long customerId = 1L;
     String firstName = "John";
@@ -64,17 +60,10 @@ class DiscountServiceImplTests {
     MiniRoomDto miniRoomDto = new MiniRoomDto(roomId, roomType, roomNumber);
     MiniCustomerDto miniCustomerDto = new MiniCustomerDto(customerId, firstName, lastName, email);
 
-    MiniBookingDto miniBookingDto = new MiniBookingDto(bookingId, startDate, endDate, miniRoomDto, miniCustomerDto);
-
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
             .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
-    DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
-            .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
-/*    DetailedCustomerDto detailedCustomerDto = DetailedCustomerDto.builder().id(customerId).firstName(firstName)
-            .lastName(lastName).eMail(email).phone(phone).bookings(customer.getBookings().stream()
-                    .map(booking -> service.bookingToMiniBookingDto(booking)).toList()).build();*/
 
     @Test
     void calculateDiscount() {
@@ -83,43 +72,28 @@ class DiscountServiceImplTests {
         // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
-        // Mock bookingRepo behavior (no nights booked last year)
-        when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today, today.minusYears(1))).thenReturn(Optional.empty());
+        // Mock bookingRepo behavior (only 2 nights booked last year)
+        when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today.minusYears(1), today)).thenReturn(Optional.of(2));
 
         int discountedPrice = service.calculateDiscount(roomId, customerId, detailedBookingDto);
         System.out.println(room.toString());
 
         assertEquals(9910, discountedPrice);
-
     }
 
     @Test
     void calculateDiscountForCustomersWithMoreThan10nightsBookedLastYear() {
-        DetailedBookingDto detailedBookingDto2 = DetailedBookingDto.builder()
-                .id(bookingId)
-                .startDate(startDate.minusDays(10))
-                .endDate(endDate.minusDays(22))
-                .bookingNumber(bookingNumber)
-                .extraBedsWanted(extraBedsWanted)
-                .miniCustomerDto(miniCustomerDto)
-                .miniRoomDto(miniRoomDto)
-                .totalPrice(totalPrice)
-                .build();
-
-        //when(bookingService.bookingToDetailedBookingDto()).thenReturn()
-
         LocalDate today = LocalDate.now();
 
         // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
-        // Mock bookingRepo behavior (no nights booked last year)
-        when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today, today.minusYears(1))).thenReturn(Optional.of(15));
+        // Mock bookingRepo behavior
+        when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today.minusYears(1), today)).thenReturn(Optional.of(14));
 
         int discountedPrice = service.calculateDiscount(roomId, customerId, detailedBookingDto);
-        System.out.println(room.toString());
 
-        assertEquals(9860, discountedPrice);
-
+        assertEquals(9710, discountedPrice);
     }
+
 }
