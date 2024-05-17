@@ -6,9 +6,11 @@ import com.example.shabbyshackinn.services.BlacklistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,6 +24,13 @@ public class BlacklistServiceImpl implements BlacklistService {
 
     private final ObjectMapper mapper = new JsonMapper();
     private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
+
+    @Autowired
+    public BlacklistServiceImpl(JsonStreamProvider jsonStreamProvider) {
+        this.jsonStreamProvider = jsonStreamProvider;
+    }
+
+    final JsonStreamProvider jsonStreamProvider;
 
     @Override
     public String addBlackListedCustomer(BlackListedCustomer customer) {
@@ -64,9 +73,14 @@ public class BlacklistServiceImpl implements BlacklistService {
     @Override
     public String updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer){
         try {
-            System.out.println(blackListedCustomer.ok);
-            URL url = new URL(apiUrl + "/" + blackListedCustomer.getEmail());
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            System.out.println(blackListedCustomer.ok);
+//            URL url = new URL(apiUrl + "/" + blackListedCustomer.getEmail());
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setRequestMethod("PUT");
+//            connection.setRequestProperty("Content-Type", "application/json");
+//            connection.setDoOutput(true);
+
+            HttpURLConnection connection = (HttpURLConnection) jsonStreamProvider.getUpdateConnection(blackListedCustomer.getEmail());
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
@@ -94,8 +108,8 @@ public class BlacklistServiceImpl implements BlacklistService {
     @Override
     public List<BlackListedCustomer> getBlacklistedCustomersFromAPI() {
         try {
-            return mapper.readValue(new URL(apiUrl),
-                    mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
+            InputStream stream = jsonStreamProvider.getDataStream();
+            return mapper.readValue(stream, mapper.getTypeFactory().constructCollectionType(List.class, BlackListedCustomer.class));
         } catch (IOException e) {
             e.printStackTrace();
 
