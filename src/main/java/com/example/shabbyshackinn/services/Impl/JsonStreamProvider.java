@@ -20,7 +20,12 @@ public class JsonStreamProvider {
         return url.openStream();
     }
 
-    public List<Shippers> getDataStreamShippers() throws IOException {
+    public InputStream getDataStreamShippers() throws IOException {
+        URL url = new URL("https://javaintegration.systementor.se/shippers");
+        return url.openStream();
+    }
+
+    public List<Shippers> getDataStreamShippersAsList() throws IOException {
         URL url = new URL("https://javaintegration.systementor.se/shippers");
         try (InputStream inputStream = url.openStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
