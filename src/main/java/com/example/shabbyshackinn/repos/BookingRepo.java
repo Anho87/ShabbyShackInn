@@ -1,17 +1,18 @@
 package com.example.shabbyshackinn.repos;
 
-import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.models.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface BookingRepo extends JpaRepository<Booking, Long> {
-    @Query(value = "SELECT SUM(DATEDIFF(b.end_date, b.start_date)) FROM booking b WHERE b.customer_id = :customerId AND b.start_date >= :startOfYear AND b.start_date < :startOfNextYear", nativeQuery = true)
+    @Query(value = "SELECT SUM(DATEDIFF('DAY', b.\"startDate\", b.\"endDate\")) FROM \"Booking\" b WHERE b.\"customer_id\" = :customerId AND b.\"startDate\" >= :startOfYear AND b.\"startDate\" < :startOfNextYear", nativeQuery = true)
     Optional<Integer> sumNightsByCustomerIdAndYear(Long customerId, LocalDate startOfYear, LocalDate startOfNextYear);
-    
+
     List<Booking> findAllByEndDateAfter(LocalDate todayDate);
-    List<Booking> findAllByIdIsNotAndRoomIdAndStartDateBeforeAndEndDateAfter(Long bookingId,Long roomId,LocalDate startDate,LocalDate endDate);
+
+    List<Booking> findAllByIdIsNotAndRoomIdAndStartDateBeforeAndEndDateAfter(Long bookingId, Long roomId, LocalDate startDate, LocalDate endDate);
 }
