@@ -39,7 +39,7 @@ public class ShipperServiceImpl implements ShipperService {
 
     @Override
     public List<Shippers> getShippers() throws IOException {
-        return jsonStreamProvider.getDataStreamShippers();
+        return jsonStreamProvider.getDataStreamShippersAsList();
     }
 
     @Override
