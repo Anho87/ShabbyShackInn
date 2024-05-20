@@ -90,22 +90,5 @@ public class ShipperServiceImplIntegrationTest {
         assertEquals("070-136-6555", shipper8.getPhone());
         
     }
-
-
-
-
-    //        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStreamShippers()).useDelimiter("\\A");
-//        String result = s.hasNext() ? s.next() : "";
-//
-//        assertTrue(result.contains("\"id\""));
-//        assertTrue(result.contains("\"email\""));
-//        assertTrue(result.contains("\"companyName\""));
-//        assertTrue(result.contains("\"contactName\""));
-//        assertTrue(result.contains("\"contactTitle\""));
-//        assertTrue(result.contains("\"streetAddress\""));
-//        assertTrue(result.contains("\"city\""));
-//        assertTrue(result.contains("\"postalCode\""));
-//        assertTrue(result.contains("\"country\""));
-//        assertTrue(result.contains("\"phone\""));
-//        assertTrue(result.contains("\"fax\""));
+    
 }
