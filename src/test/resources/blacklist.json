@@ -1,0 +1,18 @@
+[
+{
+  "id": 163,
+  "email": "kalle.anka@mail.se",
+  "name": "kalle anka",
+  "group": "ShabbyShackInn",
+  "created": "2024-05-16T11:28:59.139939",
+  "ok": false
+},
+{
+"id": 164,
+"email": "musse.pigg@mail.se",
+"name": "musse pigg",
+"group": "ShabbyShackInn",
+"created": "2024-05-16T11:34:57.42546",
+"ok": true
+}
+]

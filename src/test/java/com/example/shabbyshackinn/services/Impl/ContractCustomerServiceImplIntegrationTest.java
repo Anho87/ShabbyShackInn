@@ -57,7 +57,7 @@ public class ContractCustomerServiceImplIntegrationTest {
     }
 
     @Test
-    void saveOrUpdateContractCustomerShouldSaveToDatabase() throws IOException {
+    void fetchAndSaveContractCustomersShouldSaveToDatabase() throws IOException {
         XmlStreamProvider xmlStreamProvider = mock(XmlStreamProvider.class);
         when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("contractCustomer.xml"));
 

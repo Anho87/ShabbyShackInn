@@ -2,8 +2,9 @@ package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.models.Shippers;
 import com.example.shabbyshackinn.repos.ShipperRepo;
-import com.example.shabbyshackinn.services.JSONStreamProvider;
 import com.example.shabbyshackinn.services.ShipperService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +13,18 @@ import java.util.List;
 
 @Service
 public class ShipperServiceImpl implements ShipperService {
-    
+
+    private final ObjectMapper mapper = new JsonMapper();
+    private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
+
     @Autowired
-    public ShipperServiceImpl(JSONStreamProvider jsonStreamProvider, ShipperRepo shipperRepo) {
+    public ShipperServiceImpl(JsonStreamProvider jsonStreamProvider, ShipperRepo shipperRepo) {
         this.jsonStreamProvider = jsonStreamProvider;
         this.shipperRepo = shipperRepo;
     }
-    
-    JSONStreamProvider jsonStreamProvider;
+
     private final ShipperRepo shipperRepo;
-    
-    public ShipperServiceImpl(ShipperRepo shipperRepo) {
-        this.shipperRepo = shipperRepo;
-    }
+    final JsonStreamProvider jsonStreamProvider;
     
     @Override
     public List<Shippers> getAllShippers() {
@@ -39,9 +39,9 @@ public class ShipperServiceImpl implements ShipperService {
 
     @Override
     public List<Shippers> getShippers() throws IOException {
-        return jsonStreamProvider.getDataStream();
+        return jsonStreamProvider.getDataStreamShippers();
     }
-    
+
     @Override
     public void fetchAndSaveShippers() throws IOException {
         for(Shippers shippers : getAllShippers()){

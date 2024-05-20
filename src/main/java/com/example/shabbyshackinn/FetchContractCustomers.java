@@ -29,7 +29,7 @@ public class FetchContractCustomers implements CommandLineRunner {
         XmlMapper mapper = new XmlMapper(module);
         AllContractCustomers allContractCustomers = mapper.readValue(new URL("https://javaintegration.systementor.se/customers"), 
                 AllContractCustomers.class);
-        
+
         
         ContractCustomerServiceImpl contractCustomerService = new ContractCustomerServiceImpl(contractCustomerRepo);
         for (ContractCustomer c : allContractCustomers.contractCustomers) {
