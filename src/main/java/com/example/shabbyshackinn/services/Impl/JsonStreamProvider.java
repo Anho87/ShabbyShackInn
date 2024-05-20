@@ -15,6 +15,11 @@ public class JsonStreamProvider {
         URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist");
         return url.openStream();
     }
+    
+    public InputStream getDataStreamShippers() throws IOException {
+        URL url = new URL("https://javaintegration.systementor.se/shippers");
+        return url.openStream();
+    }
 
     public URLConnection getUpdateConnection(String email) throws IOException {
         URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist/" + email);
