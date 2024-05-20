@@ -30,7 +30,7 @@ public class DiscountServiceImpl implements DiscountService {
         LocalDate end = detailedBookingDto.getEndDate();
         long daysBooked = ChronoUnit.DAYS.between(start, end);
         double totalDiscount = 0;
-        double pricePerNight = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get().getPrice();
+        double pricePerNight = roomRepo.findById(roomId).get().getPrice();
         double totalStandardPrice = daysBooked * pricePerNight;
 
         // 2% discount for nights between Sunday and Monday pricePerNight * 0.005 - total
@@ -49,9 +49,8 @@ public class DiscountServiceImpl implements DiscountService {
         System.out.println("0.5% Discount after booking minimum 2 nights: "+totalDiscount);
 
         // 2% discount for customer with >= 10 nights booked last year
-        LocalDate today = LocalDate.now();
-        LocalDate lastYearStart = today.minusYears(1);
-        LocalDate thisYearStart = today;
+        LocalDate thisYearStart = LocalDate.now();
+        LocalDate lastYearStart = thisYearStart.minusYears(1);
         Optional<Integer> nightsOptional = bookingRepo.sumNightsByCustomerIdAndYear(customerId, lastYearStart, thisYearStart);
         int nightsBookedLastYear = nightsOptional.orElse(0);
         if (nightsBookedLastYear >= 10) {

@@ -12,10 +12,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -158,11 +155,11 @@ class BookingServiceImplTests {
     
     @Test
     void getAllCurrentAndFutureMiniBookings(){
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        LocalDate todayDate = LocalDate.now();
+        when(bookingRepo.findAllByEndDateAfter(todayDate)).thenReturn(Collections.singletonList(booking));
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        List<MiniBookingDto> allCustomers = service2.getAllCurrentAndFutureMiniBookings();
-
-        assertEquals(1, allCustomers.size());
+        List<MiniBookingDto> allCurrentAndFutureMiniBookings = service2.getAllCurrentAndFutureMiniBookings();
+        assertEquals(1, allCurrentAndFutureMiniBookings.size());
     }
     
     @Test

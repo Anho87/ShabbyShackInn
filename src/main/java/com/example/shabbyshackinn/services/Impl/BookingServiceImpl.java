@@ -86,8 +86,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<MiniBookingDto> getAllCurrentAndFutureMiniBookings() {
-        LocalDate todaysDate = LocalDate.now();
-        return bookingRepo.findAll().stream().filter(booking -> booking.getEndDate().isAfter(todaysDate)).map(booking -> bookingToMiniBookingDto(booking)).toList();
+        LocalDate todayDate = LocalDate.now();
+        return bookingRepo.findAllByEndDateAfter(todayDate).stream().map(this::bookingToMiniBookingDto).toList();
     }
 
     @Override
@@ -145,5 +145,7 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
 
         return overlappingBookings.isEmpty();
+//        List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateBeforeAndEndDateAfter(booking.getId(),booking.getMiniRoomDto().getId(),booking.getStartDate(),booking.getEndDate());
+//        return overlappingBookings.isEmpty();
     }
 }
