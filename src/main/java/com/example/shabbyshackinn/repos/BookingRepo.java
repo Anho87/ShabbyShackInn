@@ -13,5 +13,6 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     Optional<Integer> sumNightsByCustomerIdAndYear(Long customerId, LocalDate startOfYear, LocalDate startOfNextYear);
     
     List<Booking> findAllByEndDateAfter(LocalDate todayDate);
-    List<Booking> findAllByIdIsNotAndRoomIdAndStartDateBeforeAndEndDateAfter(Long bookingId,Long roomId,LocalDate startDate,LocalDate endDate);
+    List<Booking> findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(Long bookingId,Long roomId,LocalDate endDate, LocalDate startDate);
+    List<Booking> findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate endDate, LocalDate startDate);
 }

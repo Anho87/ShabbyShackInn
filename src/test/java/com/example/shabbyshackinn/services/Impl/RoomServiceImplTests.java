@@ -7,6 +7,7 @@ import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -143,31 +146,40 @@ public class RoomServiceImplTests {
     void findAvailableRoomsForThreePeople() {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusDays(1);
+        Room r2 = new Room(2L,roomType,2,beds,100,0);
+        Room r3 = new Room(2L,roomType,2,beds,100,2);
         int amountOfPersons = 3;
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        when(roomRepo.findAll()).thenReturn(Arrays.asList(room,r2,r3));
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        when(roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual(Arrays.asList(r2.getId()),amountOfPersons)).thenReturn(Arrays.asList(room,r2,r3));
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)).thenReturn(Arrays.asList(booking));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
 
-        assertEquals(1, detailedRoomDtoList.size());
+        assertEquals(2, detailedRoomDtoList.size());
     }
 
     @Test
     void findAvailableRoomsForFourPeople() {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusDays(1);
+        Room r2 = new Room(2L,roomType,2,beds,100,0);
+        Room r3 = new Room(2L,roomType,2,beds,100,2);
         int amountOfPersons = 4;
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+//        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+//        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        when(roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual(Arrays.asList(room.getId(),r2.getId(),r3.getId()),amountOfPersons)).thenReturn(Arrays.asList(room,r2,r3));
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)).thenReturn(Arrays.asList(booking));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
-
-        assertEquals(0, detailedRoomDtoList.size());
+        detailedRoomDtoList.forEach(detailedRoomDto1 -> System.out.println( detailedRoomDto1.getBeds() + "|" + detailedRoomDto1.getPossibleExtraBeds()));
+        assertEquals(1, detailedRoomDtoList.size());
     }
 
     @Test
     void findMiniRoomByRoomNumber() {
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+//        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        when(roomRepo.findRoomByRoomNumber(room.getRoomNumber())).thenReturn(room);
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         MiniRoomDto actual = service2.findMiniRoomByRoomNumber(room.getRoomNumber());
         assertEquals(actual.getId(), room.getId());

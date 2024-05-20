@@ -86,8 +86,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<MiniBookingDto> getAllCurrentAndFutureMiniBookings() {
-        LocalDate todayDate = LocalDate.now();
-        return bookingRepo.findAllByEndDateAfter(todayDate).stream().map(this::bookingToMiniBookingDto).toList();
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        return bookingRepo.findAllByEndDateAfter(yesterday).stream().map(this::bookingToMiniBookingDto).toList();
     }
 
     @Override
@@ -132,20 +132,22 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public boolean checkIfBookingPossible(DetailedBookingDto booking) {
-        Long roomId = booking.getMiniRoomDto().getId();
-        LocalDate startDate = booking.getStartDate();
-        LocalDate endDate = booking.getEndDate();
-        Long currentBookingId = booking.getId();
-
-        List<Booking> overlappingBookings = bookingRepo.findAll()
-                .stream()
-                .filter(b -> !b.getId().equals(currentBookingId)) 
-                .filter(b -> b.getRoom().getId().equals(roomId))  
-                .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
-                .toList();
-
-        return overlappingBookings.isEmpty();
-//        List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateBeforeAndEndDateAfter(booking.getId(),booking.getMiniRoomDto().getId(),booking.getStartDate(),booking.getEndDate());
+//        Long roomId = booking.getMiniRoomDto().getId();
+//        LocalDate startDate = booking.getStartDate();
+//        LocalDate endDate = booking.getEndDate();
+//        Long currentBookingId = booking.getId();
+//
+//        List<Booking> overlappingBookings = bookingRepo.findAll()
+//                .stream()
+//                .filter(b -> !b.getId().equals(currentBookingId)) 
+//                .filter(b -> b.getRoom().getId().equals(roomId))  
+//                .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
+//                .toList();
+//
 //        return overlappingBookings.isEmpty();
+        List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(booking.getId(),booking.getMiniRoomDto().getId(),booking.getEndDate(),booking.getStartDate());
+        System.out.println("New Booking = ID: " + booking.getId() + "|" + booking.getMiniRoomDto().getId() + "|" + booking.getStartDate() + "|" + booking.getEndDate());
+        overlappingBookings.forEach(b -> System.out.println("Old bookings = ID: " + b.getId() + "|" + b.getRoom().getId() + "|" + b.getStartDate() + "|" + b.getEndDate()));
+        return overlappingBookings.isEmpty();
     }
 }
