@@ -8,9 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ShipperServiceImplIntegrationTest {
@@ -24,6 +25,25 @@ public class ShipperServiceImplIntegrationTest {
 
     @Test
     void getShippersWillFetch() throws IOException {
+        sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
+        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStreamShippers()).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+
+        assertTrue(result.contains("\"id\""));
+        assertTrue(result.contains("\"email\""));
+        assertTrue(result.contains("\"companyName\""));
+        assertTrue(result.contains("\"contactName\""));
+        assertTrue(result.contains("\"contactTitle\""));
+        assertTrue(result.contains("\"streetAddress\""));
+        assertTrue(result.contains("\"city\""));
+        assertTrue(result.contains("\"postalCode\""));
+        assertTrue(result.contains("\"country\""));
+        assertTrue(result.contains("\"phone\""));
+        assertTrue(result.contains("\"fax\""));
+    }
+
+    @Test
+    void getShippersWillFetchAndGetData() throws IOException {
         sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
         List<Shippers> shippersList = sut.getShippers();
         assertNotNull(shippersList);
@@ -70,22 +90,5 @@ public class ShipperServiceImplIntegrationTest {
         assertEquals("070-136-6555", shipper8.getPhone());
         
     }
-
-
-
-
-    //        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStreamShippers()).useDelimiter("\\A");
-//        String result = s.hasNext() ? s.next() : "";
-//
-//        assertTrue(result.contains("\"id\""));
-//        assertTrue(result.contains("\"email\""));
-//        assertTrue(result.contains("\"companyName\""));
-//        assertTrue(result.contains("\"contactName\""));
-//        assertTrue(result.contains("\"contactTitle\""));
-//        assertTrue(result.contains("\"streetAddress\""));
-//        assertTrue(result.contains("\"city\""));
-//        assertTrue(result.contains("\"postalCode\""));
-//        assertTrue(result.contains("\"country\""));
-//        assertTrue(result.contains("\"phone\""));
-//        assertTrue(result.contains("\"fax\""));
+    
 }

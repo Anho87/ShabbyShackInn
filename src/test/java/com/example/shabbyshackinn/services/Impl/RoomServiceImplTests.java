@@ -7,6 +7,8 @@ import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,11 +21,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RoomServiceImplTests {
-    
+
 
     @Mock
     private BookingRepo bookingRepo;
@@ -39,8 +44,8 @@ public class RoomServiceImplTests {
     String phone = "123456789";
     String email = "john.doe@example.com";
 
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2020, 1, 3);
+    LocalDate startDate = LocalDate.now();
+    LocalDate endDate = startDate.plusDays(1);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
     int price = 1000;
@@ -55,7 +60,10 @@ public class RoomServiceImplTests {
 
     Room room = new Room(roomId, roomType, roomNumber, beds, price, possibleExtraBeds);
 
-    Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
+    Room r2 = new Room(2L, roomType, 2, beds, 100, 0);
+    Room r3 = new Room(2L, roomType, 2, beds, 100, 2);
+
+    Customer customer = new Customer(customerId, firstName, lastName, phone, email, bookings);
 
     Booking booking = new Booking(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
 
@@ -64,7 +72,7 @@ public class RoomServiceImplTests {
     MiniCustomerDto miniCustomerDto = new MiniCustomerDto(customerId, firstName, lastName, email);
 
     MiniBookingDto miniBookingDto = new MiniBookingDto(bookingId, startDate, endDate, miniRoomDto, miniCustomerDto);
-    
+
 
     DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
             .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
@@ -72,10 +80,9 @@ public class RoomServiceImplTests {
 
     DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber).price(price)
             .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
-    
-    
+
     @Test
-    void roomToDetailedRoomDTO(){
+    void roomToDetailedRoomDTO() {
         DetailedRoomDto actual = service.roomToDetailedRoomDTO(room);
 
         assertEquals(actual.getId(), room.getId());
@@ -85,20 +92,21 @@ public class RoomServiceImplTests {
         assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
-    
+
     @Test
-    void getAllRooms(){
+    void getAllRooms() {
         when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         List<DetailedRoomDto> allRoom = service2.getAllRooms();
 
         assertEquals(1, allRoom.size());
+        assertEquals(1L,allRoom.get(0).getId());
     }
-    
+
     @Test
-    void detailedRoomToRoom(){
+    void detailedRoomToRoom() {
         Room actual = service.detailedRoomToRoom(detailedRoomDto);
-        
+
         assertEquals(actual.getId(), detailedRoomDto.getId());
         assertEquals(actual.getRoomType().roomType, detailedRoomDto.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), detailedRoomDto.getRoomNumber());
@@ -106,18 +114,18 @@ public class RoomServiceImplTests {
         assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), detailedRoomDto.getPossibleExtraBeds());
     }
-    
+
     @Test
-    void roomToMiniRoomDto(){
+    void roomToMiniRoomDto() {
         MiniRoomDto actual = service.roomToMiniRoomDto(room);
-        
+
         assertEquals(actual.getId(), room.getId());
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
     }
-    
+
     @Test
-    void findDetailedRoomById(){
+    void findDetailedRoomById() {
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         DetailedRoomDto actual = service2.findDetailedRoomById(room.getId());
@@ -128,9 +136,9 @@ public class RoomServiceImplTests {
         assertEquals(actual.getPrice(), room.getPrice());
         assertEquals(actual.getPossibleExtraBeds(), room.getPossibleExtraBeds());
     }
-    
+
     @Test
-    void findMiniRoomById(){
+    void findMiniRoomById() {
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         MiniRoomDto actual = service2.findMiniRoomById(room.getId());
@@ -141,39 +149,39 @@ public class RoomServiceImplTests {
 
     @Test
     void findAvailableRoomsForThreePeople() {
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = startDate.plusDays(1);
         int amountOfPersons = 3;
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
+        when(roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual(
+                Arrays.asList(detailedBookingDto.getMiniRoomDto().getId()),amountOfPersons)).thenReturn(Arrays.asList(room,r3));
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
-        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
-
-        assertEquals(1, detailedRoomDtoList.size());
+        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(Arrays.asList(detailedBookingDto), amountOfPersons);
+        assertEquals(2, detailedRoomDtoList.size());
     }
 
     @Test
     void findAvailableRoomsForFourPeople() {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = startDate.plusDays(1);
+        Room r2 = new Room(2L, roomType, 2, beds, 100, 0);
+        Room r3 = new Room(2L, roomType, 2, beds, 100, 2);
         int amountOfPersons = 4;
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
-        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
-        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(startDate, endDate, amountOfPersons);
+//        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+//        when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
 
-        assertEquals(0, detailedRoomDtoList.size());
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        List<DetailedRoomDto> detailedRoomDtoList = service2.findAvailableRooms(Arrays.asList(detailedBookingDto), amountOfPersons);
+        detailedRoomDtoList.forEach(detailedRoomDto1 -> System.out.println(detailedRoomDto1.getBeds() + "|" + detailedRoomDto1.getPossibleExtraBeds()));
+        assertEquals(1, detailedRoomDtoList.size());
     }
 
     @Test
     void findMiniRoomByRoomNumber() {
-        when(roomRepo.findAll()).thenReturn(Arrays.asList(room));
+        when(roomRepo.findRoomByRoomNumber(room.getRoomNumber())).thenReturn(room);
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         MiniRoomDto actual = service2.findMiniRoomByRoomNumber(room.getRoomNumber());
         assertEquals(actual.getId(), room.getId());
         assertEquals(actual.getRoomType().roomType, room.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), room.getRoomNumber());
     }
-    
-    
+
+
 }

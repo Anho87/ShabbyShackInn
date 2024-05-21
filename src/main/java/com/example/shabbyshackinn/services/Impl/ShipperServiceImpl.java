@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ShipperServiceImpl implements ShipperService {
 
     private final ObjectMapper mapper = new JsonMapper();
-    private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
-
+    private final String apiUrl = "https://javaintegration.systementor.se/shippers";
+    
     @Autowired
     public ShipperServiceImpl(JsonStreamProvider jsonStreamProvider, ShipperRepo shipperRepo) {
         this.jsonStreamProvider = jsonStreamProvider;
@@ -53,6 +55,18 @@ public class ShipperServiceImpl implements ShipperService {
             s.companyName = shippers.companyName;
             s.phone = shippers.phone;
             shipperRepo.save(s);
+        }
+    }
+
+    @Override
+    public List<Shippers> getShippersFromAPI() {
+        try {
+            InputStream stream = jsonStreamProvider.getDataStreamShippers();
+            return mapper.readValue(stream, mapper.getTypeFactory().constructCollectionType(List.class, Shippers.class));
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return new ArrayList<>();
         }
     }
 }

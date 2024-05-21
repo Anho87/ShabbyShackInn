@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Service
 public class DiscountServiceImpl implements DiscountService {
-
     final private BookingRepo bookingRepo;
     final private RoomRepo roomRepo;
 
@@ -23,43 +22,58 @@ public class DiscountServiceImpl implements DiscountService {
         this.roomRepo = roomRepo;
     }
 
-
     @Override
     public int calculateDiscount(Long roomId, Long customerId, DetailedBookingDto detailedBookingDto) {
-        LocalDate start = detailedBookingDto.getStartDate();
-        LocalDate end = detailedBookingDto.getEndDate();
-        long daysBooked = ChronoUnit.DAYS.between(start, end);
+        long daysBooked = ChronoUnit.DAYS.between(detailedBookingDto.getStartDate(), detailedBookingDto.getEndDate());
         double totalDiscount = 0;
         double pricePerNight = roomRepo.findById(roomId).get().getPrice();
         double totalStandardPrice = daysBooked * pricePerNight;
 
-        // 2% discount for nights between Sunday and Monday pricePerNight * 0.005 - total
+        totalDiscount += calculateSundayDiscount(detailedBookingDto, pricePerNight);
+        totalDiscount += calculateLongStayDiscount(detailedBookingDto, totalStandardPrice);
+        totalDiscount += calculateLoyaltyDiscount(customerId, totalStandardPrice);
+
+        System.out.println("Total discount: " + totalDiscount);
+        return (int) Math.round(totalStandardPrice - totalDiscount);
+    }
+
+    public double calculateLongStayDiscount(DetailedBookingDto detailedBookingDto, double totalStandardPrice) {
+        long daysBooked = ChronoUnit.DAYS.between(detailedBookingDto.getStartDate(), detailedBookingDto.getEndDate());
+        double longStayDiscount = 0;
+
+        if (daysBooked >= 2) {
+            longStayDiscount += totalStandardPrice * 0.005;
+        }
+        System.out.println("0.5% Discount after booking minimum 2 nights: " + longStayDiscount);
+        return longStayDiscount;
+    }
+
+    public double calculateSundayDiscount(DetailedBookingDto detailedBookingDto, double pricePerNight) {
+        LocalDate start = detailedBookingDto.getStartDate();
+        LocalDate end = detailedBookingDto.getEndDate();
+        double sundayDiscount = 0;
+
         while (start.isBefore(end)) {
             if (start.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                totalDiscount += pricePerNight * 0.02;
+                sundayDiscount += pricePerNight * 0.02;
             }
             start = start.plusDays(1);
         }
-        System.out.println("2% Discount after Sunday deal: "+totalDiscount);
+        System.out.println("2% Discount after Sunday deal: " + sundayDiscount);
+        return sundayDiscount;
+    }
 
-        // 0.5% discount for booking longer than 1 night
-        if (daysBooked >= 2) {
-            totalDiscount += totalStandardPrice * 0.005;
-        }
-        System.out.println("0.5% Discount after booking minimum 2 nights: "+totalDiscount);
-
-        // 2% discount for customer with >= 10 nights booked last year
+    public double calculateLoyaltyDiscount(Long customerId, double totalStandardPrice) {
         LocalDate thisYearStart = LocalDate.now();
         LocalDate lastYearStart = thisYearStart.minusYears(1);
         Optional<Integer> nightsOptional = bookingRepo.sumNightsByCustomerIdAndYear(customerId, lastYearStart, thisYearStart);
         int nightsBookedLastYear = nightsOptional.orElse(0);
+        double loyaltyDiscount = 0;
+
         if (nightsBookedLastYear >= 10) {
-            totalDiscount += totalStandardPrice * 0.02;
+            loyaltyDiscount += totalStandardPrice * 0.02;
         }
-        System.out.println("2% discount: " + totalDiscount + " nights booked last year: " + nightsBookedLastYear);
-
-        return (int) Math.round(totalStandardPrice - totalDiscount);
-
+        System.out.println("2% discount: " + loyaltyDiscount + " nights booked last year: " + nightsBookedLastYear);
+        return loyaltyDiscount;
     }
-
 }
