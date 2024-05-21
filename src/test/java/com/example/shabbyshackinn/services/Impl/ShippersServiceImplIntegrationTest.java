@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class ShipperServiceImplIntegrationTest {
+public class ShippersServiceImplIntegrationTest {
     @Autowired
     ShipperRepo shipperRepo;
 
