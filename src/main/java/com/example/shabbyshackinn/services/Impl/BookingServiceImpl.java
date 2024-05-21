@@ -145,9 +145,20 @@ public class BookingServiceImpl implements BookingService {
 //                .toList();
 //
 //        return overlappingBookings.isEmpty();
-        List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(booking.getId(),booking.getMiniRoomDto().getId(),booking.getEndDate(),booking.getStartDate());
+        List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(booking.getId(), booking.getMiniRoomDto().getId(), booking.getEndDate(), booking.getStartDate());
         System.out.println("New Booking = ID: " + booking.getId() + "|" + booking.getMiniRoomDto().getId() + "|" + booking.getStartDate() + "|" + booking.getEndDate());
         overlappingBookings.forEach(b -> System.out.println("Old bookings = ID: " + b.getId() + "|" + b.getRoom().getId() + "|" + b.getStartDate() + "|" + b.getEndDate()));
         return overlappingBookings.isEmpty();
     }
+
+    @Override
+    public List<DetailedBookingDto> findBookingByDates(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isBefore(endDate)) {
+            return bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
+                    .stream().map(this::bookingToDetailedBookingDto).toList();
+        }else {
+            return null;
+        }
+    }
+
 }

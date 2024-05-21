@@ -202,7 +202,7 @@ class BookingServiceImplTests {
     void checkIfBookingPossible(){
         List<Booking> allBookings = Arrays.asList(booking);
 //
-//        when(bookingRepo.findAll()).thenReturn(allBookings);
+        when(bookingRepo.findAll()).thenReturn(allBookings);
         when(bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(
                 booking.getId(),
                 booking.getRoom().getId(),

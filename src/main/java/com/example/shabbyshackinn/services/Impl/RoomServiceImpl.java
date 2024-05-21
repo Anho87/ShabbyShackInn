@@ -1,5 +1,6 @@
 package com.example.shabbyshackinn.services.Impl;
 
+import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
 import com.example.shabbyshackinn.models.Booking;
@@ -64,28 +65,29 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<DetailedRoomDto> findAvailableRooms(LocalDate startDate, LocalDate endDate, int amountOfPersons) {
-        if (startDate.isBefore(endDate)){
+    public List<DetailedRoomDto> findAvailableRooms(List<DetailedBookingDto> detailedBookingDtoList, int amountOfPersons) {
+//        if (startDate.isBefore(endDate)){
 //            List<DetailedRoomDto> bookedDetaliedRoomsDto = bookingRepo.findAll().stream()
 //                    .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
 //                    .map(b -> b.getRoom())
 //                    .map(room -> roomToDetailedRoomDTO(room))
 //                    .toList();
-            List<Long> bookedRoomsId = bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
-                    .stream()
-                    .map(Booking::getRoom)
-                    .map(Room::getId)
-                    .toList();
+//            List<Long> bookedRoomsId = bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
+//                    .stream()
+//                    .map(Booking::getRoom)
+//                    .map(Room::getId)
+//                    .toList();
 
 //            return getAllRooms().stream()
 //                    .filter(room -> !bookedDetaliedRoomsDto.contains(room))
 //                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() >= amountOfPersons)
 //                    .toList();
-            return roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual(bookedRoomsId,amountOfPersons)
+            return roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual
+                            (detailedBookingDtoList.stream().map(DetailedBookingDto::getId).toList(),amountOfPersons)
                     .stream().map(this::roomToDetailedRoomDTO).toList();
-        }else {
-            return null;
-        }
+//        }else {
+//            return null;
+//        }
 
     }
 

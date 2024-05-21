@@ -12,15 +12,14 @@ import java.util.List;
 public class RoomEventServiceImpl implements RoomEventService {
     
     private final RoomEventRepo roomEventRepo;
-    private final RoomRepo roomRepo;
     
-    public RoomEventServiceImpl(RoomEventRepo roomEventRepo, RoomRepo roomRepo) {
+    public RoomEventServiceImpl(RoomEventRepo roomEventRepo) {
         this.roomEventRepo = roomEventRepo;
-        this.roomRepo = roomRepo;
     }
     
     @Override
     public List<RoomEvent> getAllRoomEvents(Long id) {
-        return roomEventRepo.findAll().stream().filter(roomEvent -> roomEvent.getRoomNo() == id).toList();
+//        return roomEventRepo.findAll().stream().filter(roomEvent -> roomEvent.getRoomNo() == id).toList();
+        return roomEventRepo.findRoomEventsByRoomNo(Math.toIntExact(id));
     }
 }
