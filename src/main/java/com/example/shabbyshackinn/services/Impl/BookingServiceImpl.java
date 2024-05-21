@@ -92,9 +92,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public String addBooking(DetailedBookingDto detailedBookingDto) {
-        BlacklistResponse br = blacklistService.checkIfEmailIsBlacklisted(detailedBookingDto.getMiniCustomerDto().getEMail());
-        System.out.println("isCustomerOkInBlacklist " + detailedBookingDto.getMiniCustomerDto().getEMail() + br.isOk());
-        if (!br.isOk()) {
+        BlacklistResponse blacklistResponse = blacklistService.checkIfEmailIsBlacklisted(detailedBookingDto.getMiniCustomerDto().getEMail());
+        System.out.println("isCustomerOkInBlacklist " + detailedBookingDto.getMiniCustomerDto().getEMail() + blacklistResponse.isOk());
+        if (!blacklistResponse.isOk()) {
             return "Booking not added, " + detailedBookingDto.getMiniCustomerDto().getEMail() + " is blacklisted!";
         }
 
