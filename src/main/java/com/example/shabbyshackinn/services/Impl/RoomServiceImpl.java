@@ -1,7 +1,9 @@
 package com.example.shabbyshackinn.services.Impl;
 
+import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
+import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
@@ -47,8 +49,9 @@ public class RoomServiceImpl implements RoomService {
     
     @Override
     public MiniRoomDto findMiniRoomByRoomNumber(int roomNumber){
-       Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
-       return roomToMiniRoomDto(room);
+//       Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
+//       return roomToMiniRoomDto(room);
+        return roomToMiniRoomDto(roomRepo.findRoomByRoomNumber(roomNumber));
     }
     
     
@@ -62,21 +65,29 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<DetailedRoomDto> findAvailableRooms(LocalDate startDate, LocalDate endDate, int amountOfPersons) {
-        if (startDate.isBefore(endDate)){
-            List<DetailedRoomDto> bookedDetaliedRoomsDto = bookingRepo.findAll().stream()
-                    .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
-                    .map(b -> b.getRoom())
-                    .map(room -> roomToDetailedRoomDTO(room))
-                    .toList();
+    public List<DetailedRoomDto> findAvailableRooms(List<DetailedBookingDto> detailedBookingDtoList, int amountOfPersons) {
+//        if (startDate.isBefore(endDate)){
+//            List<DetailedRoomDto> bookedDetaliedRoomsDto = bookingRepo.findAll().stream()
+//                    .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
+//                    .map(b -> b.getRoom())
+//                    .map(room -> roomToDetailedRoomDTO(room))
+//                    .toList();
+//            List<Long> bookedRoomsId = bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
+//                    .stream()
+//                    .map(Booking::getRoom)
+//                    .map(Room::getId)
+//                    .toList();
 
-            return getAllRooms().stream()
-                    .filter(room -> !bookedDetaliedRoomsDto.contains(room))
-                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() >= amountOfPersons)
-                    .toList();
-        }else {
-            return null;
-        }
+//            return getAllRooms().stream()
+//                    .filter(room -> !bookedDetaliedRoomsDto.contains(room))
+//                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() >= amountOfPersons)
+//                    .toList();
+            return roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual
+                            (detailedBookingDtoList.stream().map(DetailedBookingDto::getId).toList(),amountOfPersons)
+                    .stream().map(this::roomToDetailedRoomDTO).toList();
+//        }else {
+//            return null;
+//        }
 
     }
 

@@ -6,6 +6,7 @@ import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Customer;
 import com.example.shabbyshackinn.models.Room;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
@@ -19,6 +20,6 @@ public interface BookingService {
     String updateBooking(DetailedBookingDto booking);
     String deleteBooking(Long id);
     DetailedBookingDto findDetailedBookingById(Long id);
-
     boolean checkIfBookingPossible(DetailedBookingDto booking);
+    List<DetailedBookingDto> findBookingByDates(LocalDate startDate, LocalDate endDate);
 }

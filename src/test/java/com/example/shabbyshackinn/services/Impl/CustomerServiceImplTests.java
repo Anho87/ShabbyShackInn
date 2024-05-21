@@ -18,8 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -40,8 +39,8 @@ class CustomerServiceImplTests {
     String phone = "123456789";
     String email = "john.doe@example.com";
 
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2020, 1, 3);
+    LocalDate startDate = LocalDate.now();
+    LocalDate endDate = startDate.plusDays(1);
     int bookingNumber = 123;
     int extraBedsWanted = 1;
     int totalPrice = 9999999;
@@ -92,6 +91,7 @@ class CustomerServiceImplTests {
         List<DetailedCustomerDto> allCustomers = service2.getAllCustomers();
 
         assertEquals(1, allCustomers.size());
+        assertEquals(allCustomers.get(0).getFirstName(),customer.getFirstName());
     }
 
     @Test
@@ -181,8 +181,15 @@ class CustomerServiceImplTests {
     }
 
     @Test
-    void customerHasActiveBookings() {
+    void customerHasNoActiveBookings() {
         Boolean actual = service.customerHasActiveBookings(customer);
         assertTrue(actual);
+    }
+
+    @Test
+    void customerHasActiveBookings() {
+        customer.addBooking(booking);
+        Boolean actual = service.customerHasActiveBookings(customer);
+        assertFalse(actual);
     }
 }

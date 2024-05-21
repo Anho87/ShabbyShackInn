@@ -58,4 +58,8 @@ public class Customer {
         this.eMail = eMail;
         this.bookings = bookings;
     }
+    
+    public void addBooking(Booking booking){
+        bookings.add(booking);
+    }
 }

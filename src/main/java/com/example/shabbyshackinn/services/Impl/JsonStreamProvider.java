@@ -21,6 +21,20 @@ public class JsonStreamProvider {
     }
 
     public URLConnection getUpdateBlacklistConnection(String email) throws IOException {
+    public InputStream getDataStreamShippers() throws IOException {
+        URL url = new URL("https://javaintegration.systementor.se/shippers");
+        return url.openStream();
+    }
+
+    public List<Shippers> getDataStreamShippersAsList() throws IOException {
+        URL url = new URL("https://javaintegration.systementor.se/shippers");
+        try (InputStream inputStream = url.openStream()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return Arrays.asList(objectMapper.readValue(inputStream, Shippers[].class));
+        }
+    }
+
+    public URLConnection getUpdateConnection(String email) throws IOException {
         URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist/" + email);
         return url.openConnection();
     }

@@ -1,5 +1,6 @@
 package com.example.shabbyshackinn.services;
 
+import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.dtos.MiniRoomDto;
 import com.example.shabbyshackinn.models.Room;
@@ -13,7 +14,7 @@ public interface RoomService {//
     Room detailedRoomToRoom(DetailedRoomDto room);
     MiniRoomDto roomToMiniRoomDto(Room room);
     MiniRoomDto findMiniRoomByRoomNumber(int roomNumber);
-    List<DetailedRoomDto> findAvailableRooms(LocalDate startDate, LocalDate endDate, int amountOfPersons);
+    List<DetailedRoomDto> findAvailableRooms(List<DetailedBookingDto> detailedBookingDtoList,int amountOfPersons);
     DetailedRoomDto findDetailedRoomById(Long id);
     MiniRoomDto findMiniRoomById(Long id);
 }

@@ -155,8 +155,8 @@ class BookingServiceImplTests {
     
     @Test
     void getAllCurrentAndFutureMiniBookings(){
-        LocalDate todayDate = LocalDate.now();
-        when(bookingRepo.findAllByEndDateAfter(todayDate)).thenReturn(Collections.singletonList(booking));
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        when(bookingRepo.findAllByEndDateAfter(yesterday)).thenReturn(Collections.singletonList(booking));
         BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
         List<MiniBookingDto> allCurrentAndFutureMiniBookings = service2.getAllCurrentAndFutureMiniBookings();
         assertEquals(1, allCurrentAndFutureMiniBookings.size());
@@ -201,13 +201,19 @@ class BookingServiceImplTests {
     @Test
     void checkIfBookingPossible(){
         List<Booking> allBookings = Arrays.asList(booking);
-
+//
         when(bookingRepo.findAll()).thenReturn(allBookings);
-        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
-        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
-        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
-
+        when(bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(
+                booking.getId(),
+                booking.getRoom().getId(),
+                booking.getEndDate(),
+                booking.getStartDate())).thenReturn(allBookings);
+//        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
+//        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+//        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+//        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
+        
+       
         DetailedBookingDto DifferentBookingIdSameDatesSameRoom = DetailedBookingDto.builder().id(3L)
                 .startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
                 .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();

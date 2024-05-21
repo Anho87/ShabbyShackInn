@@ -1,8 +1,10 @@
 package com.example.shabbyshackinn.controllers;
 
 
+import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.DetailedRoomDto;
 import com.example.shabbyshackinn.models.RoomEvent;
+import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.RoomEventService;
 import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,12 @@ import java.util.List;
 public class RoomController {
     private final RoomService roomService;
     private final RoomEventService roomEventService;
+    private final BookingService bookingService;
 
-    public RoomController(RoomService roomService, RoomEventService roomEventService){
+    public RoomController(RoomService roomService, RoomEventService roomEventService,BookingService bookingService){
         this.roomService = roomService;
         this.roomEventService = roomEventService;
+        this.bookingService = bookingService;
     }
 
 
@@ -33,7 +37,8 @@ public class RoomController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("numberOfGuests", numberOfGuests);
-        List<DetailedRoomDto> availableRooms = roomService.findAvailableRooms(startDate,endDate,numberOfGuests);
+        List<DetailedBookingDto> bookingsWithDates = bookingService.findBookingByDates(startDate,endDate);
+        List<DetailedRoomDto> availableRooms = roomService.findAvailableRooms(bookingsWithDates,numberOfGuests);
         model.addAttribute("searchResults", availableRooms);
         return "searchResults";
     }
