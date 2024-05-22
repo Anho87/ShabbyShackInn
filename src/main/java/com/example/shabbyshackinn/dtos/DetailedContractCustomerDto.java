@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DetailedContractCustomerDto {
 
-    private int id;
+    private Long id;
     private int externalSystemId;
     private String companyName;
     private String contactName;

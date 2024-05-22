@@ -18,11 +18,9 @@ import java.util.List;
 @RequestMapping("/shabbyShackInn")
 public class CustomerController {
     private final CustomerService customerService;
-    private final ContractCustomerService contractCustomerService;
 
-    public CustomerController(CustomerService customerService, ContractCustomerService contractCustomerService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.contractCustomerService = contractCustomerService;
     }
 
 
@@ -61,35 +59,5 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
-
-    @GetMapping("/allContractCustomers")
-    public String listAllContractCustomers(Model model) {
-        List<MiniContractCustomerDto> contractCustomerList = contractCustomerService.getAllMiniContractCustomers();
-        model.addAttribute("allContractCustomer", contractCustomerList);
-        return "allContractCustomers";
-    }
-
-    @GetMapping("searchedContractCustomers")
-    public String searchedContractCustomers(Model model,
-                                            @RequestParam(defaultValue = "") String q,
-                                            @RequestParam(defaultValue = "companyName") String sortCol,
-                                            @RequestParam(defaultValue = "ASC") String sortOrder) {
-        q = q.trim();
-        System.out.println(q);
-        System.out.println(sortCol);
-        System.out.println(sortOrder);
-        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortCol);
-        List<ContractCustomer> searchedContractCustomerList = contractCustomerService.findAllBySearchAndSortOrder(q, sort);
-        model.addAttribute("allContractCustomer", searchedContractCustomerList);
-        model.addAttribute("q", q);
-        return "allContractCustomers";
-    }
-
-    @GetMapping("/contractCustomer/{id}")
-    public String showContractCustomer(@PathVariable Long id, Model model) {
-        DetailedContractCustomerDto contractCustomer = contractCustomerService.findDetailedContractCustomerById(id);
-        model.addAttribute("contractCustomer", contractCustomer);
-        return "contractCustomer";
-    }
-
+    
 }

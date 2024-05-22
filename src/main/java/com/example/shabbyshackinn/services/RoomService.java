@@ -14,7 +14,8 @@ public interface RoomService {//
     Room detailedRoomToRoom(DetailedRoomDto room);
     MiniRoomDto roomToMiniRoomDto(Room room);
     MiniRoomDto findMiniRoomByRoomNumber(int roomNumber);
-    List<DetailedRoomDto> findAvailableRooms(List<DetailedBookingDto> detailedBookingDtoList,int amountOfPersons);
+    List<DetailedRoomDto> findAvailableRooms(List<Long> detailedBookingDtoList);
     DetailedRoomDto findDetailedRoomById(Long id);
     MiniRoomDto findMiniRoomById(Long id);
+    List<DetailedRoomDto> findBigEnoughRoomsForNumberOfGuests(int amountOfPersons);
 }
