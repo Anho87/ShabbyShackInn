@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/shabbyShackInn/index",  "/js/**", "/css/**", "/images/**", "/login/**", "/logout","/queues/**","/shabbyShackInn/allRooms" ).permitAll()
+                        .requestMatchers("/js/**", "/css/**", "/images/**", "/login/**", "/logout","/queues/**","/shabbyShackInn/allRooms" ).permitAll()
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2->{
