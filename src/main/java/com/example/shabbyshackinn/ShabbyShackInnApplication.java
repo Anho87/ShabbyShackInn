@@ -1,23 +1,18 @@
 package com.example.shabbyshackinn;
 
-import com.example.shabbyshackinn.models.Booking;
-import com.example.shabbyshackinn.models.Customer;
-import com.example.shabbyshackinn.models.Room;
-import com.example.shabbyshackinn.models.RoomType;
-import com.example.shabbyshackinn.repos.BookingRepo;
-import com.example.shabbyshackinn.repos.CustomerRepo;
-import com.example.shabbyshackinn.repos.RoomRepo;
-import org.springframework.boot.CommandLineRunner;
+import com.example.shabbyshackinn.security.UserDataSeeder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
+    
+    @Autowired
+    private UserDataSeeder userDataSeeder;
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -34,12 +29,16 @@ public class ShabbyShackInnApplication {
             SpringApplication application = new SpringApplication(ReadQueueApp.class);
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
-
         } else if (Objects.equals(args[0], "runBean")) {
             SpringApplication application = new SpringApplication(RunBean.class);
             application.setWebApplicationType(WebApplicationType.NONE);
             application.run(args);
-
         }
     }
+//    @Bean
+//    CommandLineRunner commandLineRunner() {
+//        return args -> {
+//            userDataSeeder.seedUsers();
+//        };
+//    }
 }
