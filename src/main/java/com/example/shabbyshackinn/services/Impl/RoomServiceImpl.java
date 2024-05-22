@@ -65,31 +65,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<DetailedRoomDto> findAvailableRooms(List<DetailedBookingDto> detailedBookingDtoList, int amountOfPersons) {
-//        if (startDate.isBefore(endDate)){
-//            List<DetailedRoomDto> bookedDetaliedRoomsDto = bookingRepo.findAll().stream()
-//                    .filter(b -> b.getStartDate().isBefore(endDate) && b.getEndDate().isAfter(startDate))
-//                    .map(b -> b.getRoom())
-//                    .map(room -> roomToDetailedRoomDTO(room))
-//                    .toList();
-//            List<Long> bookedRoomsId = bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
-//                    .stream()
-//                    .map(Booking::getRoom)
-//                    .map(Room::getId)
-//                    .toList();
-
-//            return getAllRooms().stream()
-//                    .filter(room -> !bookedDetaliedRoomsDto.contains(room))
-//                    .filter(room -> room.getBeds() + room.getPossibleExtraBeds() >= amountOfPersons)
-//                    .toList();
-            return roomRepo.findAllByIdIsNotAndBedsPlusPossibleExtraBedsIsGreaterThanEqual
-                            (detailedBookingDtoList.stream().map(DetailedBookingDto::getId).toList(),amountOfPersons)
-                    .stream().map(this::roomToDetailedRoomDTO).toList();
-//        }else {
-//            return null;
-//        }
-
+    public List<DetailedRoomDto> findAvailableRooms(List<Long> alreadyBookedRoomsIds) {
+            return roomRepo.findAllByIdIsNot(alreadyBookedRoomsIds).stream()
+                    .map(this::roomToDetailedRoomDTO).toList();
+ 
     }
 
-
+    @Override
+    public List<DetailedRoomDto> findBigEnoughRoomsForNumberOfGuests(int amountOfPersons){
+        return roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons).stream()
+                .map(this::roomToDetailedRoomDTO).toList();
+    }
 }
