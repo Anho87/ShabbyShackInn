@@ -8,10 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserController {
     
-    @GetMapping(path = "/addUser")
+    @GetMapping(path = "/manageUsers")
     @PreAuthorize("hasAuthority('Admin')")
     public String empty(Model model) {
-        model.addAttribute("addUser", "Admin");
-        return "/admin";
+        model.addAttribute("manageUsers", "Admin");
+        return "manageUsers";
+    }
+    
+    @GetMapping(path = "/addUser")
+    @PreAuthorize("hasAuthority('Admin')")
+    public String addUser(Model model) {
+        model.addAttribute("add", "Admin");
+        return "index";
     }
 }
