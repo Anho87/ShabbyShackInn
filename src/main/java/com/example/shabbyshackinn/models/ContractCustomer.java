@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class ContractCustomer {
     @Id
     @GeneratedValue
-    public int id;
+    public Long id;
     @JacksonXmlProperty(localName = "id")
     public int externalSystemId;
     public String companyName;

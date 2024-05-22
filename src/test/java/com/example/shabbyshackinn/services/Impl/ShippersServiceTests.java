@@ -2,6 +2,7 @@ package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.models.Shippers;
 import com.example.shabbyshackinn.repos.ShipperRepo;
+import com.example.shabbyshackinn.services.JsonStreamProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

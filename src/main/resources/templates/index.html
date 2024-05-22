@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
@@ -17,6 +19,46 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+<header class="bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center py-2">
+            <div class="col-md-8 d-flex justify-content-start">
+                <div class="btn-group mr-2" role="group" aria-label="Navigation Buttons">
+                    <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-light">Add Customer</a>
+                    <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-light">All Contract Customers</a>
+                    <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-light">All rooms</a>
+                    <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-light">Manage Blacklist</a>
+                </div>
+                <div>
+                    <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/index.html}" class="btn btn-outline-light">Login</a>
+                    <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/login}" class="btn btn-outline-light">Logout</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <form th:action="@{/shabbyShackInn/search}" method="get" class="form-inline justify-content-end">
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label for="startDate" class="sr-only">Start Date</label>
+                            <input type="date" class="form-control mb-2" id="startDate" name="startDate" placeholder="Start Date" required>
+                        </div>
+                        <div class="col-auto">
+                            <label for="endDate" class="sr-only">End Date</label>
+                            <input type="date" class="form-control mb-2" id="endDate" name="endDate" placeholder="End Date" required>
+                        </div>
+                        <div class="col-auto">
+                            <label for="numberOfGuests" class="sr-only">Persons</label>
+                            <input type="number" class="form-control mb-2" id="numberOfGuests" name="numberOfGuests" placeholder="Number of guests" min="1" required>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-light mb-2">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+<!--
 <div class="container mt-3">
     <div class="row mb-4">
         <div class="col-md-6">
@@ -24,6 +66,8 @@
             <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-primary">All Contract Customers</a>
             <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-primary">All rooms</a>
             <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-primary">Manage Blacklist</a>
+            <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="user-info btn btn-primary">Login</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}" class="user-info btn btn-primary">Logout</a>
         </div>
 
         <div class="col-md-6">
@@ -46,6 +90,7 @@
         </div>
     </div>
 </div>
+-->
 <div class="container table-container">
     <div class="row">
         <div class="col-md-6">

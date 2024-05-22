@@ -1,6 +1,6 @@
 package com.example.shabbyshackinn.services.Impl;
 
-import com.example.shabbyshackinn.services.BlacklistService;
+import com.example.shabbyshackinn.services.JsonStreamProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ class BlacklistServiceImplIntegrationTest {
     @Test
     void getBlacklistedCustomersWillFetch() throws IOException {
         sut = new BlacklistServiceImpl(jsonStreamProvider);
-        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStream()).useDelimiter("\\A");
+        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStreamFullBlacklist()).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
 
         assertTrue(result.contains("\"id\""));
@@ -29,6 +29,16 @@ class BlacklistServiceImplIntegrationTest {
         assertTrue(result.contains("\"name\""));
         assertTrue(result.contains("\"group\""));
         assertTrue(result.contains("\"created\""));
+        assertTrue(result.contains("\"ok\""));
+    }
+
+    @Test
+    void getBlacklistCheckResponseWillFetch() throws IOException {
+        sut = new BlacklistServiceImpl(jsonStreamProvider);
+        Scanner s = new Scanner(sut.jsonStreamProvider.getDataStreamBlacklistCheck("test@email.test")).useDelimiter("\\A");
+        String result = s.hasNext() ? s.next() : "";
+
+        assertTrue(result.contains("\"statusText\""));
         assertTrue(result.contains("\"ok\""));
     }
 }
