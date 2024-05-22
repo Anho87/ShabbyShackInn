@@ -15,15 +15,21 @@ import java.util.List;
 @Service
 public class JsonStreamProvider {
 
-    public InputStream getDataStream() throws IOException {
+    public InputStream getDataStreamFullBlacklist() throws IOException {
         URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist");
         return url.openStream();
+    }
+
+    public URLConnection getAddToBlacklistConnection() throws IOException {
+        URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist");
+        return url.openConnection();
     }
 
     public InputStream getDataStreamShippers() throws IOException {
         URL url = new URL("https://javaintegration.systementor.se/shippers");
         return url.openStream();
     }
+
 
     public List<Shippers> getDataStreamShippersAsList() throws IOException {
         URL url = new URL("https://javaintegration.systementor.se/shippers");
@@ -33,8 +39,14 @@ public class JsonStreamProvider {
         }
     }
 
-    public URLConnection getUpdateConnection(String email) throws IOException {
+    public URLConnection getUpdateBlacklistConnection(String email) throws IOException {
         URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklist/" + email);
         return url.openConnection();
     }
+
+    public InputStream getDataStreamBlacklistCheck(String email) throws IOException {
+        URL url = new URL("https://javabl.systementor.se/api/ShabbyShackInn/blacklistcheck/" + email);
+        return url.openStream();
+    }
+
 }

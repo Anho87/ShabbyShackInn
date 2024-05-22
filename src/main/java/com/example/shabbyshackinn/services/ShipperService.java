@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ShipperService {
+    
 
     List<Shippers> getShippers() throws IOException;
-
-//    void fetchAndSaveShippers() throws IOException;
     
 
     List<Shippers> getShippersFromAPI();

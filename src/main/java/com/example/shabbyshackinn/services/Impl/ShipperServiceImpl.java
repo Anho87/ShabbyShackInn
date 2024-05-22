@@ -26,8 +26,6 @@ public class ShipperServiceImpl implements ShipperService {
 
     final ShipperRepo shipperRepo;
     final JsonStreamProvider jsonStreamProvider;
-    
-    
 
     @Override
     public List<Shippers> getShippers() throws IOException {
