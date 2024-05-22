@@ -2,17 +2,19 @@ package com.example.shabbyshackinn;
 
 import com.example.shabbyshackinn.security.UserDataSeeder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.util.Objects;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
     
-    @Autowired
-    private UserDataSeeder userDataSeeder;
+//    @Autowired
+//    private UserDataSeeder userDataSeeder;
 
     public static void main(String[] args) {
         if (args.length == 0) {

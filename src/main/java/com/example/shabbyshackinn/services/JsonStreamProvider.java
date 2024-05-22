@@ -1,4 +1,4 @@
-package com.example.shabbyshackinn.services.Impl;
+package com.example.shabbyshackinn.services;
 
 
 import com.example.shabbyshackinn.models.Shippers;

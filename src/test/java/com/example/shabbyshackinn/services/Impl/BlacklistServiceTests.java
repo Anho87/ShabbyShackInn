@@ -2,6 +2,7 @@ package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.models.BlacklistResponse;
+import com.example.shabbyshackinn.services.JsonStreamProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

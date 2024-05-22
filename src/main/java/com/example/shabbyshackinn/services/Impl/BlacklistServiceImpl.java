@@ -3,6 +3,7 @@ package com.example.shabbyshackinn.services.Impl;
 import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.models.BlacklistResponse;
 import com.example.shabbyshackinn.services.BlacklistService;
+import com.example.shabbyshackinn.services.JsonStreamProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

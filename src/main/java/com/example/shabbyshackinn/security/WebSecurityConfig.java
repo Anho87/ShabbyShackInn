@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/js/**", "/css/**", "/images/**", "/login/**", "/logout","/queues/**","/shabbyShackInn/allRooms" ).permitAll()
+                        .requestMatchers("/login/**" ).permitAll()
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2->{
@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                 )
                 .logout((logout) -> {
                     logout.permitAll();
-                    logout.logoutSuccessUrl("/");
+                    logout.logoutSuccessUrl("/login");
                 })
                 .csrf(AbstractHttpConfigurer::disable);
 

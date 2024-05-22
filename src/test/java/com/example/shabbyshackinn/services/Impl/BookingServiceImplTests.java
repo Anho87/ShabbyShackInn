@@ -6,6 +6,7 @@ import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BlacklistService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,94 +26,90 @@ class BookingServiceImplTests {
 
     @Mock
     private BookingRepo bookingRepo;
-    
+
     @Mock
     private RoomRepo roomRepo;
 
     @Mock
     private BlacklistService blacklistService;
+
     @Mock
     private DiscountServiceImpl discountService;
 
     @InjectMocks
-    private BookingServiceImpl service = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
+    private BookingServiceImpl service;
 
-    Long customerId = 1L;
-    String firstName = "John";
-    String lastName = "Doe";
-    String phone = "123456789";
-    String email = "john.doe@example.com";
+    private Customer customer;
+    private Room room;
+    private Booking booking;
+    private DetailedBookingDto detailedBookingDto;
+    private MiniRoomDto miniRoomDto;
+    private MiniCustomerDto miniCustomerDto;
+    private BlacklistResponse blacklistResponseNotBlacklisted;
+    private BlacklistResponse blacklistResponseBlacklisted;
 
-    LocalDate startDate = LocalDate.now().plusDays(1);
-    LocalDate endDate = startDate.plusDays(2);
-    int bookingNumber = 123;
-    int extraBedsWanted = 1;
-    int totalPrice = 999999999;
-    Long roomId = 1L;
-    int roomNumber = 1;
-    RoomType roomType = RoomType.DOUBLE;
-    int beds = 2;
-    int price = 1000;
-    int possibleExtraBeds = 1;
-    List<Booking> bookings = new ArrayList<>();
-    Long bookingId = 1L;
-
-    Room room = new Room(roomId, roomType, roomNumber, beds, price, possibleExtraBeds);
-
-    Customer customer = new Customer(customerId, firstName, lastName, phone, email,bookings);
-
-    Booking booking = new Booking(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, totalPrice, customer, room);
-
-    BlacklistResponse blacklistResponseNotBlacklisted = new BlacklistResponse("OK", true);
-
-    BlacklistResponse blacklistResponseBlacklisted = new BlacklistResponse("Blacklisted", false);
-    
-    MiniRoomDto miniRoomDto = new MiniRoomDto(roomId, roomType, roomNumber);
-
-    MiniCustomerDto miniCustomerDto = new MiniCustomerDto(customerId, firstName, lastName, email);
-
-    MiniBookingDto miniBookingDto = new MiniBookingDto(bookingId, startDate, endDate, miniRoomDto, miniCustomerDto);
-
-    DetailedCustomerDto detailedCustomerDto = DetailedCustomerDto.builder().id(customerId).firstName(firstName)
-            .lastName(lastName).eMail(email).phone(phone).bookings(customer.getBookings().stream()
-                    .map(booking -> service.bookingToMiniBookingDto(booking)).toList()).build();
-
-    DetailedBookingDto detailedBookingDto = DetailedBookingDto.builder().id(bookingId)
-            .startDate(startDate).endDate(endDate).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-            .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice) .build();
-
-    DetailedRoomDto detailedRoomDto = DetailedRoomDto.builder().id(roomId).roomType(roomType).roomNumber(roomNumber)
-            .beds(beds).possibleExtraBeds(possibleExtraBeds).build();
+    @BeforeEach
+    void setUp() {
+        customer = new Customer(1L, "John", "Doe", "123456789", "john.doe@example.com");
+        room = new Room(1L, RoomType.DOUBLE, 1, 2, 1000, 1);
+        booking = new Booking(1L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(3), 123, 1, 3000, customer, room);
+        miniRoomDto = new MiniRoomDto(1L, RoomType.DOUBLE, 1);
+        miniCustomerDto  = new MiniCustomerDto(1L, "John", "Doe", "john.doe@example.com");
+        detailedBookingDto = DetailedBookingDto.builder()
+                .id(1L)
+                .startDate(LocalDate.now().plusDays(1))
+                .endDate(LocalDate.now().plusDays(3))
+                .bookingNumber(123)
+                .extraBedsWanted(0)
+                .miniCustomerDto(miniCustomerDto)
+                .miniRoomDto(miniRoomDto)
+                .totalPrice(1000)
+                .build();
+        blacklistResponseNotBlacklisted = new BlacklistResponse("OK", true);
+        blacklistResponseBlacklisted = new BlacklistResponse("Blacklisted", false);
+    }
 
     @Test
-    void getMiniAllBookings(){
+    void addBooking() {
+        when(bookingRepo.save(booking)).thenReturn(booking);
+        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
+        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
+
+        String feedback = service.addBooking(detailedBookingDto);
+
+        assertEquals("Booking added", feedback);
+    }
+
+    @Test
+    void getMiniAllBookings() {
         when(bookingRepo.findAll()).thenReturn(Arrays.asList(booking));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        List<MiniBookingDto> allCustomers = service2.getAllMiniBookings();
+
+        List<MiniBookingDto> allCustomers = service.getAllMiniBookings();
 
         assertEquals(1, allCustomers.size());
     }
 
     @Test
-    void bookingToMiniBookingDto(){
+    void bookingToMiniBookingDto() {
         MiniBookingDto actual = service.bookingToMiniBookingDto(booking);
 
         assertEquals(actual.getId(), booking.getId());
         assertEquals(actual.getStartDate(), booking.getStartDate());
         assertEquals(actual.getEndDate(), booking.getEndDate());
-        
+
         assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
         assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
         assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
         assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
-        
+
         assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
         assertEquals(actual.getMiniRoomDto().getRoomType().roomType, booking.getRoom().getRoomType().roomType);
         assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
     }
-    
+
     @Test
-    void bookingToDetailedBookingDto(){
+    void bookingToDetailedBookingDto() {
         DetailedBookingDto actual = service.bookingToDetailedBookingDto(booking);
 
         assertEquals(actual.getId(), booking.getId());
@@ -121,21 +118,21 @@ class BookingServiceImplTests {
         assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
         assertEquals(actual.getExtraBedsWanted(), booking.getExtraBedsWanted());
         assertEquals(actual.getTotalPrice(), booking.getTotalPrice());
-        
+
         assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
         assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
         assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
         assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
-        
+
         assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
         assertEquals(actual.getMiniRoomDto().getRoomType().roomType, booking.getRoom().getRoomType().roomType);
         assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
     }
-    
+
     @Test
-    void detailedBookingDtoToBooking(){
-        Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto,customer,room);
-        
+    void detailedBookingDtoToBooking() {
+        Booking actual = service.detailedBookingDtoToBooking(detailedBookingDto, customer, room);
+
         assertEquals(actual.getId(), detailedBookingDto.getId());
         assertEquals(actual.getStartDate(), detailedBookingDto.getStartDate());
         assertEquals(actual.getEndDate(), detailedBookingDto.getEndDate());
@@ -147,113 +144,107 @@ class BookingServiceImplTests {
         assertEquals(actual.getCustomer().getFirstName(), detailedBookingDto.getMiniCustomerDto().getFirstName());
         assertEquals(actual.getCustomer().getLastName(), detailedBookingDto.getMiniCustomerDto().getLastName());
         assertEquals(actual.getCustomer().getEMail(), detailedBookingDto.getMiniCustomerDto().getEMail());
-        
+
         assertEquals(actual.getRoom().getId(), detailedBookingDto.getMiniRoomDto().getId());
         assertEquals(actual.getRoom().getRoomType().roomType, detailedBookingDto.getMiniRoomDto().getRoomType().roomType);
         assertEquals(actual.getRoom().getRoomNumber(), detailedBookingDto.getMiniRoomDto().getRoomNumber());
     }
-    
+
     @Test
-    void getAllCurrentAndFutureMiniBookings(){
+    void getAllCurrentAndFutureMiniBookings() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
         when(bookingRepo.findAllByEndDateAfter(yesterday)).thenReturn(Collections.singletonList(booking));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        List<MiniBookingDto> allCurrentAndFutureMiniBookings = service2.getAllCurrentAndFutureMiniBookings();
+
+        List<MiniBookingDto> allCurrentAndFutureMiniBookings = service.getAllCurrentAndFutureMiniBookings();
+
         assertEquals(1, allCurrentAndFutureMiniBookings.size());
     }
-    
+
     @Test
-    void addBooking(){
-        when(bookingRepo.save(booking)).thenReturn(booking);
-        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
-        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        String feedback = service2.addBooking(detailedBookingDto);
-        System.out.println("Feedback: " + feedback);
-        assertTrue(feedback.equalsIgnoreCase("Booking added"));
-    }
-    
-    @Test
-    void updateBooking(){
+    void updateBooking() {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        String feedBack = service2.updateBooking(detailedBookingDto);
-        System.out.println("feedback" + feedBack);
-        assertTrue(feedBack.equalsIgnoreCase("Booking updated"));
+
+        String feedback = service.updateBooking(detailedBookingDto);
+
+        assertEquals("Booking updated", feedback);
     }
-    
+
     @Test
-    void deleteBooking(){
+    void deleteBooking() {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseBlacklisted);
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        service2.addBooking(detailedBookingDto);
-        String feedback = service2.deleteBooking(bookingId);
-        System.out.println("Feedback: " + feedback);
-        assertTrue(feedback.equalsIgnoreCase("Booking deleted"));
+
+        service.addBooking(detailedBookingDto);
+        String feedback = service.deleteBooking(1L);
+
+        assertEquals("Booking deleted", feedback);
     }
-    
+
     @Test
-    void checkIfBookingPossible(){
-        List<Booking> allBookings = Arrays.asList(booking);
-//
-        when(bookingRepo.findAll()).thenReturn(allBookings);
+    void checkIfBookingPossible() {
+        List<Booking> conflictingBookings = Collections.singletonList(booking);
         when(bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(
-                booking.getId(),
-                booking.getRoom().getId(),
-                booking.getEndDate(),
-                booking.getStartDate())).thenReturn(allBookings);
-//        when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
-//        when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
-//        when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
-//        when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
-        
-       
-        DetailedBookingDto DifferentBookingIdSameDatesSameRoom = DetailedBookingDto.builder().id(3L)
-                .startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
+                1L,
+                1L,
+                LocalDate.now().plusDays(3),  // End date of the new booking
+                LocalDate.now().plusDays(1)   // Start date of the new booking
+        )).thenReturn(conflictingBookings);
 
-        DetailedBookingDto DifferentBookingIdDifferentDates = DetailedBookingDto.builder().id(3L)
-                .startDate(startDate.plusDays(5)).endDate(endDate.plusDays(6)).bookingNumber(bookingNumber).extraBedsWanted(extraBedsWanted)
-                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
+        when(bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(
+                2L,
+                1L,
+                LocalDate.now().plusDays(3),  // End date of the new booking
+                LocalDate.now().plusDays(1)   // Start date of the new booking
+        )).thenReturn(conflictingBookings);
 
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService,bookingRepo, customerRepo, roomRepo, discountService);
+        when(bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(
+                3L,
+                1L,
+                LocalDate.now().plusDays(3),  // End date of the new booking
+                LocalDate.now().plusDays(1)   // Start date of the new booking
+        )).thenReturn(conflictingBookings);
 
-        boolean feedbackSameBooking = service2.checkIfBookingPossible(detailedBookingDto);
-        boolean feedbackDifferentBookingIdSameDatesSameRoom = service2.checkIfBookingPossible(DifferentBookingIdSameDatesSameRoom);
-        boolean feedbackDifferentBookingIdDifferentDates = service2.checkIfBookingPossible(DifferentBookingIdDifferentDates);
+        DetailedBookingDto differentBookingIdSameDatesSameRoom = DetailedBookingDto.builder().id(2L)
+                .startDate(booking.getStartDate()).endDate(booking.getEndDate()).bookingNumber(13).extraBedsWanted(0)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(2000).build();
 
-        assertTrue(feedbackSameBooking);
+        DetailedBookingDto differentBookingIdDifferentDates = DetailedBookingDto.builder().id(3L)
+                .startDate(LocalDate.now().plusDays(5)).endDate(LocalDate.now().plusDays(6)).bookingNumber(12).extraBedsWanted(0)
+                .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(1000).build();
+
+        boolean feedbackSameBooking = service.checkIfBookingPossible(detailedBookingDto);
+        boolean feedbackDifferentBookingIdSameDatesSameRoom = service.checkIfBookingPossible(differentBookingIdSameDatesSameRoom);
+        boolean feedbackDifferentBookingIdDifferentDates = service.checkIfBookingPossible(differentBookingIdDifferentDates);
+
+        assertFalse(feedbackSameBooking);
         assertFalse(feedbackDifferentBookingIdSameDatesSameRoom);
         assertTrue(feedbackDifferentBookingIdDifferentDates);
     }
-    
+
     @Test
-    void findDetailedBookingById(){
+    void findDetailedBookingById() {
         when(bookingRepo.findById(booking.getId())).thenReturn(Optional.of(booking));
-        BookingServiceImpl service2 = new BookingServiceImpl(blacklistService, bookingRepo, customerRepo, roomRepo, discountService);
-        DetailedBookingDto actual = service2.findDetailedBookingById(booking.getId());
-        
+
+        DetailedBookingDto actual = service.findDetailedBookingById(booking.getId());
+
         assertEquals(actual.getId(), booking.getId());
         assertEquals(actual.getStartDate(), booking.getStartDate());
         assertEquals(actual.getEndDate(), booking.getEndDate());
         assertEquals(actual.getBookingNumber(), booking.getBookingNumber());
-        assertEquals(actual.getExtraBedsWanted(),booking.getExtraBedsWanted());
+        assertEquals(actual.getExtraBedsWanted(), booking.getExtraBedsWanted());
         assertEquals(actual.getTotalPrice(), booking.getTotalPrice());
 
         assertEquals(actual.getMiniCustomerDto().getId(), booking.getCustomer().getId());
         assertEquals(actual.getMiniCustomerDto().getFirstName(), booking.getCustomer().getFirstName());
         assertEquals(actual.getMiniCustomerDto().getLastName(), booking.getCustomer().getLastName());
         assertEquals(actual.getMiniCustomerDto().getEMail(), booking.getCustomer().getEMail());
-        
+
         assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
         assertEquals(actual.getMiniRoomDto().getRoomType(), booking.getRoom().getRoomType());
         assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
-        
     }
 }
