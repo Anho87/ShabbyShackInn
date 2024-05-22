@@ -12,7 +12,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('Admin')")
     public String empty(Model model) {
         model.addAttribute("manageUsers", "Admin");
-        return "manageUsers";
+        return "admin";
     }
     
     @GetMapping(path = "/addUser")
