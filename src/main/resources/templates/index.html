@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
@@ -24,6 +26,8 @@
             <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-primary">All Contract Customers</a>
             <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-primary">All rooms</a>
             <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-primary">Manage Blacklist</a>
+            <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="user-info btn btn-primary">Login</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}" class="user-info btn btn-primary">Logout</a>
         </div>
 
         <div class="col-md-6">

@@ -18,7 +18,6 @@ public interface ContractCustomerService {
     ContractCustomer getContractCustomerByExternalSystemId(int externalSystemId);
     String updateContractCustomer(ContractCustomer existingContractCustomer, ContractCustomer contractCustomer);
     DetailedContractCustomerDto contractCustomerToDetailedContractCustomerDto(ContractCustomer contractCustomer);
-    ContractCustomer detailedContractCustomerToContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto);
     DetailedContractCustomerDto findDetailedContractCustomerById(Long id);
     List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort);
     void fetchAndSaveContractCustomers()throws IOException;

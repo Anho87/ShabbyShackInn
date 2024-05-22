@@ -109,22 +109,6 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
     }
 
     @Override
-    public ContractCustomer detailedContractCustomerToContractCustomer(DetailedContractCustomerDto detailedContractCustomerDto) {
-        return ContractCustomer.builder().id(detailedContractCustomerDto.getId())
-                .externalSystemId(detailedContractCustomerDto.getExternalSystemId())
-                .companyName(detailedContractCustomerDto.getCompanyName())
-                .contactName(detailedContractCustomerDto.getContactName())
-                .contactTitle(detailedContractCustomerDto.getContactTitle())
-                .streetAddress(detailedContractCustomerDto.getStreetAddress())
-                .city(detailedContractCustomerDto.getCity())
-                .postalCode(detailedContractCustomerDto.getPostalCode())
-                .country(detailedContractCustomerDto.getCountry())
-                .phone(detailedContractCustomerDto.getPhone())
-                .fax(detailedContractCustomerDto.getFax())
-                .build();
-    }
-
-    @Override
     public DetailedContractCustomerDto findDetailedContractCustomerById(Long id){
         return contractCustomerToDetailedContractCustomerDto(contractCustomerRepo.findById(id).get());
     }

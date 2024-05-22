@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MiniContractCustomerDto {
-    private int id;
+    private Long id;
     private String companyName;
     private String contactName;
     private String country;

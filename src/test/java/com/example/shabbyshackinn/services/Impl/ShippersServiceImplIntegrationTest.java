@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ShippersServiceImplIntegrationTest {
     @Autowired
     ShipperRepo shipperRepo;
-
+    
     @Autowired
     JsonStreamProvider jsonStreamProvider;
-
+    
     ShipperServiceImpl sut;
 
     @Test
@@ -42,13 +42,14 @@ public class ShippersServiceImplIntegrationTest {
         assertTrue(result.contains("\"phone\""));
         assertTrue(result.contains("\"fax\""));
     }
-
+    
     @Test
-    void getShippersWillFetchAndGetData() throws IOException {
+    void getShippersWillFetchAndGetRightData() throws IOException {
         sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
+
         List<Shippers> shippersList = sut.getShippers();
         assertNotNull(shippersList);
-        assertEquals(8, shippersList.size());
+        assertEquals(8, shippersList.size()); // Assuming you know the exact number of shippers
 
         Shippers shipper = shippersList.get(0);
         assertEquals(1, shipper.getId());
@@ -88,8 +89,25 @@ public class ShippersServiceImplIntegrationTest {
         Shippers shipper8 = shippersList.get(7);
         assertEquals(8, shipper8.getId());
         assertEquals("Johansson-Änglund", shipper8.getCompanyName());
-        assertEquals("070-136-6555", shipper8.getPhone());
-        
+        assertEquals("070-136-6555", shipper8.getPhone());  
     }
-    
+
+//    @Test
+//    void fetchAndSaveShippersShouldSaveToDatabase() throws IOException {
+//        JSONStreamProvider jsonStreamProvider = mock(JSONStreamProvider.class);
+//        
+//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("shippers.json");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        List<Shippers> shippersList = Arrays.asList(objectMapper.readValue(inputStream, Shippers[].class));
+//
+//        when(jsonStreamProvider.getDataStream()).thenReturn(shippersList);
+//
+//        sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
+//
+//        shipperRepo.deleteAll();
+//
+//        sut.fetchAndSaveShippers();
+//
+//        assertEquals(3, shipperRepo.count());
+//    }
 }
