@@ -149,7 +149,12 @@ public class RoomServiceImplTests {
     void findAvailableRoomsForThreePeople() {
         int amountOfPersons = 3;
         List<Room> roomsList = Arrays.asList(roomWith3Beds, roomWith4Beds);
-        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons)).thenReturn(roomsList);
+        roomRepo.deleteAll();
+        roomRepo.save(roomWith2Beds);
+        roomRepo.save(roomWith3Beds);
+        roomRepo.save(roomWith4Beds);
+        //TODO SKAPA NYTT REPO SOM ANVÄNDER H2
+//        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons)).thenReturn(roomsList);
         RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
         List<DetailedRoomDto> detailedRoomDtoList = service2.findBigEnoughRoomsForNumberOfGuests(amountOfPersons);
         assertEquals(2, detailedRoomDtoList.size());

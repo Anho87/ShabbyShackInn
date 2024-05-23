@@ -47,7 +47,7 @@ public class WebSecurityConfig {
 //                        ep.userAuthoritiesMapper( this.userAuthoritiesMapper() );
 //                    });
 //                })
-                .formLogin((form) -> form
+                .formLogin((form) -> form.successForwardUrl("/shabbyShackInn/index")
 //                        .loginPage("/login")
                                 .permitAll()
                 )
