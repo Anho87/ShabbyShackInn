@@ -25,7 +25,7 @@ public class BlacklistServiceImpl implements BlacklistService {
 
 
     private final ObjectMapper mapper = new JsonMapper();
-    private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
+   // private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
 
 
     @Autowired
