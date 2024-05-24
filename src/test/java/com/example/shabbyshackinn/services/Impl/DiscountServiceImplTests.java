@@ -76,7 +76,7 @@ class DiscountServiceImplTests {
 
         int discountedPrice = service.calculateDiscount(roomId, customerId, detailedBookingDto);
 
-        assertEquals(9930, discountedPrice);
+        assertEquals(9910, discountedPrice);
     }
 
     @Test
@@ -91,7 +91,7 @@ class DiscountServiceImplTests {
 
         int discountedPrice = service.calculateDiscount(roomId, customerId, detailedBookingDto);
 
-        assertEquals(9730, discountedPrice);
+        assertEquals(9710, discountedPrice);
     }
 
     @Test

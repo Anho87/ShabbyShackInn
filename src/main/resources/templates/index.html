@@ -30,7 +30,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                     <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-light">Manage Blacklist</a>
                 </div>
                 <div>
-                    <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/ShabbyShackInn/index}" class="btn btn-outline-light">Login</a>
+                    <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="btn btn-outline-light">Login</a>
                     <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}" class="btn btn-outline-light">Logout</a>
                 </div>
             </div>
@@ -65,9 +65,9 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
             <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-primary">Add Customer</a>
             <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-primary">All Contract Customers</a>
             <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-primary">All rooms</a>
-            <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-primary">Manage Blacklist</a>
-            <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="user-info btn btn-primary">Login</a>
-            <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}" class="user-info btn btn-primary">Logout</a>
+            <a th:href="@{/shabbyShackInn/manageBlacklist}" style="margin-top: 10px" class="btn btn-primary">Manage Blacklist</a>
+            <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" style="margin-top: 10px" class="user-info btn btn-success">Login</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}" style="margin-top: 10px" class="user-info btn btn-danger">Logout</a>
         </div>
 
         <div class="col-md-6">

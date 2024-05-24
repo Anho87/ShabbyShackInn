@@ -39,7 +39,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**" ).permitAll()
+                        .requestMatchers("/login/**").permitAll()
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2->{
@@ -47,7 +47,8 @@ public class WebSecurityConfig {
 //                        ep.userAuthoritiesMapper( this.userAuthoritiesMapper() );
 //                    });
 //                })
-                .formLogin((form) -> form.successForwardUrl("/shabbyShackInn/index")
+                .formLogin((form) -> form.
+                                successForwardUrl("/shabbyShackInn/index")
 //                        .loginPage("/login")
                                 .permitAll()
                 )
