@@ -18,26 +18,26 @@ import java.util.List;
 public class JsonStreamProvider {
     
     @Autowired
-    private IntegrationProperties integrationProperties;    
+    private IntegrationProperties properties;   
 
     public InputStream getDataStreamFullBlacklist() throws IOException {
-        URL url = new URL(integrationProperties.getBlackListProperties().getUrl());
+        URL url = new URL(properties.getBlackListProperties().getUrl());
         return url.openStream();
     }
 
     public URLConnection getAddToBlacklistConnection() throws IOException {
-        URL url = new URL(integrationProperties.getBlackListProperties().getUrl());
+        URL url = new URL(properties.getBlackListProperties().getUrl());
         return url.openConnection();
     }
 
     public InputStream getDataStreamShippers() throws IOException {
-        URL url = new URL(integrationProperties.getShippersProperties().getUrl());
+        URL url = new URL(properties.getShippersProperties().getUrl());
         return url.openStream();
     }
 
 
     public List<Shippers> getDataStreamShippersAsList() throws IOException {
-        URL url = new URL(integrationProperties.getShippersProperties().getUrl());
+        URL url = new URL(properties.getShippersProperties().getUrl());
         try (InputStream inputStream = url.openStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
             return Arrays.asList(objectMapper.readValue(inputStream, Shippers[].class));
@@ -45,12 +45,12 @@ public class JsonStreamProvider {
     }
 
     public URLConnection getUpdateBlacklistConnection(String email) throws IOException {
-        URL url = new URL(   integrationProperties.getBlackListProperties().getUrl() + "/" + email);
+        URL url = new URL(   properties.getBlackListProperties().getUrl() + "/" + email);
         return url.openConnection();
     }
 
     public InputStream getDataStreamBlacklistCheck(String email) throws IOException {
-        URL url = new URL(integrationProperties.getBlackListProperties().getUrl() + "check/" + email);
+        URL url = new URL(properties.getBlackListProperties().getUrl() + "check/" + email);
         return url.openStream();
     }
 
