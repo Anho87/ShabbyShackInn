@@ -55,7 +55,7 @@ public class WebSecurityConfig {
                     logout.permitAll();
                     logout.logoutSuccessUrl("/login");
                 })
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable); //Kankse ta bort den här??
 
         return http.build();
     }

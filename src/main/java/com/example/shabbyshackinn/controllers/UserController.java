@@ -26,7 +26,7 @@ import java.util.UUID;
 
 //import static com.sun.org.apache.xml.internal.serializer.utils.Utils.messages;
 //JavaMailSender
-@RestController
+@Controller
 public class UserController {
 
     @Autowired
@@ -70,9 +70,13 @@ public class UserController {
         User user = userService.findByUsername(userEmail);
         if (user == null) {
             //throw new UserNotFoundException();
-            System.out.println("Fel i UserController: resetPassword");
+            System.out.println("User not found in resetPassword");
         }
-        String token = UUID.randomUUID().toString();
+        //String token = UUID.randomUUID().toString();
+        String token;
+        do {
+            token = UUID.randomUUID().toString();
+        } while (passwordResetTokenRepo.existsByToken(token));
         userService.createPasswordResetTokenForUser(user, token);
         mailSender.send(constructResetTokenEmail(getAppUrl(request),
                 request.getLocale(), token, user));
@@ -99,8 +103,8 @@ public class UserController {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setSubject(subject);
         email.setText(body);
-        //email.setTo(user.getEmail());
-        email.setTo("Kalle.johansson@hotmail.com");
+        email.setTo(user.getUsername());
+        //email.setTo("Kalle.johansson@hotmail.com");
         email.setFrom(env.getProperty("support.email"));
         return email;
     }
