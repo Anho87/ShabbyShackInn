@@ -17,4 +17,5 @@ public class IntegrationProperties {
     private BlackListProperties blackListProperties;
     private ContractCustomerProperties contractCustomerProperties;
     private ShippersProperties shippersProperties;
+    private MailConfig mailConfig;
 }

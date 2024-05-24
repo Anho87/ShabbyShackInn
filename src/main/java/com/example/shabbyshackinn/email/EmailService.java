@@ -22,6 +22,7 @@ public class EmailService {
         MimeMessageHelper helper = null;
         try {
             helper = new MimeMessageHelper(message, true);
+            helper.setFrom("ShabbyShackInn@ShabbyShack.Inn");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);
