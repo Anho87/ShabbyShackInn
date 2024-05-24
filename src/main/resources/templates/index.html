@@ -28,6 +28,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
                     <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-light">All Contract Customers</a>
                     <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-light">All rooms</a>
                     <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-light">Manage Blacklist</a>
+                    <a th:href="@{/forgotPassword}" class="btn btn-light">Reset Password</a>
                 </div>
                 <div>
                     <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/ShabbyShackInn/index}" class="btn btn-outline-light">Login</a>
@@ -149,6 +150,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 
 </body>
 </html>
