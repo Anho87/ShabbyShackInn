@@ -38,7 +38,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation ("com.sun.mail:javax.mail:1.6.2")
     implementation ("org.springframework.boot:spring-boot-starter-mail")
 }
 

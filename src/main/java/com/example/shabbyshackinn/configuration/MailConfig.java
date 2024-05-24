@@ -18,7 +18,7 @@ public class MailConfig {
         mailSender.setUsername("nicolas.kuhic@ethereal.email");
         mailSender.setPassword("mFYSstepYQcBwKapCh");
 
-        // Aktivera SMTP-autentisering och TLS-start
+        
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
