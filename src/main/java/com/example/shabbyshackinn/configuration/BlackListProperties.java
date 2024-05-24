@@ -15,5 +15,4 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class BlackListProperties {
     private String url;
-    private String emailToCheck;
 }
