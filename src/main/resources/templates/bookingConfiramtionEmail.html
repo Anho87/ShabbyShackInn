@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>BookingEmailConformation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/templates/styles.css">
+<!--  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h2>Booking Confirmation</h2>
+  </div>
+  <div class="content">
+    <h1>Hello, {{customer_name}}</h1>
+    <p>Thank you for your booking! Here are your booking details:</p>
+    <p>
+      <strong>Booking ID:</strong> {{booking_id}}<br>
+      <strong>Start date:</strong> {{booking_startdate}}<br>
+      <strong>End date:</strong> {{booking_endDate}}<br>
+      <strong>Name:</strong> {{customer_name}}<br>
+      <strong>Amount Paid:</strong> {{amount_paid}}<br>
+    </p>
+    <p>If you have any questions or need to make changes to your booking, please do not contact us at:</p>
+    <p>
+      <strong>Email:</strong> shabbyshack@Inn.se<br>
+      <strong>Phone:</strong> (123) 456-7890
+    </p>
+    <a href="{{booking_url}}" class="btn">View Your Booking</a>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 ShabbyShackInn. All rights reserved.</p>
+  </div>
+</div>
+</body>
+</html>
