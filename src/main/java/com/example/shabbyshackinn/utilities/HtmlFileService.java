@@ -10,7 +10,7 @@ public class HtmlFileService {
 
     public void saveHtmlToFile(String htmlCode) {
         try {
-            FileWriter writer = new FileWriter("bookingConfirmationEmail.html");
+            FileWriter writer = new FileWriter("src/main/resources/templates/bookingConfiramtionEmail.html");
             writer.write(htmlCode);
             writer.close();
         } catch (IOException e) {
