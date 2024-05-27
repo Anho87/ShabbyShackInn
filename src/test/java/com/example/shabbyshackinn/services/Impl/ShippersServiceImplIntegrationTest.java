@@ -49,7 +49,7 @@ public class ShippersServiceImplIntegrationTest {
 
         List<Shippers> shippersList = sut.getShippers();
         assertNotNull(shippersList);
-        assertEquals(8, shippersList.size()); // Assuming you know the exact number of shippers
+        assertEquals(8, shippersList.size());
 
         Shippers shipper = shippersList.get(0);
         assertEquals(1, shipper.getId());
@@ -91,23 +91,5 @@ public class ShippersServiceImplIntegrationTest {
         assertEquals("Johansson-Änglund", shipper8.getCompanyName());
         assertEquals("070-136-6555", shipper8.getPhone());  
     }
-
-//    @Test
-//    void fetchAndSaveShippersShouldSaveToDatabase() throws IOException {
-//        JSONStreamProvider jsonStreamProvider = mock(JSONStreamProvider.class);
-//        
-//        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("shippers.json");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        List<Shippers> shippersList = Arrays.asList(objectMapper.readValue(inputStream, Shippers[].class));
-//
-//        when(jsonStreamProvider.getDataStream()).thenReturn(shippersList);
-//
-//        sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
-//
-//        shipperRepo.deleteAll();
-//
-//        sut.fetchAndSaveShippers();
-//
-//        assertEquals(3, shipperRepo.count());
-//    }
+    
 }
