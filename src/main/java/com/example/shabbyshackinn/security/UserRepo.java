@@ -12,4 +12,5 @@ public interface UserRepo extends CrudRepository<User, UUID> {
 
     User findByUsername(String username);
 
+
 }
