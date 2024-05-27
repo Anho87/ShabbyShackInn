@@ -1,5 +1,6 @@
 package com.example.shabbyshackinn.services.Impl;
 
+import com.example.shabbyshackinn.email.EmailService;
 import com.example.shabbyshackinn.dtos.DetailedBookingDto;
 import com.example.shabbyshackinn.dtos.MiniBookingDto;
 import com.example.shabbyshackinn.dtos.MiniCustomerDto;
@@ -10,7 +11,9 @@ import com.example.shabbyshackinn.repos.CustomerRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
 import com.example.shabbyshackinn.services.BlacklistService;
 import com.example.shabbyshackinn.services.BookingService;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 
 import java.time.LocalDate;
@@ -24,13 +27,18 @@ public class BookingServiceImpl implements BookingService {
     final private RoomRepo roomRepo;
     final private BlacklistService blacklistService;
     final private DiscountServiceImpl discountService;
+    final private JavaMailSender javaMailSender;
+    private final TemplateEngine templateEngine;
+    
 
-    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService) {
+    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService,JavaMailSender javaMailSender,TemplateEngine templateEngine) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.blacklistService = blacklistService;
         this.discountService = discountService;
+        this.javaMailSender = javaMailSender;
+        this.templateEngine = templateEngine;
     }
 
     @Override
@@ -104,9 +112,22 @@ public class BookingServiceImpl implements BookingService {
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
             bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
+            sendBookingConfirmationEmail(detailedBookingDto,customer,room);
             return "Booking added";
         }
         return "Booking not added";
+    }
+
+    private void sendBookingConfirmationEmail(DetailedBookingDto detailedBookingDto, Customer customer, Room room){
+        EmailService emailService = new EmailService(javaMailSender,templateEngine);
+        emailService.sendBookingConfirmedEmail(customer.getEMail(),"Booking Confirmation"
+        ,customer.getFirstName()
+                , customer.getLastName()
+                ,detailedBookingDto.getBookingNumber()
+                ,detailedBookingDto.getStartDate().toString()
+                ,detailedBookingDto.getEndDate().toString()
+                ,detailedBookingDto.getTotalPrice());
+                
     }
 
     @Override

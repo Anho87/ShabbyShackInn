@@ -25,11 +25,11 @@ public class UserDataSeeder {
             addUser("johan.johnsson@airbnb.se", "Admin", "1");
         }
         if (userRepository.getByUsername("Andreas.holmber@airbnb.se") == null) {
-            addUser("Andreas.holmber@airbnb.se", "Receptionist","2");
+            addUser("Andreas.holmber@airbnb.se", "Receptionist", "2");
         }
     }
     
-    private void addUser(String mail, String group,String password) {
+    private void addUser(String mail, String group, String password) {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName(group));
         
