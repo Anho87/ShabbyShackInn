@@ -27,6 +27,9 @@ public class UserDataSeeder {
         if (userRepository.getByUsername("Andreas.holmber@airbnb.se") == null) {
             addUser("Andreas.holmber@airbnb.se", "Receptionist");
         }
+        if (userRepository.getByUsername("Felix.Dahlberg@airbnb.se") == null) {
+            addUser("Felix.Dahlberg@airbnb.se", "Receptionist");
+        }
     }
     
     private void addUser(String mail, String group) {

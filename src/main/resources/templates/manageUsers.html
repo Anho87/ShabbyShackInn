@@ -8,54 +8,41 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-    <h1>Users</h1>
-    <form action="#" th:action="@{/shabbyShackInn/searchedContractCustomers}"  method="GET">
-        <label for="q">Search</label>
-        <input type="text" id="q" name="q" th:value="${q}">
-    </form>
-
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>
-                User Name
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='companyName', sortOrder='asc')}">
-                    <i class="fa-solid fa-arrow-up-a-z"></i>
-                </a>
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='companyName', sortOrder='desc')}">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
-                </a>
-            </th>
-            <th>
-                User Roles
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='contactName', sortOrder='asc')}">
-                    <i class="fa-solid fa-arrow-up-a-z"></i>
-                </a>
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='contactName', sortOrder='desc')}">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
-                </a>
-            </th>
-
-            <th>
-                Country
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='country', sortOrder='asc')}">
-                    <i class="fa-solid fa-arrow-up-a-z"></i>
-                </a>
-                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='country', sortOrder='desc')}">
-                    <i class="fa-solid fa-arrow-down-a-z"></i>
-                </a>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${allUsers}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.roles}"></td>
-            <td th:text="${customer.country}"></td>
-        </tr>
-        </tbody>
-    </table>
+<div th:if="${feedback}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${feedback}"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
+<div class="container mt-5">
+    <div class="col-md-6">
+        <div class="container mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Users</h2>
+                <a th:href="@{/shabbyShackInn/addUserForm}" class="btn btn-primary">Add new User</a>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>User roles</th>
+                <th colspan="3">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${allUsers}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.getAuthorities()}"></td>
+                <td><a th:href="@{/shabbyShackInn/index}">Update</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
