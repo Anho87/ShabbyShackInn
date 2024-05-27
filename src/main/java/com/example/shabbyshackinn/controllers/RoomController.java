@@ -41,7 +41,7 @@ public class RoomController {
         List<DetailedRoomDto> toSmallroomsList = roomService.findBigEnoughRoomsForNumberOfGuests(numberOfGuests);
         List<DetailedBookingDto> alreadyBookedRooms = bookingService.findBookingByDates(startDate, endDate);
         if (!alreadyBookedRooms.isEmpty()) {
-            System.out.println("list is empty");
+            System.out.println("list not empty");
             List<Long> roomsAlreadyBookedIdList = alreadyBookedRooms.stream().map(room -> room.getMiniRoomDto().getId()).toList();
             List<DetailedRoomDto> roomsNotAlreadyBooked = roomService.findAvailableRooms(roomsAlreadyBookedIdList);
             List<DetailedRoomDto> availableRooms = toSmallroomsList.stream()
@@ -49,7 +49,7 @@ public class RoomController {
                     .toList();
             model.addAttribute("searchResults", availableRooms);
         }else {
-            System.out.println("list not empty");
+            System.out.println("list is empty");
             List<DetailedRoomDto> availableRooms = toSmallroomsList;
             model.addAttribute("searchResults", availableRooms);
         }

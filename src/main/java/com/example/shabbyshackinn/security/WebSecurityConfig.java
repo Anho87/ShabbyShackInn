@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;    
 
 @Configuration
 @EnableWebSecurity
@@ -39,17 +39,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/login", "/resetPasswordLink/**", "/handleResetPassword/**", "/resetPassword/**","/updatedPassword/**").permitAll()
+                       // .requestMatchers(HttpMethod.POST, "/shabbyShackInn/changeMailLayout").permitAll() //.hasAuthority("Admin") // Kräver att användaren har behörighet "ADMIN" för POST-förfrågningar
                         .anyRequest().authenticated()
                 )
-//                .oauth2Login(oauth2->{
-//                    oauth2.userInfoEndpoint(ep->{
-//                        ep.userAuthoritiesMapper( this.userAuthoritiesMapper() );
-//                    });
-//                })
-                .formLogin((form) -> form.
+                
+
+                .formLogin((form) -> form
+                        .loginPage("/login").
                                 successForwardUrl("/shabbyShackInn/index")
-//                        .loginPage("/login")
                                 .permitAll()
                 )
                 .logout((logout) -> {
@@ -57,40 +55,10 @@ public class WebSecurityConfig {
                     logout.logoutSuccessUrl("/login");
                 })
                 .csrf(AbstractHttpConfigurer::disable);
+        //TODO: Maybe delete this line (59)
 
         return http.build();
     }
-
-//    private GrantedAuthoritiesMapper userAuthoritiesMapper() {
-//
-//        return (authorities) -> {
-//            List<SimpleGrantedAuthority> mappedAuthorities = new ArrayList<>();
-//
-//
-//            authorities.forEach(authority -> {
-//
-//                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-//
-//                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-//
-//
-//                    //String email = userAttributes.get("email").toString();
-//                    // email is not returned from Github!!! If not public email setting is turned on in your account
-//
-//                    // så - vi kan gå på login
-//                    String login = userAttributes.get("login").toString();
-//
-//                    // Map the attributes found in userAttributes
-//                    // to one or more GrantedAuthority's and add it to mappedAuthorities
-//                    if(login.equals("aspcodenet")){
-//                        mappedAuthorities.add(new SimpleGrantedAuthority("Admin"));
-//                    }
-//                }
-//
-//            });
-//            
-//            return mappedAuthorities;
-//        };
-//    }
+    
     
 }

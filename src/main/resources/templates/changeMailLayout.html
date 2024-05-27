@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Editor</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h1>HTML Editor</h1>
+<form action="#" th:action="@{/shabbyShackInn/updateOrChangeMailLayout}" method="post">
+    <label>
+        <textarea name="htmlCode" rows="10" cols="50" th:text="${fileContent}"></textarea>
+    </label>
+    <br>
+    <button class="btn btn-success" type="submit" value="Submit">Save HTML</button>
+</form>
+
+</body>
+</html>

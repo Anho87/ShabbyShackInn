@@ -24,6 +24,7 @@ public class User {
     private String username;
     private String password;
     private boolean enabled;
+    private String resetToken;
     
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
