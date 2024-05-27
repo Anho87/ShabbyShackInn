@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>BookingEmailConformation</title>
   <meta charset="UTF-8">
@@ -13,21 +13,20 @@
     <h2>Booking Confirmation</h2>
   </div>
   <div class="content">
-    <h1>Hello, {{customer_name}}</h1>
+    <h1>Hello, <span th:text="${customer_name}"></span></h1>
     <p>Thank you for your booking! Here are your booking details:</p>
     <p>
-      <strong>Booking ID:</strong> {{booking_id}}<br>
-      <strong>Start date:</strong> {{booking_startdate}}<br>
-      <strong>End date:</strong> {{booking_endDate}}<br>
-      <strong>Name:</strong> {{customer_name}}<br>
-      <strong>Amount Paid:</strong> {{amount_paid}}<br>
+      <strong>Booking number:</strong> <span th:text="${booking_number}"></span><br>
+      <strong>Start date:</strong> <span th:text="${booking_startdate}"></span><br>
+      <strong>End date:</strong> <span th:text="${booking_endDate}"></span><br>
+      <strong>Name:</strong> <span th:text="${customer_name}"></span><br>
+      <strong>Amount Paid:</strong> <span th:text="${amount_paid}"></span><br>
     </p>
     <p>If you have any questions or need to make changes to your booking, please do not contact us at:</p>
     <p>
       <strong>Email:</strong> shabbyshack@Inn.se<br>
       <strong>Phone:</strong> (123) 456-7890
     </p>
-    <a href="{{booking_url}}" class="btn">View Your Booking</a>
   </div>
   <div class="footer">
     <p>&copy; 2024 ShabbyShackInn. All rights reserved.</p>

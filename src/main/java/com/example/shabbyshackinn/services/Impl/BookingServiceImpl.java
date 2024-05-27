@@ -13,6 +13,7 @@ import com.example.shabbyshackinn.services.BlacklistService;
 import com.example.shabbyshackinn.services.BookingService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 
 import java.time.LocalDate;
@@ -27,14 +28,17 @@ public class BookingServiceImpl implements BookingService {
     final private BlacklistService blacklistService;
     final private DiscountServiceImpl discountService;
     final private JavaMailSender javaMailSender;
+    private final TemplateEngine templateEngine;
+    
 
-    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService,JavaMailSender javaMailSender) {
+    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService,JavaMailSender javaMailSender,TemplateEngine templateEngine) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
         this.blacklistService = blacklistService;
         this.discountService = discountService;
         this.javaMailSender = javaMailSender;
+        this.templateEngine = templateEngine;
     }
 
     @Override
@@ -115,12 +119,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void sendBookingConfirmationEmail(DetailedBookingDto detailedBookingDto, Customer customer, Room room){
-        EmailService emailService = new EmailService(javaMailSender);
-        emailService.sendBookingConfirmedEmail( customer.getEMail(),"Your Booking",
-                "Hello" + customer.getFirstName()
-                        + " Here is your booking information!" + "Room: " + room.getRoomNumber()
-                        + " Startdate: " + detailedBookingDto.getStartDate()
-                        + " Enddate: " + detailedBookingDto.getEndDate());
+        EmailService emailService = new EmailService(javaMailSender,templateEngine);
+        emailService.sendBookingConfirmedEmail(customer.getEMail(),"Booking Confirmation"
+        ,customer.getFirstName()
+                , customer.getLastName()
+                ,detailedBookingDto.getBookingNumber()
+                ,detailedBookingDto.getStartDate().toString()
+                ,detailedBookingDto.getEndDate().toString()
+                ,detailedBookingDto.getTotalPrice());
+                
     }
 
     @Override
