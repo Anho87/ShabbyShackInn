@@ -2,7 +2,6 @@ package com.example.shabbyshackinn.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,9 +45,9 @@ public class WebSecurityConfig {
                 )
                 
 
-                .formLogin((form) -> form.
+                .formLogin((form) -> form
+                        .loginPage("/login").
                                 successForwardUrl("/shabbyShackInn/index")
-//                        .loginPage("/login")
                                 .permitAll()
                 )
                 .logout((logout) -> {
