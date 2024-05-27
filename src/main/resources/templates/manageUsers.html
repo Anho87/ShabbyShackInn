@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Users</h1>
+    <form action="#" th:action="@{/shabbyShackInn/searchedContractCustomers}"  method="GET">
+        <label for="q">Search</label>
+        <input type="text" id="q" name="q" th:value="${q}">
+    </form>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>
+                User Name
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='companyName', sortOrder='asc')}">
+                    <i class="fa-solid fa-arrow-up-a-z"></i>
+                </a>
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='companyName', sortOrder='desc')}">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                </a>
+            </th>
+            <th>
+                User Roles
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='contactName', sortOrder='asc')}">
+                    <i class="fa-solid fa-arrow-up-a-z"></i>
+                </a>
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='contactName', sortOrder='desc')}">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                </a>
+            </th>
+
+            <th>
+                Country
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='country', sortOrder='asc')}">
+                    <i class="fa-solid fa-arrow-up-a-z"></i>
+                </a>
+                <a th:href="@{/shabbyShackInn/searchedContractCustomers(q=${q}, sortCol='country', sortOrder='desc')}">
+                    <i class="fa-solid fa-arrow-down-a-z"></i>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${allUsers}" th:onclick="'window.location.href=\'/shabbyShackInn/contractCustomer/' + ${customer.id} + '\''" style="cursor:pointer;">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.roles}"></td>
+            <td th:text="${customer.country}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
