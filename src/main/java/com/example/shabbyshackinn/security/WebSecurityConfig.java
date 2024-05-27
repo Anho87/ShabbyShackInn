@@ -39,8 +39,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/shabbyShackInn/changeMailLayout").permitAll() //.hasAuthority("Admin") // Kräver att användaren har behörighet "ADMIN" för POST-förfrågningar
+                        .requestMatchers("/login", "/resetPasswordLink/**", "/handleResetPassword/**", "/resetPassword/**","/updatedPassword/**").permitAll()
+                       // .requestMatchers(HttpMethod.POST, "/shabbyShackInn/changeMailLayout").permitAll() //.hasAuthority("Admin") // Kräver att användaren har behörighet "ADMIN" för POST-förfrågningar
                         .anyRequest().authenticated()
                 )
                 

@@ -9,4 +9,8 @@ import java.util.UUID;
 public interface UserRepo extends CrudRepository<User, UUID> {
     @Query("SELECT u FROM User u WHERE u.username = :username")
     public User getByUsername(@Param("username") String username);
+    
+    User findUserByResetToken(String resetToken);
+    
+    User findUserByUsername(String email);
 }

@@ -21,21 +21,7 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
-
-    //    public void sendBookingConfirmedEmail(String to, String subject, String body) {
-//        MimeMessage message = javaMailSender.createMimeMessage();
-//        MimeMessageHelper helper = null;
-//        try {
-//            helper = new MimeMessageHelper(message, true);
-//            helper.setFrom("ShabbyShackInn@ShabbyShack.Inn");
-//            helper.setTo(to);
-//            helper.setSubject(subject);
-//            helper.setText(body, true);
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//        javaMailSender.send(message);
-//    }
+    
     public void sendBookingConfirmedEmail(String to, String subject, String customerFirstName, String customerLastName, int bookingNumber, String bookingStartDate, String bookingEndDate, double amountPaid) {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = null;
