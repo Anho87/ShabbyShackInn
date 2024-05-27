@@ -4,8 +4,6 @@
   <title>BookingEmailConformation</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/templates/styles.css">
-<!--  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">-->
 </head>
 <style>
   body {
@@ -73,7 +71,7 @@
       <strong>Start date:</strong> <span th:text="${booking_startdate}"></span><br>
       <strong>End date:</strong> <span th:text="${booking_endDate}"></span><br>
       <strong>Name:</strong> <span th:text="${customer_name}"></span><br>
-      <strong>Amount Paid:</strong> <span th:text="${amount_paid}"></span><br>
+      <strong>Amount Paid:</strong> <span th:text="${amount_paid}">kr</span><br>
     </p>
     <p>If you have any questions or need to make changes to your booking, please do not contact us at:</p>
     <p>
