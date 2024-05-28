@@ -26,8 +26,9 @@
                     <a th:href="@{/shabbyShackInn/customerAddAndUpdate/{id}(id=${0})}" class="btn btn-light">Add Customer</a>
                     <a th:href="@{/shabbyShackInn/allContractCustomers}" class="btn btn-light">All Contract Customers</a>
                     <a th:href="@{/shabbyShackInn/allRooms}" class="btn btn-light">All rooms</a>
-                    <a th:href="@{/shabbyShackInn/manageBlacklist}" class="btn btn-light">Manage Blacklist</a>
+                    <a th:href="@{/shabbyShackInn/manageBlacklist}" sec:authorize="hasAuthority('Admin')" class="btn btn-light">Manage Blacklist</a>
                     <a th:href="@{/shabbyShackInn/changeMailLayout}" sec:authorize="hasAuthority('Admin')" class="btn btn-light">Change E-mail Layout</a>
+                    <a th:href="@{/shabbyShackInn/manageUsers}" sec:authorize="hasAuthority('Admin')" class="btn btn-light">Manage Users</a>
                 </div>
                 <div>
                     <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/login}" class="btn btn-outline-light">Login</a>
