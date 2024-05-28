@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -52,10 +53,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
-    public String updateUser(String mail, String password, List<Role> roles) {
+    public String updateUser(String oldMail, String newMail, String password, ArrayList<Role> roles) {
         try {
-            User user = (User) loadUserByUsername(mail);
-
+            User user = userRepo.getByUsername(oldMail);
+            if (!newMail.equals(oldMail)) {
+                user.setUsername(newMail);
+            }
             if (password != null && !password.isEmpty()) {
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                 String hash = encoder.encode(password);

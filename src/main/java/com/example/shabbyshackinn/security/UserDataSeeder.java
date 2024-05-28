@@ -28,7 +28,7 @@ public class UserDataSeeder {
             addUser("Andreas.holmber@airbnb.se", "Receptionist", "2");
         }
         if (userRepository.getByUsername("Felix.Dahlberg@airbnb.se") == null) {
-            addUser("Felix.Dahlberg@airbnb.se", "Receptionist", "3");
+            addUser("Felix.Dahlberg@airbnb.se", "Receptionist","3");
         }
     }
     

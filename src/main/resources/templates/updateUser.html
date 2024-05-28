@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Update User</h2>
+            <div class="center-div">
+                <form th:action="@{/shabbyShackInn/updateUser}" method="post">
+                    <input type=hidden id="oldUsername" name="oldUsername" th:value="${username}"><br>
+                    <div style="padding-left: 18px">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" th:value="${username}"
+                                   pattern="\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Fill in if you want new password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="New password">
+                        </div>
+                        <div class="form-group">
+                            <label for="roles">Roles</label>
+                            <div th:each="role : ${allRoles}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="roles" name="roles" th:value="${role}"
+                                           th:checked="${#lists.contains(userRoles, role)}">
+                                    <label class="form-check-label" th:for="${role}"
+                                           th:text="${role}"></label>
+                                </div>
+                             </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
