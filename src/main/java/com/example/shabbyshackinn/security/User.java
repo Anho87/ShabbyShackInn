@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ public class User {
     private String password;
     private boolean enabled;
     private String resetToken;
+    private LocalDateTime resetTokenCreationTime;
     
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
