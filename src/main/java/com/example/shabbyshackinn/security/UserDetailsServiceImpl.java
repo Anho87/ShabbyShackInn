@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,21 +85,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userRepo.save(user);
     }
 
-    public void updatePassword(String token, String newPassword) {
-        // Hämta användaren baserat på token
+    public String updatePassword(String token, String newPassword) {
+    
         User user = userRepo.findUserByResetToken(token);
-
-        if (user != null) {
-
+        LocalDateTime now = LocalDateTime.now();
+        if (user == null) {
+            return"Your password wasn't updated";
+            
+        } else if(now.isAfter(user.getResetTokenCreationTime())){
+//            user.setResetToken(null);
+//            user.setResetTokenCreationTime(null);
+            resetUserTokens(user);
+            return"Time has expired for you password reset link";
+        }else{
             String hashedPassword = passwordEncoder.encode(newPassword);
-
-
             user.setPassword(hashedPassword);
-            user.setResetToken(null);
+//            user.setResetToken(null);
+//            user.setResetTokenCreationTime(null);
+            resetUserTokens(user);
             userRepo.save(user);
-        } else {
-
-            throw new RuntimeException("Kunde inte hitta användaren med token: " + token);
+            return"Password updated";
         }
+    }
+    
+    private void resetUserTokens(User user){
+        user.setResetToken(null);
+        user.setResetTokenCreationTime(null);
     }
 }
