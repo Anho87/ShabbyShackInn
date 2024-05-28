@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+
 @Controller
 public class AuthController {
 
@@ -37,23 +39,23 @@ public class AuthController {
 
     @PostMapping("/handleResetPassword")
     public String handleResetPassword(@RequestParam("email") String email, RedirectAttributes redirectAttributes) {
-        // Generera en token för återställning av lösenord
-        String resetToken = TokenGenerator.generateToken(32); // Ange önskad längd för token här
-//        System.out.println(email);
+        
+        String resetToken = TokenGenerator.generateToken(32); 
+        LocalDateTime now = LocalDateTime.now().plusHours(24);
+
         User user = userDetailsService.getUserByEmail(email);
         user.setResetToken(resetToken);
+        user.setResetTokenCreationTime(now);
         userDetailsService.saveUserToken(user);
-        // Skapa återställningslänk med token
+     
         String resetLink = "http://localhost:8080/resetPassword/" + resetToken;
-
-        // Skicka e-postmeddelande med återställningslänk
+        
         SimpleMailMessage feedback = new SimpleMailMessage();
         feedback.setTo(email);
         feedback.setSubject("Återställning av Lösenord");
         feedback.setText("För att återställa ditt lösenord, klicka på länken nedan:\n" + resetLink);
         javaMailSender.send(feedback);
-
-        // Skicka tillbaka en bekräftelse till användaren och omdirigera till inloggningssidan
+        
         redirectAttributes.addFlashAttribute("message", "En återställningslänk har skickats till " + email);
         return "redirect:/login";
     }

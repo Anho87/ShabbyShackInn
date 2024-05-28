@@ -8,6 +8,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/shabbyShackInn/index}" class="btn btn-success">Tillbaka till startsidan</a>
 <div th:if="${feedback}" class="alert alert-success alert-dismissible fade show" role="alert">
     <span th:text="${feedback}"></span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -33,9 +33,9 @@ private final UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/updatedPassword")
     public String updatedPassword(@RequestParam("token") String token, @RequestParam("password") String password, RedirectAttributes redirectAttributes){
-        userDetailsService.updatePassword(token, password); 
+        String feedback =  userDetailsService.updatePassword(token, password); 
 
-        redirectAttributes.addFlashAttribute("message", "Ditt lösenord är nu ändrat");
+        redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/login";
     }
 }
