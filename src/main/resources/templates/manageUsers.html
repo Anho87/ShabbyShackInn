@@ -34,7 +34,7 @@
             <tr th:each="user : ${allUsers}">
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.getAuthorities()}"></td>
-                <td><a th:href="@{/shabbyShackInn/index}">Update</a></td>
+                <td><a th:href="@{/shabbyShackInn/updateUserForm/{username}(username=${user.username})}">Update</a></td>
             </tr>
             </tbody>
         </table>
