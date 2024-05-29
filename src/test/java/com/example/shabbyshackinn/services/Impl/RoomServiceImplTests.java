@@ -15,10 +15,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +37,7 @@ public class RoomServiceImplTests {
     private BookingService bookingService;
 
     @InjectMocks
-    private RoomServiceImpl service = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
+    private RoomServiceImpl service;
     Long customerId = 1L;
     String firstName = "John";
     String lastName = "Doe";
@@ -103,7 +100,7 @@ public class RoomServiceImplTests {
         List<DetailedRoomDto> allRoom = service2.getAllRooms();
 
         assertEquals(1, allRoom.size());
-        assertEquals(1L,allRoom.get(0).getId());
+        assertEquals(1L, allRoom.get(0).getId());
     }
 
     @Test
@@ -149,7 +146,7 @@ public class RoomServiceImplTests {
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), roomWith3Beds.getRoomNumber());
     }
-    
+
     @Test
     void findMiniRoomByRoomNumber() {
         when(roomRepo.findRoomByRoomNumber(roomWith3Beds.getRoomNumber())).thenReturn(roomWith3Beds);
@@ -160,5 +157,39 @@ public class RoomServiceImplTests {
         assertEquals(actual.getRoomNumber(), roomWith3Beds.getRoomNumber());
     }
 
+    @Test
+    void testSearchAvailableRooms_PastDates() {
+        LocalDate pastStartDate = LocalDate.now().minusDays(10);
+        LocalDate pastEndDate = LocalDate.now().minusDays(5);
+        List<DetailedRoomDto> result = service.searchAvailableRooms(pastStartDate, pastEndDate, 2);
+        assertEquals(0, result.size());
+    }
 
+    @Test
+    void testSearchAvailableRooms_NoBigEnoughRooms() {
+        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(3)).thenReturn(Collections.emptyList());
+        when(bookingService.findBookingByDates(startDate, endDate)).thenReturn(Collections.emptyList());
+
+        List<DetailedRoomDto> result = service.searchAvailableRooms(startDate, endDate, 3);
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void testSearchAvailableRooms_AlreadyBookedRooms() {
+        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(2)).thenReturn(List.of(roomWith3Beds, roomWith2Beds, roomWith4Beds));
+        when(bookingService.findBookingByDates(startDate, endDate)).thenReturn(List.of(detailedBookingDto));
+        when(roomRepo.findAllByIdIsNot(List.of(roomId))).thenReturn(List.of(roomWith2Beds, roomWith4Beds));
+
+        List<DetailedRoomDto> result = service.searchAvailableRooms(startDate, endDate, 2);
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void testSearchAvailableRooms_AvailableRooms() {
+        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(2)).thenReturn(List.of(roomWith3Beds, roomWith2Beds, roomWith4Beds));
+        when(bookingService.findBookingByDates(startDate, endDate)).thenReturn(Collections.emptyList());
+
+        List<DetailedRoomDto> result = service.searchAvailableRooms(startDate, endDate, 2);
+        assertEquals(3, result.size());
+    }
 }

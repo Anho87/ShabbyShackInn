@@ -53,8 +53,6 @@ public class RoomServiceImpl implements RoomService {
     
     @Override
     public MiniRoomDto findMiniRoomByRoomNumber(int roomNumber){
-//       Room room = roomRepo.findAll().stream().filter(r -> r.getRoomNumber() == roomNumber).findFirst().get();
-//       return roomToMiniRoomDto(room);
         return roomToMiniRoomDto(roomRepo.findRoomByRoomNumber(roomNumber));
     }
     
@@ -72,7 +70,6 @@ public class RoomServiceImpl implements RoomService {
     public List<DetailedRoomDto> findAvailableRooms(List<Long> alreadyBookedRoomsIds) {
             return roomRepo.findAllByIdIsNot(alreadyBookedRoomsIds).stream()
                     .map(this::roomToDetailedRoomDTO).toList();
- 
     }
 
     @Override
@@ -86,7 +83,6 @@ public class RoomServiceImpl implements RoomService {
 
         LocalDate today = LocalDate.now();
 
-        // Ensure the search only considers future dates
         if (startDate.isBefore(today) && endDate.isAfter(startDate)) {
             return Collections.emptyList();
         }
