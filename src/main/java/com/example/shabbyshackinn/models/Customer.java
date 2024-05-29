@@ -32,17 +32,18 @@ public class Customer {
     private String phone;
     @Email
     private String eMail;
-    
+
     @OneToMany(mappedBy = "customer")
     private List<Booking> bookings;
-    
-    public Customer(Long id,String name, String lastName, String phone, String eMail) {
+
+    public Customer(Long id, String name, String lastName, String phone, String eMail) {
         this.id = id;
         this.firstName = name;
         this.lastName = lastName;
         this.phone = phone;
         this.eMail = eMail;
     }
+
     public Customer(String name, String lastName, String phone, String eMail) {
         this.firstName = name;
         this.lastName = lastName;
@@ -58,8 +59,8 @@ public class Customer {
         this.eMail = eMail;
         this.bookings = bookings;
     }
-    
-    public void addBooking(Booking booking){
+
+    public void addBooking(Booking booking) {
         bookings.add(booking);
     }
 }

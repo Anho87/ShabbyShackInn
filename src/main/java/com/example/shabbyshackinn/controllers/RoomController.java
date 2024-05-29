@@ -48,7 +48,7 @@ public class RoomController {
                     .filter(roomsNotAlreadyBooked::contains)
                     .toList();
             model.addAttribute("searchResults", availableRooms);
-        }else {
+        } else {
             System.out.println("list is empty");
             List<DetailedRoomDto> availableRooms = toSmallroomsList;
             model.addAttribute("searchResults", availableRooms);

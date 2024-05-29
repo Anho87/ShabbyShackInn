@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -98,7 +95,7 @@ public class RoomServiceImplTests {
         List<DetailedRoomDto> allRoom = service2.getAllRooms();
 
         assertEquals(1, allRoom.size());
-        assertEquals(1L,allRoom.get(0).getId());
+        assertEquals(1L, allRoom.get(0).getId());
     }
 
     @Test
@@ -144,7 +141,7 @@ public class RoomServiceImplTests {
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), roomWith3Beds.getRoomNumber());
     }
-    
+
     @Test
     void findMiniRoomByRoomNumber() {
         when(roomRepo.findRoomByRoomNumber(roomWith3Beds.getRoomNumber())).thenReturn(roomWith3Beds);

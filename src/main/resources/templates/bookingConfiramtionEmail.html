@@ -1,87 +1,95 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>BookingEmailConformation</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookingEmailConformation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  .header {
-    text-align: center;
-    padding: 10px 0;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 10px 10px 0 0;
-  }
-  .content {
-    padding: 20px;
-  }
-  .content h1 {
-    color: #333333;
-  }
-  .content p {
-    color: #666666;
-    line-height: 1.5;
-  }
-  .footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 0 0 10px 10px;
-  }
-  .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    color: white;
-    background-color: #4CAF50;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
-  }
-  .btn:hover {
-    background-color: #45a049;
-  }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        text-align: center;
+        padding: 10px 0;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .content h1 {
+        color: #333333;
+    }
+
+    .content p {
+        color: #666666;
+        line-height: 1.5;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        color: white;
+        background-color: #4CAF50;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
 </style>
 <body>
 <div class="container">
-  <div class="header">
-    <h2>Booking Confirmation</h2>
-  </div>
-  <div class="content">
-    <h1>Hello, <span th:text="${customer_name}"></span></h1>
-    <p>Thank you for your booking! Here are your booking details:</p>
-    <p>
-      <strong>Booking number:</strong> <span th:text="${booking_number}"></span><br>
-      <strong>Start date:</strong> <span th:text="${booking_startdate}"></span><br>
-      <strong>End date:</strong> <span th:text="${booking_endDate}"></span><br>
-      <strong>Name:</strong> <span th:text="${customer_name}"></span><br>
-      <strong>Amount Paid:</strong> <span th:text="${amount_paid}">kr</span><br>
-    </p>
-    <p>If you have any questions or need to make changes to your booking, please do not contact us at:</p>
-    <p>
-      <strong>Email:</strong> shabbyshack@Inn.se<br>
-      <strong>Phone:</strong> (123) 456-7890
-    </p>
-  </div>
-  <div class="footer">
-    <p>&copy; 2024 ShabbyShackInn. All rights reserved.</p>
-  </div>
+    <div class="header">
+        <h2>Booking Confirmation</h2>
+    </div>
+    <div class="content">
+        <h1>Hello, <span th:text="${customer_name}"></span></h1>
+        <p>Thank you for your booking! Here are your booking details:</p>
+        <p>
+            <strong>Booking number:</strong> <span th:text="${booking_number}"></span><br>
+            <strong>Start date:</strong> <span th:text="${booking_startdate}"></span><br>
+            <strong>End date:</strong> <span th:text="${booking_endDate}"></span><br>
+            <strong>Name:</strong> <span th:text="${customer_name}"></span><br>
+            <strong>Amount Paid:</strong> <span th:text="${amount_paid}">kr</span><br>
+        </p>
+        <p>If you have any questions or need to make changes to your booking, please do not contact us at:</p>
+        <p>
+            <strong>Email:</strong> shabbyshack@Inn.se<br>
+            <strong>Phone:</strong> (123) 456-7890
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 ShabbyShackInn. All rights reserved.</p>
+    </div>
 </div>
 </body>
 </html>

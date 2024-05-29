@@ -9,8 +9,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 @Service
-public class XmlStreamProvider{
-    
+public class XmlStreamProvider {
+
     @Autowired
     private IntegrationProperties properties;
 

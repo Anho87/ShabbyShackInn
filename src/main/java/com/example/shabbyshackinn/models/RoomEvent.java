@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
         @JsonSubTypes.Type(value = RoomCleaningStarted.class, name = "RoomCleaningStarted"),
         @JsonSubTypes.Type(value = RoomOpened.class, name = "RoomOpened")
 })
-// [x] Received '{"type":"RoomOpened","TimeStamp":"2024-05-13T17:36:27.15293805","RoomNo":"7"}'
 
 @Entity
 @NoArgsConstructor

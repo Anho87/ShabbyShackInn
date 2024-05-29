@@ -21,7 +21,7 @@ public class ShippersServiceTests {
 
     @Autowired
     ShipperRepo shipperRepo;
-    
+
     ShipperServiceImpl sut;
 
     @BeforeEach()
@@ -35,7 +35,7 @@ public class ShippersServiceTests {
 
         List<Shippers> result = sut.getShippersFromAPI();
 
-        assertEquals(3, result.size() );
+        assertEquals(3, result.size());
         assertEquals(1, result.get(0).getId());
         assertEquals("Svensson-Karlsson", result.get(0).getCompanyName());
         assertEquals("070-569-3764", result.get(0).getPhone());
@@ -47,8 +47,7 @@ public class ShippersServiceTests {
         assertEquals(3, result.get(2).getId());
         assertEquals("Karlsson Gruppen", result.get(2).getCompanyName());
         assertEquals("076-869-7192", result.get(2).getPhone());
-        
-        
+
 
     }
 }

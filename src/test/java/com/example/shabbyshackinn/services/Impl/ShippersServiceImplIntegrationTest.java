@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ShippersServiceImplIntegrationTest {
     @Autowired
     ShipperRepo shipperRepo;
-    
+
     @Autowired
     JsonStreamProvider jsonStreamProvider;
-    
+
     ShipperServiceImpl sut;
 
     @Test
@@ -42,7 +42,7 @@ public class ShippersServiceImplIntegrationTest {
         assertTrue(result.contains("\"phone\""));
         assertTrue(result.contains("\"fax\""));
     }
-    
+
     @Test
     void getShippersWillFetchAndGetRightData() throws IOException {
         sut = new ShipperServiceImpl(jsonStreamProvider, shipperRepo);
@@ -89,7 +89,7 @@ public class ShippersServiceImplIntegrationTest {
         Shippers shipper8 = shippersList.get(7);
         assertEquals(8, shipper8.getId());
         assertEquals("Johansson-Änglund", shipper8.getCompanyName());
-        assertEquals("070-136-6555", shipper8.getPhone());  
+        assertEquals("070-136-6555", shipper8.getPhone());
     }
-    
+
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -25,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.getByUsername(username);
-        
+
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user: " + username);
         }
@@ -56,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public String updateUser(String oldMail, String newMail, String password, ArrayList<Role> roles) {
         try {
             User user = userRepo.getByUsername(oldMail);
-            if (user ==null) {
+            if (user == null) {
                 return "User not found";
             }
             if (!newMail.equals(oldMail)) {
@@ -78,7 +77,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
 
-
     public User getUserByResetToken(String token) {
         return userRepo.findUserByResetToken(token);
     }
@@ -87,34 +85,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRepo.getByUsername(email);
     }
 
-    public void saveUserToken(User user){
+    public void saveUserToken(User user) {
         userRepo.save(user);
     }
 
     public String updatePassword(String token, String newPassword) {
-    
+
         User user = userRepo.findUserByResetToken(token);
         LocalDateTime now = LocalDateTime.now();
         if (user == null) {
-            return"Your password wasn't updated";
-            
-        } else if(now.isAfter(user.getResetTokenCreationTime())){
-//            user.setResetToken(null);
-//            user.setResetTokenCreationTime(null);
+            return "Your password wasn't updated";
+
+        } else if (now.isAfter(user.getResetTokenCreationTime())) {
             resetUserTokens(user);
-            return"Time has expired for you password reset link";
-        }else{
+            return "Time has expired for you password reset link";
+        } else {
             String hashedPassword = passwordEncoder.encode(newPassword);
             user.setPassword(hashedPassword);
-//            user.setResetToken(null);
-//            user.setResetTokenCreationTime(null);
             resetUserTokens(user);
             userRepo.save(user);
-            return"Password updated";
+            return "Password updated";
         }
     }
-    
-    private void resetUserTokens(User user){
+
+    private void resetUserTokens(User user) {
         user.setResetToken(null);
         user.setResetTokenCreationTime(null);
     }

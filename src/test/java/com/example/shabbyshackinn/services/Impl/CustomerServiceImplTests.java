@@ -91,7 +91,7 @@ class CustomerServiceImplTests {
         List<DetailedCustomerDto> allCustomers = service2.getAllCustomers();
 
         assertEquals(1, allCustomers.size());
-        assertEquals(allCustomers.get(0).getFirstName(),customer.getFirstName());
+        assertEquals(allCustomers.get(0).getFirstName(), customer.getFirstName());
     }
 
     @Test

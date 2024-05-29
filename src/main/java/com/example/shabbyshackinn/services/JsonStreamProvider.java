@@ -16,9 +16,9 @@ import java.util.List;
 
 @Service
 public class JsonStreamProvider {
-    
+
     @Autowired
-    private IntegrationProperties properties;   
+    private IntegrationProperties properties;
 
     public InputStream getDataStreamFullBlacklist() throws IOException {
         URL url = new URL(properties.getBlackListProperties().getUrl());
@@ -45,7 +45,7 @@ public class JsonStreamProvider {
     }
 
     public URLConnection getUpdateBlacklistConnection(String email) throws IOException {
-        URL url = new URL(   properties.getBlackListProperties().getUrl() + "/" + email);
+        URL url = new URL(properties.getBlackListProperties().getUrl() + "/" + email);
         return url.openConnection();
     }
 

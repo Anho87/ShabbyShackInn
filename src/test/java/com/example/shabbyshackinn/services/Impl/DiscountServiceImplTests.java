@@ -64,21 +64,6 @@ class DiscountServiceImplTests {
             .miniCustomerDto(miniCustomerDto).miniRoomDto(miniRoomDto).totalPrice(totalPrice).build();
 
 
-//    @Test
-//    void calculateTotalDiscountForCustomerWithSundayDiscountAndLongStayDiscount() {
-//        LocalDate today = LocalDate.now();
-//
-//        // Mock roomRepo behavior
-//        when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
-//
-//        // Mock bookingRepo behavior (only 2 nights booked last year)
-//        when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today.minusYears(1), today)).thenReturn(Optional.of(2));
-//
-//        int discountedPrice = service.calculateDiscount(roomId, customerId, detailedBookingDto);
-//
-//        assertEquals(9930, discountedPrice);
-//    }
-
     @Test
     void calculateTotalDiscountForCustomersWithAllDiscounts() {
         LocalDate today = LocalDate.now();
@@ -105,7 +90,6 @@ class DiscountServiceImplTests {
         DetailedBookingDto detailedBookingDto3 = new DetailedBookingDto(bookingId, sunday8DaysBeforeMonday, monday, bookingNumber, extraBedsWanted, totalPriceFor2Sundays, miniRoomDto);
         DetailedBookingDto detailedBookingDto4 = new DetailedBookingDto(bookingId, sunday.minusDays(1), monday.minusDays(1), bookingNumber, extraBedsWanted, price, miniRoomDto);
 
-        // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
         double noDiscount = service.calculateSundayDiscount(detailedBookingDto4, price);
@@ -123,7 +107,6 @@ class DiscountServiceImplTests {
         DetailedBookingDto detailedBookingDto2 = new DetailedBookingDto(bookingId, startDate, endDate, bookingNumber, extraBedsWanted, price, miniRoomDto);
         DetailedBookingDto detailedBookingDto3 = new DetailedBookingDto(bookingId, startDate, endDate.minusDays(9), bookingNumber, extraBedsWanted, totalPrice10Days, miniRoomDto);
 
-        // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
         double discountedPriceFor10Days = service.calculateLongStayDiscount(detailedBookingDto2, totalPrice10Days);
@@ -138,10 +121,8 @@ class DiscountServiceImplTests {
         LocalDate today = LocalDate.now();
         double totalStandardPrice = (int) (ChronoUnit.DAYS.between(startDate, endDate) * price);
 
-        // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
-        // Mock bookingRepo behavior
         when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today.minusYears(1), today)).thenReturn(Optional.of(10));
 
         double discountedPrice = service.calculateLoyaltyDiscount(roomId, totalStandardPrice);
@@ -154,10 +135,8 @@ class DiscountServiceImplTests {
         LocalDate today = LocalDate.now();
         double totalStandardPrice = (int) (ChronoUnit.DAYS.between(startDate, endDate) * price);
 
-        // Mock roomRepo behavior
         when(roomRepo.findById(roomId)).thenReturn(Optional.of(room));
 
-        // Mock bookingRepo behavior
         when(bookingRepo.sumNightsByCustomerIdAndYear(customerId, today.minusYears(1), today)).thenReturn(Optional.of(9));
 
         double discountedPrice = service.calculateLoyaltyDiscount(roomId, totalStandardPrice);

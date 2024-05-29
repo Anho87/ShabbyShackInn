@@ -3,11 +3,12 @@ package com.example.shabbyshackinn.services.Impl;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.RoomRepo;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -15,18 +16,7 @@ public class RoomRepoIntegrationTest {
 
     @Autowired
     private RoomRepo roomRepo;
-
-//    @BeforeEach
-//    void setUp() {
-//        roomRepo.deleteAll();
-//        
-//        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
-//        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
-//        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
-//        
-//        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
-//    }
-
+    
     @Test
     void findRoomByRoomNumber() {
         roomRepo.deleteAll();

@@ -39,23 +39,23 @@ public class AuthController {
 
     @PostMapping("/handleResetPassword")
     public String handleResetPassword(@RequestParam("email") String email, RedirectAttributes redirectAttributes) {
-        
-        String resetToken = TokenGenerator.generateToken(32); 
+
+        String resetToken = TokenGenerator.generateToken(32);
         LocalDateTime now = LocalDateTime.now().plusHours(24);
 
         User user = userDetailsService.getUserByEmail(email);
         user.setResetToken(resetToken);
         user.setResetTokenCreationTime(now);
         userDetailsService.saveUserToken(user);
-     
+
         String resetLink = "http://localhost:8080/resetPassword/" + resetToken;
-        
+
         SimpleMailMessage feedback = new SimpleMailMessage();
         feedback.setTo(email);
         feedback.setSubject("Återställning av Lösenord");
         feedback.setText("För att återställa ditt lösenord, klicka på länken nedan:\n" + resetLink);
         javaMailSender.send(feedback);
-        
+
         redirectAttributes.addFlashAttribute("message", "En återställningslänk har skickats till " + email);
         return "redirect:/login";
     }

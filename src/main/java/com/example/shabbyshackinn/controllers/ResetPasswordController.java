@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ResetPasswordController {
-private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public ResetPasswordController(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -23,7 +23,6 @@ private final UserDetailsServiceImpl userDetailsService;
     public String showResetPasswordForm(@PathVariable("token") String token, Model model) {
         User user = userDetailsService.getUserByResetToken(token);
         if (user == null) {
-            // Tokenet är ogiltigt eller har gått ut, visa en felmeddelande-sida eller omdirigera till en felhanteringssida
             return "invalid-token";
         }
         System.out.println(user.getUsername());
@@ -32,8 +31,8 @@ private final UserDetailsServiceImpl userDetailsService;
     }
 
     @PostMapping("/updatedPassword")
-    public String updatedPassword(@RequestParam("token") String token, @RequestParam("password") String password, RedirectAttributes redirectAttributes){
-        String feedback =  userDetailsService.updatePassword(token, password); 
+    public String updatedPassword(@RequestParam("token") String token, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+        String feedback = userDetailsService.updatePassword(token, password);
 
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/login";

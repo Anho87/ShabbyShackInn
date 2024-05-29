@@ -21,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepo customerRepo;
     private final BookingRepo bookingRepo;
 
-    public CustomerServiceImpl(CustomerRepo customerRepo,BookingRepo bookingRepo) {
+    public CustomerServiceImpl(CustomerRepo customerRepo, BookingRepo bookingRepo) {
         this.customerRepo = customerRepo;
         this.bookingRepo = bookingRepo;
     }
@@ -30,8 +30,9 @@ public class CustomerServiceImpl implements CustomerService {
     public List<DetailedCustomerDto> getAllCustomers() {
         return customerRepo.findAll().stream().map(c -> customerToDetailedCustomerDTO(c)).toList();
     }
+
     @Override
-    public List<MiniCustomerDto> getallMiniCustomers(){
+    public List<MiniCustomerDto> getallMiniCustomers() {
         return customerRepo.findAll().stream().map(c -> customerToMiniCustomerDto(c)).toList();
     }
 
@@ -57,14 +58,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    public MiniBookingDto bookingToMiniBookingDto(Booking booking){
+    public MiniBookingDto bookingToMiniBookingDto(Booking booking) {
         return MiniBookingDto.builder().id(booking.getId()).startDate(booking.getStartDate()).endDate(booking.getEndDate())
-                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(),booking.getRoom().getRoomType(),booking.getRoom().getRoomNumber()))
-                .miniCustomerDto(new MiniCustomerDto(booking.getCustomer().getId(),booking.getCustomer().getFirstName(),booking.getCustomer().getLastName(),booking.getCustomer().getEMail())).build();
+                .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
+                .miniCustomerDto(new MiniCustomerDto(booking.getCustomer().getId(), booking.getCustomer().getFirstName(), booking.getCustomer().getLastName(), booking.getCustomer().getEMail())).build();
     }
-    
-    
-    public MiniCustomerDto findMiniCustomerById(Long id){
+
+
+    public MiniCustomerDto findMiniCustomerById(Long id) {
         return customerToMiniCustomerDto(customerRepo.findById(id).get());
     }
 
@@ -78,9 +79,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.save(detailedCustomerToCustomer(customer));
         return "Customer " + customer.getFirstName() + " is saved";
     }
-    
+
     @Override
-    public String updateCustomer(DetailedCustomerDto customer){
+    public String updateCustomer(DetailedCustomerDto customer) {
         customerRepo.save(detailedCustomerToCustomer(customer));
         return "Customer " + customer.getFirstName() + " is updated";
     }
@@ -89,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer detailedCustomerToCustomer(DetailedCustomerDto c) {
         return Customer.builder().id(c.getId()).firstName(c.getFirstName()).lastName(c.getLastName())
                 .phone(c.getPhone()).eMail(c.getEMail()).build();
-                
+
     }
 
     @Override
@@ -97,19 +98,19 @@ public class CustomerServiceImpl implements CustomerService {
         return MiniCustomerDto.builder().id(customer.getId()).firstName(customer.getFirstName())
                 .lastName(customer.getLastName()).eMail(customer.getEMail()).build();
     }
-    
+
     @Override
-    public String deleteCustomer(Long id){
+    public String deleteCustomer(Long id) {
         Customer customer = customerRepo.findById(id).orElse(null);
         if (customer == null) {
             return "Customer not found";
         }
-        
+
         if (!customerHasActiveBookings(customer)) {
             return "Customer has ongoing bookings";
         }
-        
-        List<Booking> bookings = customer.getBookings();   
+
+        List<Booking> bookings = customer.getBookings();
         for (Booking booking : bookings) {
             booking.setCustomer(null);
             bookingRepo.save(booking);
@@ -117,9 +118,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.deleteById(id);
         return "Customer deleted";
     }
-    
+
     @Override
-    public Boolean customerHasActiveBookings(Customer customer){
+    public Boolean customerHasActiveBookings(Customer customer) {
         return customer.getBookings().stream()
                 .allMatch(booking -> LocalDate.now().isAfter(booking.getEndDate()));
     }

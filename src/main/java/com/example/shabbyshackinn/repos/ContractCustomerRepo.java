@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ContractCustomerRepo extends JpaRepository<ContractCustomer, Long> {
     List<ContractCustomer> findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
-            (String CompanyName,String ContactName,String Country,Sort sort);
+            (String CompanyName, String ContactName, String Country, Sort sort);
+
     ContractCustomer findContractCustomerByExternalSystemId(int externalSystemId);
 }

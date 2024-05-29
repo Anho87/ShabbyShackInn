@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
     List<User> getAllUsers();
 
     User getUserByResetToken(String token);

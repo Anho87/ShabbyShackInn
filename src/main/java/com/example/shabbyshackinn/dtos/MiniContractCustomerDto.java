@@ -16,5 +16,5 @@ public class MiniContractCustomerDto {
     private String companyName;
     private String contactName;
     private String country;
-    
+
 }

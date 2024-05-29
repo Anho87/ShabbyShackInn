@@ -9,17 +9,28 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ContractCustomerService {
-    
+
     List<ContractCustomer> getAllContractCustomers();
+
     String addContractCustomer(ContractCustomer contractCustomer);
+
     List<MiniContractCustomerDto> getAllMiniContractCustomers();
+
     MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer);
+
     String saveOrUpdateContractCustomer(ContractCustomer contractCustomer);
+
     ContractCustomer getContractCustomerByExternalSystemId(int externalSystemId);
+
     String updateContractCustomer(ContractCustomer existingContractCustomer, ContractCustomer contractCustomer);
+
     DetailedContractCustomerDto contractCustomerToDetailedContractCustomerDto(ContractCustomer contractCustomer);
+
     DetailedContractCustomerDto findDetailedContractCustomerById(Long id);
+
     List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort);
-    void fetchAndSaveContractCustomers()throws IOException;
-    List<ContractCustomer> getContractCustomers()throws IOException;
+
+    void fetchAndSaveContractCustomers() throws IOException;
+
+    List<ContractCustomer> getContractCustomers() throws IOException;
 }

@@ -15,22 +15,22 @@ public class FetchShippers implements CommandLineRunner {
 
     @Autowired
     IntegrationProperties integrationProperties;
-    
+
     ShipperRepo shipperRepo;
 
 
-    public FetchShippers(ShipperRepo shipperRepo){
+    public FetchShippers(ShipperRepo shipperRepo) {
         this.shipperRepo = shipperRepo;
     }
-    
+
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Run FetchShippers");
         ObjectMapper objectMapper = new ObjectMapper();
         Shippers[] shippers = objectMapper.readValue(new URL(integrationProperties.getShippersProperties().getUrl()),
                 Shippers[].class);
-        
-        for (Shippers s: shippers){
+
+        for (Shippers s : shippers) {
             shipperRepo.save(s);
         }
     }

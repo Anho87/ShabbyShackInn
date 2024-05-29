@@ -8,15 +8,15 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan
 public class SeedUsers implements CommandLineRunner {
-    
+
     @Autowired
     private UserDataSeeder userDataSeeder;
 
     @Override
     public void run(String... args) throws Exception {
-        
+
     }
-    
+
     @Bean
     CommandLineRunner commandLineRunner() {
         return args -> {

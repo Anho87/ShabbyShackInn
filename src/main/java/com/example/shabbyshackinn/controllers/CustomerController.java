@@ -59,5 +59,5 @@ public class CustomerController {
         redirectAttributes.addFlashAttribute("feedback", feedback);
         return "redirect:/shabbyShackInn/index";
     }
-    
+
 }
