@@ -38,21 +38,10 @@ public class RoomController {
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("numberOfGuests", numberOfGuests);
-        List<DetailedRoomDto> toSmallroomsList = roomService.findBigEnoughRoomsForNumberOfGuests(numberOfGuests);
-        List<DetailedBookingDto> alreadyBookedRooms = bookingService.findBookingByDates(startDate, endDate);
-        if (!alreadyBookedRooms.isEmpty()) {
-            System.out.println("list not empty");
-            List<Long> roomsAlreadyBookedIdList = alreadyBookedRooms.stream().map(room -> room.getMiniRoomDto().getId()).toList();
-            List<DetailedRoomDto> roomsNotAlreadyBooked = roomService.findAvailableRooms(roomsAlreadyBookedIdList);
-            List<DetailedRoomDto> availableRooms = toSmallroomsList.stream()
-                    .filter(roomsNotAlreadyBooked::contains)
-                    .toList();
-            model.addAttribute("searchResults", availableRooms);
-        }else {
-            System.out.println("list is empty");
-            List<DetailedRoomDto> availableRooms = toSmallroomsList;
-            model.addAttribute("searchResults", availableRooms);
-        }
+
+        List<DetailedRoomDto> availableRooms = roomService.searchAvailableRooms(startDate, endDate, numberOfGuests);
+        model.addAttribute("searchResults", availableRooms);
+
         return "searchResults";
     }
 

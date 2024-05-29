@@ -15,4 +15,5 @@ public interface BookingRepo extends JpaRepository<Booking, Long> {
     List<Booking> findAllByEndDateAfter(LocalDate todayDate);
     List<Booking> findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(Long bookingId,Long roomId,LocalDate endDate, LocalDate startDate);
     List<Booking> findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate endDate, LocalDate startDate);
+
 }
