@@ -263,4 +263,35 @@ class BookingServiceImplTests {
         assertEquals(actual.getMiniRoomDto().getRoomType(), booking.getRoom().getRoomType());
         assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
     }
+
+    @Test
+    void findBookingByDates() {
+        Booking booking2 = new Booking(2L, LocalDate.now().plusDays(5), LocalDate.now().plusDays(10), 456, 2, 5000, customer, room);
+        List<Booking> bookings = Arrays.asList(booking, booking2);
+
+        // Test case where both bookings are found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(10), LocalDate.now().minusDays(1))).thenReturn(bookings);
+
+        List<DetailedBookingDto> resultWithBothBookingsFound = service.findBookingByDates(LocalDate.now().minusDays(1), LocalDate.now().plusDays(10));
+        assertNotNull(resultWithBothBookingsFound);
+        assertEquals(2, resultWithBothBookingsFound.size());
+
+        // Test case where only one booking is found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(3), LocalDate.now().minusDays(1))).thenReturn(Collections.singletonList(booking));
+
+        List<DetailedBookingDto> resultWithOneBookingFound = service.findBookingByDates(LocalDate.now().minusDays(1), LocalDate.now().plusDays(3));
+        assertNotNull(resultWithOneBookingFound);
+        assertEquals(1, resultWithOneBookingFound.size());
+
+        // Test case where no bookings are found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(15), LocalDate.now().plusDays(11))).thenReturn(Collections.emptyList());
+
+        List<DetailedBookingDto> resultWithNoBookingsFound = service.findBookingByDates(LocalDate.now().plusDays(11), LocalDate.now().plusDays(15));
+        assertNotNull(resultWithNoBookingsFound);
+        assertEquals(0, resultWithNoBookingsFound.size());
+
+        // Test case for invalid date range (startDate is after endDate)
+        List<DetailedBookingDto> resultWithInvalidDateRanges = service.findBookingByDates(LocalDate.now().plusDays(10), LocalDate.now().minusDays(1));
+        assertNull(resultWithInvalidDateRanges);
+    }
 }
