@@ -4,13 +4,14 @@ import com.example.shabbyshackinn.security.Role;
 import com.example.shabbyshackinn.security.RoleRepo;
 import com.example.shabbyshackinn.security.UserDetailsServiceImpl;
 import com.example.shabbyshackinn.security.UserRepo;
+import com.example.shabbyshackinn.security.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
