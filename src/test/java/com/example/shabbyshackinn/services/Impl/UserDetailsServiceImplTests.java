@@ -4,7 +4,6 @@ import com.example.shabbyshackinn.security.Role;
 import com.example.shabbyshackinn.security.User;
 import com.example.shabbyshackinn.security.UserDetailsServiceImpl;
 import com.example.shabbyshackinn.security.UserRepo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class UserDetailsServiceImplTests {
@@ -66,16 +65,16 @@ public class UserDetailsServiceImplTests {
 
     @Test
     void loadUserByUsername() {
-        Assertions.assertEquals(user1.getUsername(), sut.loadUserByUsername("user1@mail.test").getUsername());
-        Assertions.assertEquals(user1.getPassword(), sut.loadUserByUsername("user1@mail.test").getPassword());
-        Assertions.assertEquals(user1.getRoles().size(), sut.loadUserByUsername("user1@mail.test").getAuthorities().size());
+        assertEquals(user1.getUsername(), sut.loadUserByUsername("user1@mail.test").getUsername());
+        assertEquals(user1.getPassword(), sut.loadUserByUsername("user1@mail.test").getPassword());
+        assertEquals(user1.getRoles().size(), sut.loadUserByUsername("user1@mail.test").getAuthorities().size());
     }
 
     @Test
     void getAllUsers() {
         List<User> expectedUsers = new ArrayList<>(Arrays.asList(user1, user2));
 
-        Assertions.assertEquals(expectedUsers.size(), sut.getAllUsers().size());
+        assertEquals(expectedUsers.size(), sut.getAllUsers().size());
     }
 
     @Test
@@ -98,6 +97,22 @@ public class UserDetailsServiceImplTests {
         System.out.println("feedback" + feedBackUserDoesNotExistInDb);
         assertTrue(feedBackUserDoesNotExistInDb.equalsIgnoreCase("User not found"));
         assertTrue(feedBackUserExistInDb.equalsIgnoreCase("User updated successfully"));
+    }
+
+    @Test
+    void deleteUser() {
+        when(userRepo.getByUsername("user1@mail.test")).thenReturn(user1);
+        String feedback = sut.deleteUser("user1@mail.test");
+        assertEquals("User deleted successfully", feedback);
+        verify(userRepo, times(1)).delete(user1);
+    }
+
+    @Test
+    void deleteUser_UserNotFound() {
+        when(userRepo.getByUsername("nonexistent@mail.test")).thenReturn(null);
+        String feedback = sut.deleteUser("nonexistent@mail.test");
+        assertEquals("User not found", feedback);
+        verify(userRepo, never()).delete(any(User.class));
     }
 
 }
