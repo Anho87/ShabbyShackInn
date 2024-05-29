@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,9 +30,10 @@ public class BookingServiceImpl implements BookingService {
     final private DiscountServiceImpl discountService;
     final private JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
-    
+    private final EmailService emailService;
 
-    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService,JavaMailSender javaMailSender,TemplateEngine templateEngine) {
+
+    public BookingServiceImpl(BlacklistService blacklistService, BookingRepo bookingRepo, CustomerRepo customerRepo, RoomRepo roomRepo, DiscountServiceImpl discountService, JavaMailSender javaMailSender, TemplateEngine templateEngine, EmailService emailService) {
         this.bookingRepo = bookingRepo;
         this.customerRepo = customerRepo;
         this.roomRepo = roomRepo;
@@ -39,6 +41,7 @@ public class BookingServiceImpl implements BookingService {
         this.discountService = discountService;
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
+        this.emailService = emailService;
     }
 
     @Override
@@ -71,7 +74,6 @@ public class BookingServiceImpl implements BookingService {
                 .miniRoomDto(new MiniRoomDto(booking.getRoom().getId(), booking.getRoom().getRoomType(), booking.getRoom().getRoomNumber()))
                 .build();
     }
-
 
     @Override
     public DetailedBookingDto findDetailedBookingById(Long id) {
@@ -112,22 +114,20 @@ public class BookingServiceImpl implements BookingService {
             Customer customer = customerRepo.findById(detailedBookingDto.getMiniCustomerDto().getId()).get();
             Room room = roomRepo.findById(detailedBookingDto.getMiniRoomDto().getId()).get();
             bookingRepo.save(detailedBookingDtoToBooking(detailedBookingDto, customer, room));
-            sendBookingConfirmationEmail(detailedBookingDto,customer,room);
+            sendBookingConfirmationEmail(detailedBookingDto, customer, room);
             return "Booking added";
         }
         return "Booking not added";
     }
 
-    private void sendBookingConfirmationEmail(DetailedBookingDto detailedBookingDto, Customer customer, Room room){
-        EmailService emailService = new EmailService(javaMailSender,templateEngine);
-        emailService.sendBookingConfirmedEmail(customer.getEMail(),"Booking Confirmation"
-        ,customer.getFirstName()
+    private void sendBookingConfirmationEmail(DetailedBookingDto detailedBookingDto, Customer customer, Room room) {
+        emailService.sendBookingConfirmedEmail(customer.getEMail(), "Booking Confirmation"
+                , customer.getFirstName()
                 , customer.getLastName()
-                ,detailedBookingDto.getBookingNumber()
-                ,detailedBookingDto.getStartDate().toString()
-                ,detailedBookingDto.getEndDate().toString()
-                ,detailedBookingDto.getTotalPrice());
-                
+                , detailedBookingDto.getBookingNumber()
+                , detailedBookingDto.getStartDate().toString()
+                , detailedBookingDto.getEndDate().toString()
+                , detailedBookingDto.getTotalPrice());
     }
 
     @Override
@@ -154,19 +154,16 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public boolean checkIfBookingPossible(DetailedBookingDto booking) {
         List<Booking> overlappingBookings = bookingRepo.findAllByIdIsNotAndRoomIdAndStartDateIsBeforeAndEndDateIsAfter(booking.getId(), booking.getMiniRoomDto().getId(), booking.getEndDate(), booking.getStartDate());
-        //System.out.println("New Booking = ID: " + booking.getId() + "|" + booking.getMiniRoomDto().getId() + "|" + booking.getStartDate() + "|" + booking.getEndDate());
-        //overlappingBookings.forEach(b -> System.out.println("Old bookings = ID: " + b.getId() + "|" + b.getRoom().getId() + "|" + b.getStartDate() + "|" + b.getEndDate()));
         return overlappingBookings.isEmpty();
     }
 
     @Override
     public List<DetailedBookingDto> findBookingByDates(LocalDate startDate, LocalDate endDate) {
         if (startDate.isBefore(endDate)) {
-            return bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate,startDate)
+            return bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(endDate, startDate)
                     .stream().map(this::bookingToDetailedBookingDto).toList();
-        }else {
-            return null;
+        } else {
+            return Collections.emptyList();
         }
     }
-
 }

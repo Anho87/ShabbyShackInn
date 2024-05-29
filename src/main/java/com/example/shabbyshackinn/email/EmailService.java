@@ -21,8 +21,8 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
-    
-    public void sendBookingConfirmedEmail(String to, String subject, String customerFirstName, String customerLastName, int bookingNumber, String bookingStartDate, String bookingEndDate, double amountPaid) {
+
+    public void sendBookingConfirmedEmail(String to, String subject, String customerFirstName, String customerLastName, int bookingNumber, String bookingStartDate, String bookingEndDate, int amountPaid) {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = null;
         try {
@@ -31,7 +31,7 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
 
-            
+
             Context context = new Context();
             context.setVariable("customer_name", customerFirstName + " " + customerLastName);
             context.setVariable("booking_number", bookingNumber);
