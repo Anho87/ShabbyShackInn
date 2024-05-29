@@ -30,7 +30,7 @@ public class ContractCustomer {
     public String country;
     public String phone;
     public String fax;
-    
+
 }
 
 

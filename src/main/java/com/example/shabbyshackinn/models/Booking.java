@@ -21,11 +21,9 @@ public class Booking {
     private Long id;
 
     @NotNull
-    //@FutureOrPresent
     private LocalDate startDate;
 
     @NotNull
-    //@Future
     private LocalDate endDate;
 
     @Positive
@@ -41,7 +39,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn
     private Customer customer;
-    
+
     @Valid
     @ManyToOne
     @JoinColumn

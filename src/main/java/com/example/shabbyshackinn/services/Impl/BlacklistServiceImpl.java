@@ -23,9 +23,7 @@ import java.util.List;
 public class BlacklistServiceImpl implements BlacklistService {
 
 
-
     private final ObjectMapper mapper = new JsonMapper();
-   // private final String apiUrl = "https://javabl.systementor.se/api/ShabbyShackInn/blacklist";
 
 
     @Autowired
@@ -64,7 +62,7 @@ public class BlacklistServiceImpl implements BlacklistService {
     }
 
     @Override
-    public BlacklistResponse checkIfEmailIsBlacklisted(String email){
+    public BlacklistResponse checkIfEmailIsBlacklisted(String email) {
         try {
             mapper.registerModule(new JavaTimeModule());
             InputStream stream = jsonStreamProvider.getDataStreamBlacklistCheck(email);
@@ -74,8 +72,9 @@ public class BlacklistServiceImpl implements BlacklistService {
         }
         return BlacklistResponse.builder().build();
     }
+
     @Override
-    public String updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer){
+    public String updateBlacklistedCustomer(BlackListedCustomer blackListedCustomer) {
         try {
             HttpURLConnection connection = (HttpURLConnection) jsonStreamProvider.getUpdateBlacklistConnection(blackListedCustomer.getEmail());
             connection.setRequestMethod("PUT");

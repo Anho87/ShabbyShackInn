@@ -21,13 +21,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
-    
+
     private String username;
     private String password;
     private boolean enabled;
     private String resetToken;
     private LocalDateTime resetTokenCreationTime;
-    
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
 }

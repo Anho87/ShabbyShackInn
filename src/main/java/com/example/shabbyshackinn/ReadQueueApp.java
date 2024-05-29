@@ -14,13 +14,15 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan
 public class ReadQueueApp implements CommandLineRunner {
-    
+
     RoomEventRepo roomEventRepo;
-    
+
     ReadQueueApp(RoomEventRepo roomEventRepo) {
         this.roomEventRepo = roomEventRepo;
     }
+
     private String queueName = "99429a76-e41f-4320-872a-baff34ca990d";
+
     @Override
     public void run(String... args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -38,10 +40,8 @@ public class ReadQueueApp implements CommandLineRunner {
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             RoomEvent roomEvent = mapper.readValue(delivery.getBody(), RoomEvent.class);
             roomEventRepo.save(roomEvent);
-//            String message = new String(delivery.getBody(), "UTF-8");
-//            System.out.println(" [x] Received '" + message + "'");
-            //https://www.baeldung.com/jackson-annotations#bd-jackson-polymorphic-type-handling-annotations
         };
-        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
+        channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+        });
     }
 }

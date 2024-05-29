@@ -23,19 +23,16 @@ public class HtmlEditorController {
     public HtmlEditorController(HtmlFileService htmlFileService) {
         this.htmlFileService = htmlFileService;
     }
-    
+
 
     @RequestMapping("/changeMailLayout")
     @PreAuthorize("hasAuthority('Admin')")
     public String showUpdateHtmlPage(Model model) {
         try {
-            // Läs in HTML-koden från filen
             String fileContent = new String(FileCopyUtils.copyToByteArray(new File("src/main/resources/templates/bookingConfiramtionEmail.html")));
 
-            // Skicka HTML-koden till vyn för rendering
             model.addAttribute("fileContent", fileContent);
         } catch (IOException e) {
-            // Hantera eventuella fel vid inläsning av filen
             e.printStackTrace();
         }
         return "changeMailLayout";
@@ -45,8 +42,8 @@ public class HtmlEditorController {
     @PreAuthorize("hasAuthority('Admin')")
     public String updateHtml(@RequestParam("htmlCode") String htmlCode) {
         System.out.println("hej");
-        htmlFileService.saveHtmlToFile(htmlCode); // Anropa din HtmlFileService för att spara HTML-koden till filen
-        return "redirect:/shabbyShackInn/index"; // eller någon annan sida
+        htmlFileService.saveHtmlToFile(htmlCode);
+        return "redirect:/shabbyShackInn/index";
     }
 }
     

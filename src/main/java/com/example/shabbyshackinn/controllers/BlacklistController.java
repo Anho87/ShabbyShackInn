@@ -4,8 +4,6 @@ package com.example.shabbyshackinn.controllers;
 import com.example.shabbyshackinn.models.BlackListedCustomer;
 import com.example.shabbyshackinn.services.BlacklistService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

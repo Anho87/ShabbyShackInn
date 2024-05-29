@@ -18,15 +18,15 @@ import static org.mockito.Mockito.when;
 public class ContractCustomerServiceImplIntegrationTest {
     @Autowired
     ContractCustomerRepo contractCustomerRepo;
-    
+
     @Autowired
     XmlStreamProvider xmlStreamProvider;
-    
+
     ContractCustomerServiceImpl sut;
-    
+
     @Test
     void getContractCustomersWillFetch() throws IOException {
-        sut = new ContractCustomerServiceImpl(xmlStreamProvider ,contractCustomerRepo);
+        sut = new ContractCustomerServiceImpl(xmlStreamProvider, contractCustomerRepo);
         Scanner s = new Scanner(sut.xmlStreamProvider.getDataStream()).useDelimiter("\\A");
         String result = s.hasNext() ? s.next() : "";
         System.out.println(result);
@@ -61,16 +61,13 @@ public class ContractCustomerServiceImplIntegrationTest {
         XmlStreamProvider xmlStreamProvider = mock(XmlStreamProvider.class);
         when(xmlStreamProvider.getDataStream()).thenReturn(getClass().getClassLoader().getResourceAsStream("contractCustomer.xml"));
 
-        sut = new ContractCustomerServiceImpl(xmlStreamProvider,contractCustomerRepo);
+        sut = new ContractCustomerServiceImpl(xmlStreamProvider, contractCustomerRepo);
 
-        // Arrange
         contractCustomerRepo.deleteAll();
 
-        // Act
         sut.fetchAndSaveContractCustomers();
 
-        //Assert
-        assertEquals(3,contractCustomerRepo.count());
+        assertEquals(3, contractCustomerRepo.count());
     }
-    
+
 }

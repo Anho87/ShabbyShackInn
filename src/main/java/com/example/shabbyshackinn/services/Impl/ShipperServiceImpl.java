@@ -18,7 +18,7 @@ import java.util.List;
 public class ShipperServiceImpl implements ShipperService {
 
     private final ObjectMapper mapper = new JsonMapper();
-    
+
     @Autowired
     public ShipperServiceImpl(JsonStreamProvider jsonStreamProvider, ShipperRepo shipperRepo) {
         this.jsonStreamProvider = jsonStreamProvider;
@@ -32,7 +32,7 @@ public class ShipperServiceImpl implements ShipperService {
     public List<Shippers> getShippers() throws IOException {
         return jsonStreamProvider.getDataStreamShippersAsList();
     }
-    
+
 
     @Override
     public List<Shippers> getShippersFromAPI() {

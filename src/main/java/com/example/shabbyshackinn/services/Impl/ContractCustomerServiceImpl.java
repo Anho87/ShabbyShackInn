@@ -13,29 +13,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.xml.catalog.Catalog;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ContractCustomerServiceImpl implements ContractCustomerService {
-    
+
     @Autowired
     public ContractCustomerServiceImpl(XmlStreamProvider xmlStreamProvider, ContractCustomerRepo contractCustomerRepo) {
         this.xmlStreamProvider = xmlStreamProvider;
         this.contractCustomerRepo = contractCustomerRepo;
     }
-    
+
     public ContractCustomerServiceImpl(ContractCustomerRepo contractCustomerRepo) {
         this.contractCustomerRepo = contractCustomerRepo;
     }
-    
+
     XmlStreamProvider xmlStreamProvider;
     final ContractCustomerRepo contractCustomerRepo;
-    
-    
+
+
     @Override
     public List<ContractCustomer> getAllContractCustomers() {
         return contractCustomerRepo.findAll();
@@ -46,25 +44,25 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         contractCustomerRepo.save(contractCustomer);
         return "Contract customer" + contractCustomer.companyName + "is saved!";
     }
-    
+
     @Override
-    public List<MiniContractCustomerDto> getAllMiniContractCustomers(){
+    public List<MiniContractCustomerDto> getAllMiniContractCustomers() {
         return contractCustomerRepo.findAll().stream().map(c -> contractCustomerToMiniContractCustomerDto(c)).toList();
     }
-    
-    
+
+
     @Override
-    public MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer){
+    public MiniContractCustomerDto contractCustomerToMiniContractCustomerDto(ContractCustomer contractCustomer) {
         return MiniContractCustomerDto.builder().id(contractCustomer.id).companyName(contractCustomer.companyName)
                 .contactName(contractCustomer.contactName).country(contractCustomer.country).build();
     }
-    
+
     @Override
     public String saveOrUpdateContractCustomer(ContractCustomer contractCustomer) {
         ContractCustomer existingContractCustomer = getContractCustomerByExternalSystemId(contractCustomer.externalSystemId);
-        if(existingContractCustomer != null){
-           return updateContractCustomer(existingContractCustomer, contractCustomer);
-        }else {
+        if (existingContractCustomer != null) {
+            return updateContractCustomer(existingContractCustomer, contractCustomer);
+        } else {
             return addContractCustomer(contractCustomer);
         }
     }
@@ -105,18 +103,18 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
                 .phone(contractCustomer.phone)
                 .fax(contractCustomer.fax)
                 .build();
-                
+
     }
 
     @Override
-    public DetailedContractCustomerDto findDetailedContractCustomerById(Long id){
+    public DetailedContractCustomerDto findDetailedContractCustomerById(Long id) {
         return contractCustomerToDetailedContractCustomerDto(contractCustomerRepo.findById(id).get());
     }
 
     @Override
     public List<ContractCustomer> findAllBySearchAndSortOrder(String searchWord, Sort sort) {
         return contractCustomerRepo.findAllByCompanyNameContainsOrContactNameContainsOrCountryContains
-                (searchWord,searchWord,searchWord,sort);
+                (searchWord, searchWord, searchWord, sort);
     }
 
     @Override
@@ -124,30 +122,21 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
         JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
-        InputStream stream =  xmlStreamProvider.getDataStream();
+        InputStream stream = xmlStreamProvider.getDataStream();
         AllContractCustomers allContractCustomers = xmlMapper.readValue(stream,
                 AllContractCustomers.class
         );
 
         return allContractCustomers.contractCustomers;
     }
+
     @Override
     public void fetchAndSaveContractCustomers() throws IOException {
-        for(ContractCustomer contractCustomer : getContractCustomers()){
+        for (ContractCustomer contractCustomer : getContractCustomers()) {
             ContractCustomer c = contractCustomerRepo.findContractCustomerByExternalSystemId(contractCustomer.externalSystemId);
-            if(c == null){
+            if (c == null) {
                 c = (new ContractCustomer());
             }
-//            c.externalSystemId= contractCustomer.externalSystemId;
-//            c.companyName = contractCustomer.companyName;
-//            c.contactName= contractCustomer.contactName;
-//            c.contactTitle= contractCustomer.contactTitle;
-//            c.streetAddress= contractCustomer.streetAddress;
-//            c.city= contractCustomer.city;
-//            c.postalCode= contractCustomer.postalCode;
-//            c.country= contractCustomer.country;
-//            c.phone= contractCustomer.phone;
-//            c.fax= contractCustomer.fax;
             contractCustomerRepo.save(c);
         }
     }

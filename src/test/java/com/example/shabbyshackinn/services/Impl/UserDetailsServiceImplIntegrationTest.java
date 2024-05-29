@@ -30,10 +30,11 @@ public class UserDetailsServiceImplIntegrationTest {
         roleRepo.save(roleReceptionist);
         roleRepo.save(roleAdmin);
 
-        userRepo.save(CreateUser("test1@test.test","Receptionist","123"));
-        userRepo.save(CreateUser("test2@test.test","Admin","456"));
-        userRepo.save(CreateUser("test3@test.test","Receptionist","789"));
+        userRepo.save(CreateUser("test1@test.test", "Receptionist", "123"));
+        userRepo.save(CreateUser("test2@test.test", "Admin", "456"));
+        userRepo.save(CreateUser("test3@test.test", "Receptionist", "789"));
     }
+
     private User CreateUser(String mail, String group, String password) {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleRepo.findByName(group));
@@ -44,31 +45,31 @@ public class UserDetailsServiceImplIntegrationTest {
     }
 
     @Test
-    void loadUserByUsername(){
+    void loadUserByUsername() {
         User user = userRepo.getByUsername("test1@test.test");
 
-        assertEquals("test1@test.test",user.getUsername());
-        assertEquals(1,user.getRoles().size());
+        assertEquals("test1@test.test", user.getUsername());
+        assertEquals(1, user.getRoles().size());
     }
 
     @Test
-    void findAllRoleNames(){
+    void findAllRoleNames() {
         List<String> roles = roleRepo.findAllRoleNames();
 
-        assertEquals(2,roles.size());
+        assertEquals(2, roles.size());
         assertTrue(roles.contains("Admin"));
         assertTrue(roles.contains("Receptionist"));
     }
 
     @Test
-    void findRoleByName(){
+    void findRoleByName() {
         Role roleReceptionist = Role.builder().name("Receptionist").build();
         Role roleAdmin = Role.builder().name("Admin").build();
 
         Role roleReceptionistResult = roleRepo.findByName("Receptionist");
         Role roleAdminResult = roleRepo.findByName("Admin");
 
-        assertEquals(roleAdmin.getName(),roleAdminResult.getName());
-        assertEquals(roleReceptionist.getName(),roleReceptionistResult.getName());
+        assertEquals(roleAdmin.getName(), roleAdminResult.getName());
+        assertEquals(roleReceptionist.getName(), roleReceptionistResult.getName());
     }
 }

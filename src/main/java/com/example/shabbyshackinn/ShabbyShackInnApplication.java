@@ -8,8 +8,8 @@ import java.util.Objects;
 
 @SpringBootApplication
 public class ShabbyShackInnApplication {
-    
-    
+
+
     public static void main(String[] args) {
         if (args.length == 0) {
             SpringApplication.run(ShabbyShackInnApplication.class, args);

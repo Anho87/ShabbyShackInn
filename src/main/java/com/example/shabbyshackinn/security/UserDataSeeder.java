@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class UserDataSeeder {
     @Autowired
     UserRepo userRepository;
-    
+
     @Autowired
     RoleRepo roleRepository;
-    
+
     public void seedUsers() {
         if (roleRepository.findByName("Admin") == null) {
             addRole("Admin");
@@ -28,20 +28,20 @@ public class UserDataSeeder {
             addUser("Andreas.holmber@airbnb.se", "Receptionist", "2");
         }
         if (userRepository.getByUsername("Felix.Dahlberg@airbnb.se") == null) {
-            addUser("Felix.Dahlberg@airbnb.se", "Receptionist","3");
+            addUser("Felix.Dahlberg@airbnb.se", "Receptionist", "3");
         }
     }
-    
+
     private void addUser(String mail, String group, String password) {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName(group));
-        
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hash = encoder.encode(password);
         User user = User.builder().enabled(true).password(hash).username(mail).roles(roles).build();
         userRepository.save(user);
     }
-    
+
     private void addRole(String name) {
         Role role = new Role();
         roleRepository.save(Role.builder().name(name).build());

@@ -16,5 +16,5 @@ public class MiniRoomDto {
     private Long id;
     private RoomType roomType;
     private int roomNumber;
-    
+
 }

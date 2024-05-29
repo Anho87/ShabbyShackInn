@@ -6,7 +6,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/shabbyShackInn/index}" class="btn btn-success">Back to main page</a>
+<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/shabbyShackInn/index}" class="btn btn-success">Back
+    to main page</a>
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
@@ -34,7 +35,7 @@
                                min="0" th:max="${possibleExtraBeds}" style="min-width: 190px"><br>
 
                         <label for="roomNumber">Room nr:</label><br>
-                        <input type="number" id="roomNumber" name="roomNumber" th:value="${roomNumber}" 
+                        <input type="number" id="roomNumber" name="roomNumber" th:value="${roomNumber}"
                                min="0" th:max="${maxRoomNumber}" style="min-width: 190px"><br>
 
                         <label for="firstName">First Name:</label><br>
