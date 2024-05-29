@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,8 +74,14 @@ public class UserController {
 
     @PostMapping("/updateUser")
     @PreAuthorize("hasAuthority('Admin')")
-    public String updateUser(@RequestParam String oldUsername, @RequestParam String username,@RequestParam String password,
-                             @RequestParam ArrayList<String> roles, RedirectAttributes redirectAttributes){
+    public String updateUser(@RequestParam String oldUsername, @RequestParam String username, @RequestParam String password,
+                             @RequestParam ArrayList<String> roles, RedirectAttributes redirectAttributes, Principal principal){
+
+        String currentUser = principal.getName();
+        if (oldUsername.equals(currentUser) && !roles.contains("Admin")){
+            redirectAttributes.addFlashAttribute("feedback", "Can't remove your own admin");
+            return "redirect:/shabbyShackInn/manageUsers";
+        }
         ArrayList<Role> roleList = roles.stream()
                 .map(roleRepo::findByName)
                 .collect(Collectors.toCollection(ArrayList::new));
