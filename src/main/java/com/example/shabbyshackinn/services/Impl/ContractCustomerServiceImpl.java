@@ -138,16 +138,16 @@ public class ContractCustomerServiceImpl implements ContractCustomerService {
             if(c == null){
                 c = (new ContractCustomer());
             }
-            c.externalSystemId= contractCustomer.externalSystemId;
-            c.companyName = contractCustomer.companyName;
-            c.contactName= contractCustomer.contactName;
-            c.contactTitle= contractCustomer.contactTitle;
-            c.streetAddress= contractCustomer.streetAddress;
-            c.city= contractCustomer.city;
-            c.postalCode= contractCustomer.postalCode;
-            c.country= contractCustomer.country;
-            c.phone= contractCustomer.phone;
-            c.fax= contractCustomer.fax;
+//            c.externalSystemId= contractCustomer.externalSystemId;
+//            c.companyName = contractCustomer.companyName;
+//            c.contactName= contractCustomer.contactName;
+//            c.contactTitle= contractCustomer.contactTitle;
+//            c.streetAddress= contractCustomer.streetAddress;
+//            c.city= contractCustomer.city;
+//            c.postalCode= contractCustomer.postalCode;
+//            c.country= contractCustomer.country;
+//            c.phone= contractCustomer.phone;
+//            c.fax= contractCustomer.fax;
             contractCustomerRepo.save(c);
         }
     }

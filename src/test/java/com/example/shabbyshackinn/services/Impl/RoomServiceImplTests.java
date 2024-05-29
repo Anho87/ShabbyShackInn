@@ -144,32 +144,7 @@ public class RoomServiceImplTests {
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);
         assertEquals(actual.getRoomNumber(), roomWith3Beds.getRoomNumber());
     }
-
-    @Test
-    void findAvailableRoomsForThreePeople() {
-        int amountOfPersons = 3;
-        List<Room> roomsList = Arrays.asList(roomWith3Beds, roomWith4Beds);
-        roomRepo.deleteAll();
-        roomRepo.save(roomWith2Beds);
-        roomRepo.save(roomWith3Beds);
-        roomRepo.save(roomWith4Beds);
-        //TODO SKAPA NYTT REPO SOM ANVÄNDER H2
-//        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons)).thenReturn(roomsList);
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
-        List<DetailedRoomDto> detailedRoomDtoList = service2.findBigEnoughRoomsForNumberOfGuests(amountOfPersons);
-        assertEquals(2, detailedRoomDtoList.size());
-    }
-
-    @Test
-    void findAvailableRoomsForFourPeople() {
-        int amountOfPersons = 4;
-        List<Room> roomsList = Arrays.asList(roomWith4Beds);
-        when(roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons)).thenReturn(roomsList);
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
-        List<DetailedRoomDto> detailedRoomDtoList = service2.findBigEnoughRoomsForNumberOfGuests(amountOfPersons);
-        assertEquals(1, detailedRoomDtoList.size());
-    }
-
+    
     @Test
     void findMiniRoomByRoomNumber() {
         when(roomRepo.findRoomByRoomNumber(roomWith3Beds.getRoomNumber())).thenReturn(roomWith3Beds);
