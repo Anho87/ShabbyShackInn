@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/shabbyShackInn/index}" class="btn btn-success">Tillbaka till startsidan</a>
+<a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/shabbyShackInn/index}" class="btn btn-success">Back to main page</a>
 
 <div class="container mt-5">
     <h1>Search Available Rooms</h1>
