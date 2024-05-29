@@ -1,6 +1,7 @@
 package com.example.shabbyshackinn.services.Impl;
 
 import com.example.shabbyshackinn.dtos.*;
+import com.example.shabbyshackinn.email.EmailService;
 import com.example.shabbyshackinn.models.*;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.CustomerRepo;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,8 +22,7 @@ import java.util.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class BookingServiceImplTests {
@@ -49,6 +48,9 @@ class BookingServiceImplTests {
     @Mock
     private TemplateEngine templateEngine;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private BookingServiceImpl service;
 
@@ -67,16 +69,16 @@ class BookingServiceImplTests {
         room = new Room(1L, RoomType.DOUBLE, 1, 2, 1000, 1);
         booking = new Booking(1L, LocalDate.now().plusDays(1), LocalDate.now().plusDays(3), 123, 1, 3000, customer, room);
         miniRoomDto = new MiniRoomDto(1L, RoomType.DOUBLE, 1);
-        miniCustomerDto  = new MiniCustomerDto(1L, "John", "Doe", "john.doe@example.com");
+        miniCustomerDto = new MiniCustomerDto(1L, "John", "Doe", "john.doe@example.com");
         detailedBookingDto = DetailedBookingDto.builder()
                 .id(1L)
                 .startDate(LocalDate.now().plusDays(1))
                 .endDate(LocalDate.now().plusDays(3))
                 .bookingNumber(123)
                 .extraBedsWanted(0)
+                .totalPrice(1000)
                 .miniCustomerDto(miniCustomerDto)
                 .miniRoomDto(miniRoomDto)
-                .totalPrice(1000)
                 .build();
         blacklistResponseNotBlacklisted = new BlacklistResponse("OK", true);
         blacklistResponseBlacklisted = new BlacklistResponse("Blacklisted", false);
@@ -84,17 +86,29 @@ class BookingServiceImplTests {
 
     @Test
     void addBooking() {
-        when(bookingRepo.save(booking)).thenReturn(booking);
+        when(bookingRepo.save(any(Booking.class))).thenReturn(booking);
         when(customerRepo.findById(customer.getId())).thenReturn(Optional.of(customer));
         when(roomRepo.findById(room.getId())).thenReturn(Optional.of(room));
         when(blacklistService.checkIfEmailIsBlacklisted(customer.getEMail())).thenReturn(blacklistResponseNotBlacklisted);
         MimeMessage mimeMessage = mock(MimeMessage.class);
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
-        when(templateEngine.process(eq("bookingConfiramtionEmail.html"), any(Context.class))).thenReturn("Email content");
+        when(templateEngine.process(eq("bookingConfiramtionEmail.html"), any(org.thymeleaf.context.Context.class))).thenReturn("Email content");
 
         String feedback = service.addBooking(detailedBookingDto);
 
         assertEquals("Booking added", feedback);
+
+        // Verify that the email service is called correctly
+        verify(emailService).sendBookingConfirmedEmail(
+                eq(customer.getEMail()),
+                eq("Booking Confirmation"),
+                eq(customer.getFirstName()),
+                eq(customer.getLastName()),
+                eq(detailedBookingDto.getBookingNumber()),
+                eq(detailedBookingDto.getStartDate().toString()),
+                eq(detailedBookingDto.getEndDate().toString()),
+                eq(detailedBookingDto.getTotalPrice())
+        );
     }
 
     @Test
@@ -262,5 +276,36 @@ class BookingServiceImplTests {
         assertEquals(actual.getMiniRoomDto().getId(), booking.getRoom().getId());
         assertEquals(actual.getMiniRoomDto().getRoomType(), booking.getRoom().getRoomType());
         assertEquals(actual.getMiniRoomDto().getRoomNumber(), booking.getRoom().getRoomNumber());
+    }
+
+    @Test
+    void findBookingByDates() {
+        Booking booking2 = new Booking(2L, LocalDate.now().plusDays(5), LocalDate.now().plusDays(10), 456, 2, 5000, customer, room);
+        List<Booking> bookings = Arrays.asList(booking, booking2);
+
+        // Test case where both bookings are found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(10), LocalDate.now().minusDays(1))).thenReturn(bookings);
+
+        List<DetailedBookingDto> resultWithBothBookingsFound = service.findBookingByDates(LocalDate.now().minusDays(1), LocalDate.now().plusDays(10));
+        assertNotNull(resultWithBothBookingsFound);
+        assertEquals(2, resultWithBothBookingsFound.size());
+
+        // Test case where only one booking is found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(3), LocalDate.now().minusDays(1))).thenReturn(Collections.singletonList(booking));
+
+        List<DetailedBookingDto> resultWithOneBookingFound = service.findBookingByDates(LocalDate.now().minusDays(1), LocalDate.now().plusDays(3));
+        assertNotNull(resultWithOneBookingFound);
+        assertEquals(1, resultWithOneBookingFound.size());
+
+        // Test case where no bookings are found
+        when(bookingRepo.findAllByStartDateIsBeforeAndEndDateIsAfter(LocalDate.now().plusDays(15), LocalDate.now().plusDays(11))).thenReturn(Collections.emptyList());
+
+        List<DetailedBookingDto> resultWithNoBookingsFound = service.findBookingByDates(LocalDate.now().plusDays(11), LocalDate.now().plusDays(15));
+        assertNotNull(resultWithNoBookingsFound);
+        assertEquals(0, resultWithNoBookingsFound.size());
+
+        // Test case for invalid date range (startDate is after endDate)
+        List<DetailedBookingDto> resultWithInvalidDateRanges = service.findBookingByDates(LocalDate.now().plusDays(10), LocalDate.now().minusDays(1));
+        assertEquals(0, resultWithInvalidDateRanges.size());
     }
 }
