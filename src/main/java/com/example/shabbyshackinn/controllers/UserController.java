@@ -5,11 +5,13 @@ import com.example.shabbyshackinn.security.RoleRepo;
 import com.example.shabbyshackinn.security.UserDetailsServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -90,4 +92,17 @@ public class UserController {
         return "redirect:/shabbyShackInn/manageUsers";
     }
 
-}
+    @RequestMapping("/deleteUser/{username}")
+    @PreAuthorize("hasAuthority('Admin')")
+    public String deleteUser(@PathVariable String username, RedirectAttributes redirectAttributes, Principal principal) {
+        String currentUser = principal.getName();
+        if (username.equals(currentUser)) {
+            redirectAttributes.addFlashAttribute("feedback", "Can't delete your own account");
+            return "redirect:/shabbyShackInn/manageUsers";
+        }
+        String feedback = userDetailsService.deleteUser(username);
+        redirectAttributes.addFlashAttribute("feedback", feedback);
+        return "redirect:/shabbyShackInn/manageUsers";
+    }
+
+    }

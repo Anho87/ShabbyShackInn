@@ -76,6 +76,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
+    public String deleteUser(String username) {
+        User user = userRepo.getByUsername(username);
+        if (user == null) {
+            return "User not found";
+        }
+        userRepo.delete(user);
+        return "User deleted successfully";
+    }
+
 
     public User getUserByResetToken(String token) {
         return userRepo.findUserByResetToken(token);

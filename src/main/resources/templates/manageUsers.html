@@ -37,6 +37,8 @@
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.getAuthorities()}"></td>
                 <td><a th:href="@{/shabbyShackInn/updateUserForm/{username}(username=${user.username})}">Update</a></td>
+                <td><a th:href="@{/shabbyShackInn/deleteUser/{username}(username=${user.username})}"
+                       onclick="return confirm('Are you sure you want to delete this user?');">Delete</a></td>
             </tr>
             </tbody>
         </table>
