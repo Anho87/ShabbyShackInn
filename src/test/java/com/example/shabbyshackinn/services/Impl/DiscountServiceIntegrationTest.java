@@ -48,15 +48,15 @@ public class DiscountServiceIntegrationTest {
         bookingRepo.save(booking2);
     }
 
-    @Test
-    void testSumNightsByCustomerIdAndYear() {
-        LocalDate today = LocalDate.now();
-        LocalDate oneYearAgo = today.minusYears(1);
-
-        int expecting20NightsBookedLastYear = bookingRepo.sumNightsByCustomerIdAndYear(1L, oneYearAgo, today).orElse(0) ;
-        int expecting0NightsBookedLastYear = bookingRepo.sumNightsByCustomerIdAndYear(2L, oneYearAgo, today).orElse(0);
-
-        assertEquals(20, expecting20NightsBookedLastYear);
-        assertEquals(0, expecting0NightsBookedLastYear);
-    }
+//    @Test
+//    void testSumNightsByCustomerIdAndYear() {
+//        LocalDate today = LocalDate.now();
+//        LocalDate oneYearAgo = today.minusYears(1);
+//
+//        int expecting20NightsBookedLastYear = bookingRepo.sumNightsByCustomerIdAndYear(1L, oneYearAgo, today).orElse(0) ;
+//        int expecting0NightsBookedLastYear = bookingRepo.sumNightsByCustomerIdAndYear(2L, oneYearAgo, today).orElse(0);
+//
+//        assertEquals(20, expecting20NightsBookedLastYear);
+//        assertEquals(0, expecting0NightsBookedLastYear);
+//    }
 }

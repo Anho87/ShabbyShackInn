@@ -7,6 +7,8 @@ import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.models.RoomType;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
+import com.example.shabbyshackinn.services.BookingService;
+import com.example.shabbyshackinn.services.RoomService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -34,8 +36,11 @@ public class RoomServiceImplTests {
     @Mock
     private RoomRepo roomRepo;
 
+    @Mock
+    private BookingService bookingService;
+
     @InjectMocks
-    private RoomServiceImpl service = new RoomServiceImpl(roomRepo, bookingRepo);
+    private RoomServiceImpl service = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
     Long customerId = 1L;
     String firstName = "John";
     String lastName = "Doe";
@@ -94,7 +99,7 @@ public class RoomServiceImplTests {
     @Test
     void getAllRooms() {
         when(roomRepo.findAll()).thenReturn(Arrays.asList(roomWith3Beds));
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
         List<DetailedRoomDto> allRoom = service2.getAllRooms();
 
         assertEquals(1, allRoom.size());
@@ -125,7 +130,7 @@ public class RoomServiceImplTests {
     @Test
     void findDetailedRoomById() {
         when(roomRepo.findById(roomWith3Beds.getId())).thenReturn(Optional.of(roomWith3Beds));
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
         DetailedRoomDto actual = service2.findDetailedRoomById(roomWith3Beds.getId());
         assertEquals(actual.getId(), roomWith3Beds.getId());
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);
@@ -138,7 +143,7 @@ public class RoomServiceImplTests {
     @Test
     void findMiniRoomById() {
         when(roomRepo.findById(roomWith3Beds.getId())).thenReturn(Optional.of(roomWith3Beds));
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
         MiniRoomDto actual = service2.findMiniRoomById(roomWith3Beds.getId());
         assertEquals(actual.getId(), roomWith3Beds.getId());
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);
@@ -148,7 +153,7 @@ public class RoomServiceImplTests {
     @Test
     void findMiniRoomByRoomNumber() {
         when(roomRepo.findRoomByRoomNumber(roomWith3Beds.getRoomNumber())).thenReturn(roomWith3Beds);
-        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo);
+        RoomServiceImpl service2 = new RoomServiceImpl(roomRepo, bookingRepo, bookingService);
         MiniRoomDto actual = service2.findMiniRoomByRoomNumber(roomWith3Beds.getRoomNumber());
         assertEquals(actual.getId(), roomWith3Beds.getId());
         assertEquals(actual.getRoomType().roomType, roomWith3Beds.getRoomType().roomType);

@@ -7,20 +7,24 @@ import com.example.shabbyshackinn.models.Booking;
 import com.example.shabbyshackinn.models.Room;
 import com.example.shabbyshackinn.repos.BookingRepo;
 import com.example.shabbyshackinn.repos.RoomRepo;
+import com.example.shabbyshackinn.services.BookingService;
 import com.example.shabbyshackinn.services.RoomService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 @Service
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepo roomRepo;
-    final private BookingRepo bookingRepo;
+    private final BookingRepo bookingRepo;
+    private final BookingService bookingService;
 
-    public RoomServiceImpl(RoomRepo roomRepo, BookingRepo bookingRepo){
+    public RoomServiceImpl(RoomRepo roomRepo, BookingRepo bookingRepo, BookingService bookingService){
         this.roomRepo = roomRepo;
         this.bookingRepo = bookingRepo;
+        this.bookingService = bookingService;
     }
 
     @Override
@@ -75,5 +79,32 @@ public class RoomServiceImpl implements RoomService {
     public List<DetailedRoomDto> findBigEnoughRoomsForNumberOfGuests(int amountOfPersons){
         return roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPersons).stream()
                 .map(this::roomToDetailedRoomDTO).toList();
+    }
+
+    @Override
+    public List<DetailedRoomDto> searchAvailableRooms(LocalDate startDate, LocalDate endDate, int numberOfGuests) {
+
+        LocalDate today = LocalDate.now();
+
+        // Ensure the search only considers future dates
+        if (startDate.isBefore(today) && endDate.isAfter(startDate)) {
+            return Collections.emptyList();
+        }
+
+        List<DetailedRoomDto> bigEnoughRooms = findBigEnoughRoomsForNumberOfGuests(numberOfGuests);
+        List<DetailedBookingDto> alreadyBookedRooms = bookingService.findBookingByDates(startDate, endDate);
+
+        if (!alreadyBookedRooms.isEmpty()) {
+            List<Long> roomsAlreadyBookedIds = alreadyBookedRooms.stream()
+                    .map(room -> room.getMiniRoomDto().getId())
+                    .toList();
+            List<DetailedRoomDto> roomsNotAlreadyBooked = findAvailableRooms(roomsAlreadyBookedIds);
+
+            return bigEnoughRooms.stream()
+                    .filter(roomsNotAlreadyBooked::contains)
+                    .toList();
+        } else {
+            return bigEnoughRooms;
+        }
     }
 }
