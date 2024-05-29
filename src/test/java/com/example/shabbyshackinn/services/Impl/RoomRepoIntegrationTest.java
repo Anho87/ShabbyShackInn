@@ -16,22 +16,27 @@ public class RoomRepoIntegrationTest {
     @Autowired
     private RoomRepo roomRepo;
 
-    @BeforeEach
-    void setUp() {
-        roomRepo.deleteAll();
-        
-        Room roomWith2Beds = new Room(1L, RoomType.SINGLE, 1, 1, 100, 1);
-        Room roomWith3Beds = new Room(2L, RoomType.DOUBLE, 2, 2, 200, 1);
-        Room roomWith4Beds = new Room(3L, RoomType.DOUBLE, 3, 2, 300, 2);
-
-        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
-    }
+//    @BeforeEach
+//    void setUp() {
+//        roomRepo.deleteAll();
+//        
+//        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
+//        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
+//        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
+//        
+//        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
+//    }
 
     @Test
     void findRoomByRoomNumber() {
+        roomRepo.deleteAll();
+        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
+        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
+        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
+        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
+        
         int roomNumber = 3;
         Room room = roomRepo.findRoomByRoomNumber(roomNumber);
-        assertEquals(3L, room.getId());
         assertEquals(3, room.getRoomNumber());
         assertEquals(2, room.getBeds());
         assertEquals(300, room.getPrice());
@@ -40,6 +45,12 @@ public class RoomRepoIntegrationTest {
 
     @Test
     void findAvailableRoomsForThreePeople() {
+        roomRepo.deleteAll();
+        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
+        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
+        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
+
+        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
         int amountOfPeople = 3;
         List<Room> actual = roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPeople);
         assertEquals(2, actual.size());
@@ -47,6 +58,12 @@ public class RoomRepoIntegrationTest {
 
     @Test
     void findAvailableRoomsForFourPeople() {
+        roomRepo.deleteAll();
+        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
+        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
+        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
+
+        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
         int amountOfPeople = 4;
         List<Room> actual = roomRepo.findAllByBedsPlusExtraBedsIsGreaterThanEqual(amountOfPeople);
         assertEquals(1, actual.size());
@@ -54,7 +71,13 @@ public class RoomRepoIntegrationTest {
 
     @Test
     void findAllRoomsByIdIsNot() {
-        List<Room> roomsNotInList = roomRepo.findAllByIdIsNot(List.of(2L, 3L));
+        roomRepo.deleteAll();
+        Room roomWith2Beds = new Room(1,RoomType.SINGLE,  1, 100, 1);
+        Room roomWith3Beds = new Room(2,RoomType.DOUBLE, 2, 200, 1);
+        Room roomWith4Beds = new Room(3,RoomType.DOUBLE,  2, 300, 2);
+
+        roomRepo.saveAll(List.of(roomWith2Beds, roomWith3Beds, roomWith4Beds));
+        List<Room> roomsNotInList = roomRepo.findAllByIdIsNot(List.of(roomWith2Beds.getId(), roomWith3Beds.getId()));
         assertEquals(1, roomsNotInList.size());
     }
 }
