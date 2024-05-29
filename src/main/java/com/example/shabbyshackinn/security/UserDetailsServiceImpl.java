@@ -81,7 +81,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepo.findUserByUsername(email);
+        return userRepo.getByUsername(email);
     }
 
     public void saveUserToken(User user){
