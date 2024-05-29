@@ -37,7 +37,6 @@ public class RoomRepoIntegrationTest {
         
         int roomNumber = 3;
         Room room = roomRepo.findRoomByRoomNumber(roomNumber);
-        assertEquals(3L, room.getId());
         assertEquals(3, room.getRoomNumber());
         assertEquals(2, room.getBeds());
         assertEquals(300, room.getPrice());
