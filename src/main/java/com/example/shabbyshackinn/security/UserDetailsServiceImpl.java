@@ -56,6 +56,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public String updateUser(String oldMail, String newMail, String password, ArrayList<Role> roles) {
         try {
             User user = userRepo.getByUsername(oldMail);
+            if (user ==null) {
+                return "User not found";
+            }
             if (!newMail.equals(oldMail)) {
                 user.setUsername(newMail);
             }
