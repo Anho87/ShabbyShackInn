@@ -27,4 +27,6 @@ public interface RoomService {//
     MiniRoomDto findMiniRoomById(Long id);
 
     List<DetailedRoomDto> findBigEnoughRoomsForNumberOfGuests(int amountOfPersons);
+    List<DetailedRoomDto> searchAvailableRooms(LocalDate startDate, LocalDate endDate, int numberOfGuests);
+
 }
